@@ -185,3 +185,45 @@ app.get('/user/:id', async (req, res) => {
 app.listen(port, () => {
     console.log('starting');
 })
+
+app.post('/description', async (req, res) => {
+  const { description } = req.body;
+
+  if (!description) {
+      return res.status(400).json({ error: 'Description is required.' });
+  }
+
+  try {
+      const newDescription = await prisma.description.create({
+          data: {
+              description,
+          },
+      });
+      res.status(201).json(newDescription);
+  } catch (error) {
+      console.error('Error saving description:', error);
+      res.status(500).json({ error: 'Failed to save description.' });
+  }
+});
+
+app.get('/description/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const description = await prisma.description.findUnique({
+          where: { id: parseInt(id) },
+      });
+
+      if (!description) {
+          return res.status(404).json({ error: 'Description not found.' });
+      }
+
+      res.status(200).json(description);
+  } catch (error) {
+      console.error('Error fetching description:', error);
+      res.status(500).json({ error: 'Failed to fetch description.' });
+  }
+});
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
