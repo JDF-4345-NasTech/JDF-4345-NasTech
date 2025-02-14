@@ -5,6 +5,7 @@ import LogoutButton from '../LogoutButton/LogoutButton';
 import AdminButton from './AdminButton/AdminButton';
 import { useEffect, useState } from 'react';
 import NonProfitHome from '../NonProfitHome/NonProfitHome';
+import Organizations from '../Organizations/Organizations';
 
 function DiscoveryPage() {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
@@ -64,6 +65,7 @@ function DiscoveryPage() {
       <LogoutButton></LogoutButton>
       {isAuthenticated && !isOrgAdmin && isUserChecked && <AdminButton setCloseAdminButton={setCloseAdminButton} closeAdminButton={closeAdminButton}></AdminButton>}
       {isOrgAdmin && <NonProfitHome orgId={adminOrg}></NonProfitHome>}
+      {!isOrgAdmin && <Organizations></Organizations>}
     </main>
   )
 }

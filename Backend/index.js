@@ -139,6 +139,17 @@ app.get('/organizations/:organizationId/events', async (req, res) => {
     }
 });
 
+// GET endpoint for retrieving all organizations
+app.get('/organizations', async (req, res) => {
+  try {
+    const organizations = await prisma.organization.findMany();
+    res.status(200).json(organizations);
+  } catch (error) {
+    console.error('Error fetching organizations:', error);
+    res.status(500).json({ error: 'An error occurred while fetching organizations.' });
+  }
+});
+
 // GET endpoint for retrieving an organization
 app.get('/organizations/:organizationId', async (req, res) => {
   const { organizationId } = req.params; // Extract organizationId from params
