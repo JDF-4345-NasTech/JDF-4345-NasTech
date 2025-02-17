@@ -12,7 +12,9 @@ function NonProfitHome( {orgId} ) {
     const { user, isAuthenticated } = useAuth0();
     const [events, setEvents] = useState([]);
     const [created, setCreated] = useState(false);
-    const [toggleEvents, setToggleEvents] = useState(true); // Toggle between current and past events
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    
     const [organization, setOrganization] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -70,10 +72,16 @@ function NonProfitHome( {orgId} ) {
         document.title = organization.name;
     }, []);
 
-    const today = new Date();
-    const currEvents = events.filter(event => new Date(event.date) >= today);
-    const pastEvents = events.filter(event => new Date(event.date) < today);
-    const filteredEvents = toggleEvents ? currEvents : pastEvents;
+    const filteredEvents = events.filter((event) => {
+        const eventDate = new Date(event.date);
+        const start = startDate ? new Date(startDate) : null;
+        const end = endDate ? new Date(endDate) : null;
+      
+        return (
+          (!start || eventDate >= start) &&
+          (!end || eventDate <= end)
+        );
+      });
     const totalPages = Math.ceil(filteredEvents.length / postsPerPage);
     const startIndex = (currentPage - 1) * postsPerPage;
     const selectedEvents = filteredEvents.slice(startIndex, startIndex + postsPerPage);
@@ -98,18 +106,17 @@ function NonProfitHome( {orgId} ) {
                             </div>
                             <div id="event-filter">
                                 <div id="segmented-button">
-                                    <button
-                                      className={`segmented ${toggleEvents ? 'curr' : ''}`} // Is .curr when active for css
-                                      onClick={() => setToggleEvents(true)}
-                                    >
-                                        Current
-                                    </button>
-                                    <button
-                                      className={`segmented ${!toggleEvents ? 'curr' : ''}`}
-                                      onClick={() => setToggleEvents(false)}
-                                    >
-                                        Old
-                                    </button>
+                                    <input
+                                        type="date"
+                                        value={startDate}
+                                        onChange={(e) => setStartDate(e.target.value)}
+                                    />
+
+                                    <input
+                                        type="date"
+                                        value={endDate}
+                                        onChange={(e) => setEndDate(e.target.value)}
+                                    />
                                 </div>
                             </div>
 
@@ -128,11 +135,11 @@ function NonProfitHome( {orgId} ) {
                                 </Link>
                             ))}
                         </div>
-                        <div id="pagination-controls">
-                            <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+                        {totalPages > 1 && (<div id="pagination-controls">
+                            <button id="pagination-button" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
                             <span> Page {currentPage} of {totalPages} </span>
-                            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
-                        </div>
+                            <button id="pagination-button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+                        </div>)}
                     </Route>
                     <Route path='/create-event'>
                         <CreateEvent updateEvents={updateEvents} orgId={orgId}></CreateEvent>
