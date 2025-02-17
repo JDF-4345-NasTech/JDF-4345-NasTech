@@ -234,8 +234,9 @@ app.listen(port, () => {
 app.get('/events/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const entry = await prisma.entry.findUnique({
+        const entry = await prisma.event.findUnique({
             where: { id: parseInt(id) },
+            include: { rsvpResponses: true },
         });
 
         if (!entry) {
