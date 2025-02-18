@@ -1,0 +1,7 @@
+#event-list {
+    margin: 0 auto;
+    display: grid;
+    gap: 20px;
+    padding: 20px;
+    width: 80%;
+}

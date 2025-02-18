@@ -1,54 +1,14 @@
 import './NonProfitEventPage.css'
 import {useState} from 'react';
-import RsvpPopUp from "./RsvpPopUp/RsvpPopUp.jsx";
-import { useAuth0 } from '@auth0/auth0-react'
+import RSVPDashboard from "../RSVPDashboard/RSVPDashboard.jsx";
+import {useAuth0} from '@auth0/auth0-react'
 
-function NonProfitEventPage( {event} ) {
-	const { user, isAuthenticated } = useAuth0();
+function NonProfitEventPage({event}) {
+	const {user, isAuthenticated} = useAuth0();
 	const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal visibility
 
-	function closeRsvp(){
+	function closeModal() {
 		setIsModalOpen(false);
-	}
-
-	const onRSVP = async (response) => {
-		const rsvpData = {
-			email: user.name,
-			response,
-			eventId: event.id,
-			eventName: event.name, 
-			eventDate: event.date,
-		};
-	
-		try {
-			const res = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/rsvp`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(rsvpData),
-			});
-
-			const res2 = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/rsvpMail`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(rsvpData),
-			});
-	
-			if (res.ok && res2.ok) {
-				const result = await res.json();
-				alert('RSVP submitted successfully!');
-			} else {
-				const error = await res.json();
-				console.error(error.message);
-				alert('Failed to submit RSVP. Please try again.');
-			}
-		} catch (err) {
-			console.error(err);
-			alert('An error occurred while submitting your RSVP.');
-		}
 	}
 
 	return (
@@ -60,11 +20,12 @@ function NonProfitEventPage( {event} ) {
 					<progress value={event.donationProgress ?? 0} max="100" id="event-progress-bar"></progress>
 				</div>
 			</div>
-			<h2 id="about-text"><strong>About Our Event</strong></h2>
+			<h2 id="about-text">
+				<strong>About Our Event</strong>
+			</h2>
 			<div id="body-container">
 				<div id="event-body">
-					{/*<img src={event.eventImage || ''} alt={event.name} className="event-image"/>*/}
-					<div><strong></strong>Date: {new Date(event.date).toLocaleDateString()}</div>
+					<div><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</div>
 					<div><strong>RSVPs:</strong> {event.rsvps || 0}</div>
 					<div>{event.description}</div>
 				</div>
@@ -73,12 +34,14 @@ function NonProfitEventPage( {event} ) {
 				</div>
 			</div>
 
-			<RsvpPopUp
-				isOpen={isModalOpen}
-				onClose={() => closeRsvp()}
-				onRSVP={onRSVP}
-			/>
-
+			{isModalOpen && (
+				<div className="modal-overlay">
+					<div className="modal-content">
+						<RSVPDashboard eventId={event.id}/>
+						<button id="close-modal" onClick={closeModal}>Close</button>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

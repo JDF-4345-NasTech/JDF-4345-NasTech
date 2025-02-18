@@ -1,8 +1,9 @@
-#event-header {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    padding-inline: 40px;
+#event-header{
+    padding: 40px;
+    align-content: center;
+    background-color: #007bff;
+    color: #fff;
+    margin-bottom: 20px;
 }
 
 #event-name {
@@ -10,7 +11,7 @@
     justify-items: flex-end;
 }
 
-#about-text {
+#about-text{
     padding-inline: 40px;
     margin: 0px;
 }
@@ -31,9 +32,8 @@
 
 #rsvp-button-container {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Pushes the button to the right */
-    flex-grow: .75; /* Takes the remaining space */
+    justify-content: flex-end;
+    flex-grow: .75;
     align-items: flex-end;
 }
 
@@ -79,11 +79,10 @@
     background-color: #007bff;
     border-radius: 5px;
 }
-
 #event-progress-container {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
+     display: flex;
+     align-items: center;
+     margin: 10px 0;
 }
 
 #event-progress-text {
