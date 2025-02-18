@@ -1,5 +1,5 @@
 #rsvp_button {
-	display: inline-block;
+    display: inline-block;
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
@@ -12,21 +12,21 @@
 
 #rsvp_button:hover {
     background-color: LightSkyBlue;
- }
+}
 
 h1 {
-	text-align: center;
+    text-align: center;
     font-size: 36px;
 }
 
 h3 {
-	text-align: center;
+    text-align: center;
     font-size: 24px;
 }
 
 #rsvp_list {
-	margin: auto;
-    color : blue;
+    margin: auto;
+    color: blue;
     text-align: center;
     font-size: 16px;
     width: 90%;
@@ -36,20 +36,25 @@ h3 {
 }
 
 #rsvp_list #rsvp_header {
-	border-style: solid;
+    border-style: solid;
     border-color: black;
-    background-color : lightgrey;
-    color : black;
+    background-color: lightgrey;
+    color: black;
 }
 
 #rsvp_list .rsvp-row {
-	color: black;
-	overflow: hidden;
-	white-space: nowrap;
+    color: black;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-#rsvp_list .rsvp-row:nth-child(even) {background: #FFF}
-#rsvp_list .rsvp-row:nth-child(odd) {background: Gainsboro}
+#rsvp_list .rsvp-row:nth-child(even) {
+    background: #FFF
+}
+
+#rsvp_list .rsvp-row:nth-child(odd) {
+    background: Gainsboro
+}
 
 #rsvp_list #name-header {
     width: 35%;
@@ -60,29 +65,33 @@ h3 {
 }
 
 #rsvp_stats {
-	margin: auto;
-    color : blue;
+    margin: auto;
+    color: blue;
     text-align: center;
     font-size: 36px;
     height: 100px;
     width: 90%;
-    margin-bottom : 64px;
+    margin-bottom: 64px;
     border-style: solid;
     border-color: black;
-    border-radius : 25px;
+    border-radius: 25px;
     overflow: hidden;
 }
+
 #rsvp_stats .yCol {
-	color : darkgreen
+    color: darkgreen
 }
+
 #rsvp_stats .nCol {
-	color : darkred
+    color: darkred
 }
+
 #rsvp_stats .mCol {
-	color : GoldenRod
+    color: GoldenRod
 }
+
 #rsvp_stats th {
-	 background-color : lightgrey;
-     width: 30%;
-     font-size: 16px;
+    background-color: lightgrey;
+    width: 30%;
+    font-size: 16px;
 }
