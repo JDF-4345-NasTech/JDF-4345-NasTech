@@ -8,9 +8,45 @@
 
 ## Release Notes
 
-### Version 0.1.0
+### Version 0.2.0
 
 This section outlines all updates and features introduced in the current release.
+
+---
+
+### Features
+
+1. **Email Notifications for RSVP**
+   - When a user RSVPs for an event, an email confirmation is automatically sent.
+   - Implemented with nodemailer.
+   - Emails are sent from a Funrazor App gmail account.
+   
+3. **Organization Discovery Page**
+   - Introduced a new page for users to discover and explore non-profit organizations.
+   - Implemented `Organizations.jsx` to fetch and display organization details dynamically.
+   
+4. **Event Details Page**
+   - Users can now view detailed event information, including images, goals, RSVP status, and donation progress.
+   - The page dynamically updates RSVP counts as users submit responses.
+   - Integrated the RSVP pop-up modal directly within the event details page.
+   
+### Bug Fixes
+
+- **Fixed API call issues for fetching organizations**
+  - Improved error handling to avoid crashes when retrieving organization data.
+  
+- **RSVP Pop-Up Accessibility**
+  - Created RSVP to be a pop up modal.
+
+### Known Issues
+
+- Users can RSVP multiple times instead of updating their existing RSVP.
+- RSVP options are available for past events, which should be disabled.
+- Some event calls are used to access rsvp count, and 0 rsvps are displayed. 
+
+---
+
+### Version 0.1.0
 
 ---
 

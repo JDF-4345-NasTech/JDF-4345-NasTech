@@ -13,7 +13,6 @@ body {
     background-color: #007bff;
     color: #fff;
     margin-bottom: 20px;
-    border-radius: 16px;
 }
 
 #non-profit-name {
@@ -65,6 +64,7 @@ body {
     display: grid;
     gap: 20px;
     padding: 20px;
+    width: 80%;
 }
 
 #event-list img {
@@ -105,6 +105,22 @@ body {
 .segmented:not(.curr) {
     background-color: #f1f1f1; /* Dim non-active side */
     color: #666;
+}
+
+#pagination-controls{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+#pagination-buttons{
+    width: 8%;
+    min-width: 100px;
+    font-size: 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
 }
 
 /* Responsive styling */

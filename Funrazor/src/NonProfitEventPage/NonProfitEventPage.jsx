@@ -1,3 +1,4 @@
+import './NonProfitEventPage.css'
 import {useState} from 'react';
 import RsvpPopUp from "./RsvpPopUp/RsvpPopUp.jsx";
 import { useAuth0 } from '@auth0/auth0-react'
@@ -51,24 +52,35 @@ function NonProfitEventPage( {event} ) {
 	}
 
 	return (
-			<div className="non-profit-event-page">
-				<h1>{event.name}</h1>
-				<img src={event.eventImage || ''} alt={event.name} className="event-image"/>
-				<div>Date: {new Date(event.date).toLocaleDateString()}</div>
-				<div>Details: {event.description}</div>
-				<p><strong>RSVPs:</strong> {event.rsvps || 0}</p>
-				<div>
-					<button onClick={() => setIsModalOpen(true)}>RSVP</button>
+		<div className="non-profit-event-page">
+			<div id="event-header">
+				<h1 id="event-name">{event.name}</h1>
+				<div id="event-progress-container">
+					<span id="event-progress-text">Donations:</span>
+					<progress value={event.donationProgress ?? 0} max="100" id="event-progress-bar"></progress>
 				</div>
-
-				<RsvpPopUp
-					isOpen={isModalOpen}
-					onClose={() => closeRsvp()}
-					onRSVP={onRSVP}
-				/>
-				<p><strong>Donation Progress:</strong> {event.donationProgress || 0}%</p>
 			</div>
-		);
+			<h2 id="about-text"><strong>About Our Event</strong></h2>
+			<div id="body-container">
+				<div id="event-body">
+					{/*<img src={event.eventImage || ''} alt={event.name} className="event-image"/>*/}
+					<div><strong></strong>Date: {new Date(event.date).toLocaleDateString()}</div>
+					<div><strong>RSVPs:</strong> {event.rsvps || 0}</div>
+					<div>{event.description}</div>
+				</div>
+				<div id="rsvp-button-container">
+					<button id="rsvp-button" onClick={() => setIsModalOpen(true)}>RSVP Information</button>
+				</div>
+			</div>
+
+			<RsvpPopUp
+				isOpen={isModalOpen}
+				onClose={() => closeRsvp()}
+				onRSVP={onRSVP}
+			/>
+
+		</div>
+	);
 }
 
 export default NonProfitEventPage;

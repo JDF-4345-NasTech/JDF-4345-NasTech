@@ -1,0 +1,116 @@
+#event-header{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-inline: 40px;
+}
+
+
+#event-name {
+    display: flex;
+    justify-items: flex-end;
+}
+
+#about-text{
+    padding-inline: 40px;
+    margin: 0px;
+}
+
+#body-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    padding-top: 10px;
+    padding-inline: 40px;
+}
+
+#event-body {
+    width: 70%;
+    flex-shrink: 0;
+}
+
+#rsvp-button-container {
+    display: flex;
+    justify-content: flex-end; /* Pushes the button to the right */
+    flex-grow: .75; /* Takes the remaining space */
+    align-items: flex-end;
+}
+
+#rsvp-button {
+    justify-content: center;
+}
+
+#event-progress-container {
+    display: flex;
+    width: 30%;
+    justify-self: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#event-progress-text {
+    font-size: 1rem;
+    color: #333;
+    margin-right: 10px;
+}
+
+/* Progress bar styling */
+#event-progress-bar {
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #eee;
+    appearance: none;
+}
+
+#event-progress-bar::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 5px;
+}
+
+#event-progress-bar::-webkit-progress-value {
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+#event-progress-bar::-moz-progress-bar {
+    background-color: #007bff;
+    border-radius: 5px;
+}#event-progress-container {
+     display: flex;
+     align-items: center;
+     margin: 10px 0;
+ }
+
+#event-progress-text {
+    font-size: 1rem;
+    color: #333;
+    margin-right: 10px;
+}
+
+/* Progress bar styling */
+#event-progress-bar {
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #eee;
+    appearance: none;
+}
+
+#event-progress-bar::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 5px;
+}
+
+#event-progress-bar::-webkit-progress-value {
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+#event-progress-bar::-moz-progress-bar {
+    background-color: #007bff;
+    border-radius: 5px;
+}
