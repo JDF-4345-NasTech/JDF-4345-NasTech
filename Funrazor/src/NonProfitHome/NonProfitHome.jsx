@@ -25,14 +25,18 @@ function NonProfitHome({ orgId }) {
             fetchEvents();
             fetchOrganization();
         }
-    }, [isAuthenticated, created]);
+    }, [isAuthenticated, orgId, created]);
 
     const fetchOrganization = () => {
         fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}`)
-            .then(response => response.json())
-            .then(data => setOrganization(data))
-            .catch(error => console.error('Error fetching organization', error));
+          .then(response => response.json())
+          .then(data => {
+              setOrganization(data);
+              console.log("Fetched Organization Data:", data); // Log the data here
+          })
+          .catch(error => console.error('Error fetching organization', error));
     };
+
 
     const fetchEvents = () => {
         fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/events`)
@@ -76,7 +80,7 @@ function NonProfitHome({ orgId }) {
                     <Route exact path='/'>
                         <div id="non-profit-header">
                             <p id="non-profit-name">{organization.name}</p>
-                            <p id="non-profit-details">{organization.description || 'This non-profit is the best one'}</p>
+                            <p id="non-profit-details">{organization.description}</p>
                             <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" />
                         </div>
                         <div id="event-buttons">

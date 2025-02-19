@@ -44,21 +44,23 @@ app.post('/rsvpMail', async (req, res) => {
 
 // POST endpoint for creating an organization
 app.post('/organizations', async (req, res) => {
-    const { name, userId } = req.body;
+  const { name, description, userId } = req.body;
 
-    if (!name || !userId) {
-        return res.status(400).json({ error: 'Missing required fields: name or userId.' });
-    }
+  // Check if the necessary fields are present
+  if (!name || !description || !userId) {
+    return res.status(400).json({ error: 'Missing required fields: name, description, or userId.' });
+  }
 
-    try {
+  try {
     const newOrganization = await prisma.organization.create({
       data: {
         name,
+        description,
       },
     });
 
     await prisma.user.update({
-      where: { id: userId }, 
+      where: { id: userId },
       data: {
         isOrgAdmin: true,
         organizationId: newOrganization.id,
