@@ -76,7 +76,7 @@ function NonProfitHome({ orgId }) {
                         <div id="non-profit-header">
                             <p id="non-profit-name">{organization.name}</p>
                             <p id="non-profit-details">{organization.description}</p>
-                            <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" />
+                            {/* <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" /> */}
                         </div>
                         <div id="event-buttons">
                             <div id="create-event-button">
