@@ -1,7 +1,7 @@
 import './NonProfitHome.css'
 import CreateEvent from '../CreateEvent/CreateEvent'
 import EventListItem from "../EventListItem/EventListItem.jsx"
-import RSVPDashboard from "../RSVPDashboard/RSVPDashboard.jsx";
+import RSVPDashboard from "../NonProfitEventPage/RSVPDashboard/RSVPDashboard.jsx";
 
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom'

@@ -1,15 +1,39 @@
 import './NonProfitEventPage.css'
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import RsvpPopUp from "./RsvpPopUp/RsvpPopUp.jsx";
+import RSVPDashboard from "./RSVPDashboard/RSVPDashboard.jsx";
 import { useAuth0 } from '@auth0/auth0-react'
 
 function NonProfitEventPage( {event} ) {
 	const { user, isAuthenticated } = useAuth0();
 	const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal visibility
+	const [userinfo, setUser] = useState([]);
 
 	function closeRsvp(){
 		setIsModalOpen(false);
 	}
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			fetchUserOrg();
+		}
+	}, [isAuthenticated]);
+
+	
+
+	const fetchUserOrg = () => {
+		fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/userinfo/${user.email}`)
+		.then(response => {
+			return response.json();
+		})
+		.then(data => {
+			setUser(data);
+			console.log(userinfo);
+		})
+		.catch(error => {
+			console.error('Error fetching user info', error);
+		});
+    }
 
 	const onRSVP = async (response) => {
 		const rsvpData = {
@@ -21,6 +45,7 @@ function NonProfitEventPage( {event} ) {
 		};
 	
 		try {
+			console.log(user);
 			const res = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/rsvp`, {
 				method: 'POST',
 				headers: {
@@ -73,11 +98,16 @@ function NonProfitEventPage( {event} ) {
 				</div>
 			</div>
 
-			<RsvpPopUp
+			{event.organizationid !== userinfo.organizationid  && <RsvpPopUp
 				isOpen={isModalOpen}
 				onClose={() => closeRsvp()}
 				onRSVP={onRSVP}
-			/>
+			/>}
+			{event.organizationid === userinfo.organizationid  && <RSVPDashboard
+				isOpen={isModalOpen}
+				onClose={() => closeRsvp()}
+				event={event}
+			/>}
 
 		</div>
 	);

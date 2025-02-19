@@ -270,3 +270,24 @@ app.get('/rsvps/:eventId', async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch RSVPs' });
   }
 });
+
+// GET endpoint for retrieving user information
+app.get('/userinfo/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const entry = await prisma.user.findUnique({
+      where: { id },
+  });
+
+  if (!entry) {
+      return res.status(404).json({ error: 'Entry not found' });
+  }
+
+  res.json(entry);
+} catch (error) {
+  console.log(error);
+  console.error(error);
+  res.status(500).json({ error: 'Failed to fetch entry' });
+}
+});
