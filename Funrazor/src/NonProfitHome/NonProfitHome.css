@@ -33,13 +33,13 @@ body {
 #event-buttons {
     display: flex;
     align-items: center;
-    margin: 20px;
+    gap: 35px;
 }
 
 #create-event-button {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
+    margin: 20px 0 0 45px;
 }
 
 #create-event-button button {
@@ -175,4 +175,19 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.date-filter {
+    width: 20%;
+    padding: 10px;
+    margin-left: 15px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    
+}
+
+input[type="date"] {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
