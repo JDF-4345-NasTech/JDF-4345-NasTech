@@ -115,3 +115,25 @@
     background-color: #007bff;
     border-radius: 5px;
 }
+
+#back-button-container {
+    display: flex;
+    justify-content: flex-start; /* Align to the left */
+    margin-top: 8px;
+    width: 150px;
+    margin-bottom: 16px;
+  }
+  
+  #back-button-container button {
+    font-size: 14px; 
+    padding: 6px 12px; 
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    border: none; 
+    cursor: pointer;
+  }
+  
+  #back-button-container button:hover {
+    background-color: #4b5563; 
+  }
