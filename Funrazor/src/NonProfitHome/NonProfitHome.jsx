@@ -46,7 +46,8 @@ function NonProfitHome({ orgId }) {
                 }
                 return response.json();
             })
-            .then(data => setEvents(data))
+            .then(data => {setEvents(data)
+                console.log(data)})
             .catch(error => console.error('Error fetching events', error));
     };
 
@@ -116,7 +117,7 @@ function NonProfitHome({ orgId }) {
                                     <EventListItem
                                         eventImage={event.eventImage || ''}
                                         eventName={event.name}
-                                        rsvps={event.rsvps || 0}
+                                        rsvps={event.rsvpResponses.length || 0}
                                         eventDate={event.date}
                                         eventDetails={event.description}
                                         eventDonationProgress={event.donationProgress || 0}
