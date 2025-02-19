@@ -1,0 +1,39 @@
+.account-dropdown {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.account-btn {
+    background-color: #ffffff;
+    color: #0056b3;
+    border: darkgrey;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.account-btn:hover {
+    background-color: #0056b3;
+}
+
+.dropdown-content {
+    display: block;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 150px;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.dropdown-content p,
+.dropdown-content button {
+    margin: 5px 0;
+    text-align: center;
+}
