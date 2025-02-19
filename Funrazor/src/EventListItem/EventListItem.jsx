@@ -4,7 +4,7 @@ import './EventListItem.css';
 function EventListItem({ eventImage = "", eventName = "", rsvps = "", eventDate = "", eventDetails = "", eventDonationProgress = "" }) {
     return (
         <div id="event-list-item">
-            <img src={eventImage} alt={eventName} id="event-image" />
+            {/* <img src={eventImage} alt={eventName} id="event-image" /> */}
             <div id="event-details">
                 <h2 id="event-title">{eventName}</h2>
                 <p id="event-date">Date: {eventDate}</p>
