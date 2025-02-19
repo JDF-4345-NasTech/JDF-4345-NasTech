@@ -2,10 +2,11 @@ import './AdminButton.css';
 import { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
-function AdminButton( {setCloseAdminButton, closeAdminButton} ) {
+function AdminButton({ setCloseAdminButton, closeAdminButton }) {
   const { user, isAuthenticated } = useAuth0();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [organizationName, setOrganizationName] = useState('');
+  const [organizationDescription, setOrganizationDescription] = useState('');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -14,11 +15,16 @@ function AdminButton( {setCloseAdminButton, closeAdminButton} ) {
   const closeModal = () => {
     setIsModalOpen(false);
     setOrganizationName('');
+    setOrganizationDescription('');
     setCloseAdminButton(!closeAdminButton);
   };
 
   const handleInputChange = (e) => {
     setOrganizationName(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setOrganizationDescription(e.target.value);
   };
 
   const handleCreateOrganization = async () => {
@@ -27,8 +33,12 @@ function AdminButton( {setCloseAdminButton, closeAdminButton} ) {
       return;
     }
 
+    if (!organizationDescription) {
+      alert('Please provide an organization description.');
+      return;
+    }
+
     try {
-      // Create the organization and update the user
       const response = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations`, {
         method: 'POST',
         headers: {
@@ -36,6 +46,7 @@ function AdminButton( {setCloseAdminButton, closeAdminButton} ) {
         },
         body: JSON.stringify({
           name: organizationName,
+          description: organizationDescription,
           userId: user.name,
         }),
       });
@@ -53,6 +64,7 @@ function AdminButton( {setCloseAdminButton, closeAdminButton} ) {
     }
   };
 
+
   return (
     <>
       <button onClick={openModal}>
@@ -69,6 +81,12 @@ function AdminButton( {setCloseAdminButton, closeAdminButton} ) {
               value={organizationName}
               onChange={handleInputChange}
             />
+            <input
+              type="text"
+              placeholder="Enter a brief description of your organization"
+              value={organizationDescription}
+              onChange={handleDescriptionChange}
+            />
             <button onClick={handleCreateOrganization}>Create Organization</button>
             <button onClick={closeModal}>Cancel</button>
           </div>
@@ -79,4 +97,3 @@ function AdminButton( {setCloseAdminButton, closeAdminButton} ) {
 }
 
 export default AdminButton;
-
