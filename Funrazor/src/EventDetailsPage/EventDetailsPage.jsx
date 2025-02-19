@@ -6,21 +6,27 @@ import ClientRSVP from "../ClientRSVP/ClientRSVP.jsx";
 const EventDetailsPage = ({event}) => {
 	const eventId = useParams().eventId;
 	const [isRsvpOpen, setIsRsvpOpen] = useState(false);
-	const [rsvpCount, setRsvpCount] = useState({confirmed: 0, maybe: 0, no: 0});
+	const [rsvpCount, setRsvpCount] = useState({confirmed: 0, maybe: 0, no: 0, total: 0});
 
 	useEffect(() => {
-
-		fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/rsvps/${eventId}`)
+		fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/events/${eventId}`)
 			.then((res) => res.json())
 			.then((data) => {
-				setRsvpCount({
-					confirmed: data.statusSummary?.Confirmed || 0,
-					maybe: data.statusSummary?.Maybe || 0,
-					no: data.statusSummary?.No || 0,
-				});
+				const rsvpResponses = data.rsvpResponses || []; // Ensure it's an array
+	
+				const counts = {
+					confirmed: rsvpResponses.filter(rsvp => rsvp.response.toLowerCase() === "yes").length,
+					maybe: rsvpResponses.filter(rsvp => rsvp.response.toLowerCase() === "maybe").length,
+					no: rsvpResponses.filter(rsvp => rsvp.response.toLowerCase() === "no").length,
+				};
+	
+				counts.total = counts.confirmed + counts.maybe + counts.no; // Add total count
+	
+				console.log(counts);
+				setRsvpCount(counts);
 			})
 			.catch((err) => console.error("Error fetching RSVP data:", err));
-	}, [eventId]);
+	}, [eventId, isRsvpOpen]);
 
 	if (!event) return <p>Loading event details...</p>;
 
@@ -37,7 +43,7 @@ const EventDetailsPage = ({event}) => {
 			<div id="body-container">
 				<div id="event-body">
 					<div><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</div>
-					<div><strong>RSVPs:</strong> {event.rsvps || 0}</div>
+					<div><strong>RSVPs:</strong> {rsvpCount.total}</div>
 					<div>{event.description}</div>
 				</div>
 				<div id="rsvp-button-container">

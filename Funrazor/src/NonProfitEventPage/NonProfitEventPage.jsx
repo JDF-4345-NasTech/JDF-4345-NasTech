@@ -26,7 +26,7 @@ function NonProfitEventPage({event}) {
 			<div id="body-container">
 				<div id="event-body">
 					<div><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</div>
-					<div><strong>RSVPs:</strong> {event.rsvps || 0}</div>
+					<div><strong>RSVPs:</strong> {event.rsvpResponses ? event.rsvpResponses.length : 0}</div>
 					<div>{event.description}</div>
 				</div>
 				<div id="rsvp-button-container">

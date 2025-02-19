@@ -41,6 +41,22 @@ app.post('/rsvpMail', async (req, res) => {
   }
 });
 
+// DELETE to clear databases
+app.delete('/all', async (req, res) => {
+  try {
+    await prisma.$transaction([
+      prisma.rSVPResponse.deleteMany(),
+      prisma.event.deleteMany(),
+      prisma.user.deleteMany(),
+      prisma.organization.deleteMany(),
+    ]);
+
+    res.json({ message: 'All data deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 // POST endpoint for creating an organization
 app.post('/organizations', async (req, res) => {
@@ -161,10 +177,13 @@ app.patch('/userAdmin', async (req, res) => {
 app.get('/organizations/:organizationId/events', async (req, res) => {
     const { organizationId } = req.params;
     try {
-        const events = await prisma.event.findMany({
-            where: {
-                organizationId: parseInt(organizationId),
-            },
+      const events = await prisma.event.findMany({
+          where: {
+              organizationId: parseInt(organizationId),
+          },
+          include: {
+              rsvpResponses: true,
+          },
         });
         res.status(200).json(events);
     } catch (error) {
