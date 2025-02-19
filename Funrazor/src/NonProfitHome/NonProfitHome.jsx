@@ -1,7 +1,6 @@
 import './NonProfitHome.css';
 import CreateEvent from '../CreateEvent/CreateEvent';
 import EventListItem from "../EventListItem/EventListItem.jsx";
-import RSVPDashboard from "../RSVPDashboard/RSVPDashboard.jsx";
 
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
@@ -84,10 +83,10 @@ function NonProfitHome({ orgId }) {
                                     <button>+ Create Event</button>
                                 </Link>
                             </div>
-                            <div class="date-filter">
+                            <div className="date-filter">
                                 <label>Search from:</label> <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
                             </div>
-                            <div class="date-filter">
+                            <div className="date-filter">
                                 <label>Search up to:</label> <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                             </div>
                         </div>

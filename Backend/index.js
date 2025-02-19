@@ -276,12 +276,16 @@ app.get('/rsvps/:eventId', async (req, res) => {
   const { eventId } = req.params;
 
   try {
-      const rsvps = await prisma.rsvp.findMany({
+      const rsvps = await prisma.RSVPResponse.findMany({
           where: { eventId: parseInt(eventId) },
       });
 
+      if (!rsvps) {
+        return res.status(404).json({ error: 'Entry not found' });
+      }
+
       const statusSummary = rsvps.reduce((acc, rsvp) => {
-          acc[rsvp.status] = (acc[rsvp.status] || 0) + 1;
+          acc[rsvp.response] = (acc[rsvp.response] || 0) + 1;
           return acc;
       }, {});
 

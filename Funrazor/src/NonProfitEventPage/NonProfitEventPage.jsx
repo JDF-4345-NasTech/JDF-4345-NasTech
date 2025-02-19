@@ -37,7 +37,7 @@ function NonProfitEventPage({event}) {
 			{isModalOpen && (
 				<div className="modal-overlay">
 					<div className="modal-content">
-						<RSVPDashboard eventId={event.id}/>
+						<RSVPDashboard event={event}/>
 						<button id="close-modal" onClick={closeModal}>Close</button>
 					</div>
 				</div>
