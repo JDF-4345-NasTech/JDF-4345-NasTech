@@ -1,10 +1,12 @@
 import {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import './EventDetailsPage.css';
 import ClientRSVP from "../ClientRSVP/ClientRSVP.jsx";
 
-const EventDetailsPage = ({event}) => {
+const EventDetailsPage = ({}) => {
 	const eventId = useParams().eventId;
+	const [event, setEvent] = useState([]);
+	const history = useHistory();
 	const [isRsvpOpen, setIsRsvpOpen] = useState(false);
 	const [rsvpCount, setRsvpCount] = useState({confirmed: 0, maybe: 0, no: 0, total: 0});
 
@@ -12,6 +14,7 @@ const EventDetailsPage = ({event}) => {
 		fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/events/${eventId}`)
 			.then((res) => res.json())
 			.then((data) => {
+				setEvent(data);
 				const rsvpResponses = data.rsvpResponses || []; // Ensure it's an array
 	
 				const counts = {
@@ -38,6 +41,14 @@ const EventDetailsPage = ({event}) => {
 					<span id="event-progress-text">Donations:</span>
 					<progress value={event.donationProgress ?? 0} max="100" id="event-progress-bar"></progress>
 				</div>
+			</div>
+			<div id="back-button-container">
+				<button 
+					onClick={() => history.goBack()} // Go back to the previous page
+					className="bg-gray-500 text-white p-2 rounded-lg mt-4"
+					>
+					Back to Events
+				</button>
 			</div>
 			<h2 id="about-text"><strong>About Our Event</strong></h2>
 			<div id="body-container">

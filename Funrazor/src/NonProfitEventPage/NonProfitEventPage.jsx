@@ -2,9 +2,11 @@ import './NonProfitEventPage.css'
 import {useState} from 'react';
 import RSVPDashboard from "../RSVPDashboard/RSVPDashboard.jsx";
 import {useAuth0} from '@auth0/auth0-react'
+import { useHistory } from 'react-router-dom'; 
 
 function NonProfitEventPage({event}) {
 	const {user, isAuthenticated} = useAuth0();
+	const history = useHistory();
 	const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal visibility
 
 	function closeModal() {
@@ -20,6 +22,14 @@ function NonProfitEventPage({event}) {
 					<progress value={event.donationProgress ?? 0} max="100" id="event-progress-bar"></progress>
 				</div>
 			</div>
+			<div id="back-button-container">
+                <button
+                    onClick={() => history.push('/')}
+                    className="bg-gray-500 text-white p-2 rounded-lg mt-4"
+                >
+                    Back to Home
+                </button>
+            </div>
 			<h2 id="about-text">
 				<strong>About Our Event</strong>
 			</h2>
