@@ -19,6 +19,15 @@ model Organization {
   description String
   events Event[]
   admins User[]
+  subscribers Subscriptions[]
+}
+
+model Subscriptions {
+  userId String @map("user_id")
+  organizationId Int @map("organization_id")
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  @@id([userId, organizationId])
 }
 
 model Event {
@@ -49,6 +58,7 @@ model User {
   isOrgAdmin     Boolean       @default(false)
   organization   Organization? @relation(fields: [organizationId], references: [id])
   organizationId Int?
+  subscribed_organizations Subscriptions[]
 }
 
 model Description {
