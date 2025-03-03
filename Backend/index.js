@@ -41,6 +41,43 @@ app.post('/rsvpMail', async (req, res) => {
   }
 });
 
+//Event Creation Route for notification email
+app.post('/eventNotification', async (req, res) => {
+  const { email, eventName, eventDate, eventDescription, orgName} = req.body;
+
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: `New ${eventName} Event from ${orgName}!`,
+    text: `We have a new event for you from ${orgName} who you subscribed to!\n\nEvent: ${eventName}\nDate: ${new Date(eventDate).toLocaleString()}\nAbout: ${eventDescription}\n\n Check ${orgName}'s page for more info! - Funrazor Team`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: 'Email notification sent!' });
+  } catch (error) {
+    console.error('Error sending email notification:', error);
+    res.status(500).json({ message: 'Email notification failed.' });
+  }
+});
+
+// DELETE to clear databases
+app.delete('/all', async (req, res) => {
+  try {
+    await prisma.$transaction([
+      prisma.rSVPResponse.deleteMany(),
+      prisma.event.deleteMany(),
+      prisma.user.deleteMany(),
+      prisma.organization.deleteMany(),
+    ]);
+
+    res.json({ message: 'All data deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 // POST endpoint for creating an organization
 app.post('/organizations', async (req, res) => {
@@ -163,10 +200,13 @@ app.patch('/userAdmin', async (req, res) => {
 app.get('/organizations/:organizationId/events', async (req, res) => {
     const { organizationId } = req.params;
     try {
-        const events = await prisma.event.findMany({
-            where: {
-                organizationId: parseInt(organizationId),
-            },
+      const events = await prisma.event.findMany({
+          where: {
+              organizationId: parseInt(organizationId),
+          },
+          include: {
+              rsvpResponses: true,
+          },
         });
         res.status(200).json(events);
     } catch (error) {
@@ -257,12 +297,16 @@ app.get('/rsvps/:eventId', async (req, res) => {
   const { eventId } = req.params;
 
   try {
-      const rsvps = await prisma.rsvp.findMany({
+      const rsvps = await prisma.RSVPResponse.findMany({
           where: { eventId: parseInt(eventId) },
       });
 
+      if (!rsvps) {
+        return res.status(404).json({ error: 'Entry not found' });
+      }
+
       const statusSummary = rsvps.reduce((acc, rsvp) => {
-          acc[rsvp.status] = (acc[rsvp.status] || 0) + 1;
+          acc[rsvp.response] = (acc[rsvp.response] || 0) + 1;
           return acc;
       }, {});
 
