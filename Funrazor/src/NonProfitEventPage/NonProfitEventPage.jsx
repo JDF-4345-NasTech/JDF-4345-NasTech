@@ -2,9 +2,11 @@ import './NonProfitEventPage.css'
 import {useState} from 'react';
 import RSVPDashboard from "../RSVPDashboard/RSVPDashboard.jsx";
 import {useAuth0} from '@auth0/auth0-react'
+import { useHistory } from 'react-router-dom'; 
 
 function NonProfitEventPage({event}) {
 	const {user, isAuthenticated} = useAuth0();
+	const history = useHistory();
 	const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal visibility
 
 	function closeModal() {
@@ -20,13 +22,21 @@ function NonProfitEventPage({event}) {
 					<progress value={event.donationProgress ?? 0} max="100" id="event-progress-bar"></progress>
 				</div>
 			</div>
+			<div id="back-button-container">
+                <button
+                    onClick={() => history.push('/')}
+                    className="bg-gray-500 text-white p-2 rounded-lg mt-4"
+                >
+                    Back to Home
+                </button>
+            </div>
 			<h2 id="about-text">
 				<strong>About Our Event</strong>
 			</h2>
 			<div id="body-container">
 				<div id="event-body">
 					<div><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</div>
-					<div><strong>RSVPs:</strong> {event.rsvps || 0}</div>
+					<div><strong>RSVPs:</strong> {event.rsvpResponses ? event.rsvpResponses.length : 0}</div>
 					<div>{event.description}</div>
 				</div>
 				<div id="rsvp-button-container">
@@ -37,7 +47,7 @@ function NonProfitEventPage({event}) {
 			{isModalOpen && (
 				<div className="modal-overlay">
 					<div className="modal-content">
-						<RSVPDashboard eventId={event.id}/>
+						<RSVPDashboard event={event}/>
 						<button id="close-modal" onClick={closeModal}>Close</button>
 					</div>
 				</div>

@@ -5,3 +5,59 @@
     padding: 20px;
     width: 80%;
 }
+
+.back-button-container {
+    margin-bottom: 20px;
+    width: 200px;
+  }
+  
+  .back-button {
+    padding: 6px 12px; 
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    border: none; 
+    cursor: pointer;
+  }
+  
+  .back-button:hover {
+    background-color: #374151;
+  }
+
+  .date-filter {
+    width: 20%;
+    padding: 10px;
+    margin-left: 15px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    
+  }
+
+  input[type="date"] {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  #pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  #pagination-buttons {
+    width: 8%;
+    min-width: 100px;
+    font-size: 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+  }
+
+  #header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+  }

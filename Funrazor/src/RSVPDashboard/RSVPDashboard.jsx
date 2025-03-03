@@ -1,50 +1,29 @@
 import './RSVPDashboard.css';
 import {useState, useEffect} from 'react';
-import {useParams} from 'react-router-dom';
 
-const RSVPDashboard = ({eventId}) => {
-	const [entry, setEntry] = useState(null);
+const RSVPDashboard = ({event}) => {
 	const [rsvps, setRsvps] = useState([]);
 	const [statusSummary, setStatusSummary] = useState([0, 0, 0]);  // Default to an array with 3 elements
 	const statusArray = ['Confirmed', 'Maybe', 'No'];
 
 	useEffect(() => {
-		document.title = 'Event RSVPs';
-	}, []);
-
-	useEffect(() => {
-		fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/events/${eventId}`)
-			.then(response => response.json())
-			.then(data => {
-				setEntry(data);
-			})
-			.catch(error => {
-				console.error('Error fetching event data', error);
-			});
-	}, [eventId]);
-
-	useEffect(() => {
-		const fetchRSVPs = async () => {
-			try {
-				const response = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/rsvps/${eventId}`);
-				const data = await response.json();
+		fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/rsvps/${event.id}`)
+			.then((res) => res.json())
+			.then((data => {
 				setRsvps(data.rsvps);
 				setStatusSummary(data.statusSummary);
-			} catch (error) {
-				console.error('Error fetching RSVPs:', error);
-			}
-		};
+			}))
+			.catch((err) => console.error('Error fetching RSVPs:', err));
+	}, [event]);
 
-		fetchRSVPs();
-	}, [eventId]);
 
-	if (!entry) {
+	if (!rsvps) {
 		return <div>Loading...</div>;
 	}
 
 	return (
 		<>
-			<h1>Event {eventId}: {entry.name}</h1>
+			<h1>Event: {event.name}</h1>
 			<h3>RSVPs</h3>
 			<table id='rsvp_stats'>
 				<thead>
@@ -56,9 +35,9 @@ const RSVPDashboard = ({eventId}) => {
 				</thead>
 				<tbody>
 				<tr>
-					<td className="yCol">{statusSummary[0] !== undefined ? statusSummary[0] : 0}</td>
-					<td className="mCol">{statusSummary[1] !== undefined ? statusSummary[1] : 0}</td>
-					<td className="nCol">{statusSummary[2] !== undefined ? statusSummary[2] : 0}</td>
+					<td className="yCol">{statusSummary.Yes !== undefined ? statusSummary.Yes : 0}</td>
+					<td className="mCol">{statusSummary.Maybe !== undefined ? statusSummary.Maybe : 0}</td>
+					<td className="nCol">{statusSummary.No !== undefined ? statusSummary.No : 0}</td>
 				</tr>
 				</tbody>
 			</table>
@@ -74,9 +53,9 @@ const RSVPDashboard = ({eventId}) => {
 				<tbody>
 				{rsvps.map((rsvp, index) => (
 					<tr key={index} className="rsvp-row">
-						<td>{rsvp.lname}, {rsvp.fname}</td>
+						<td>{rsvp.name}</td>
 						<td>{rsvp.email}</td>
-						<td>{statusArray[rsvp.status]}</td>
+						<td>{rsvp.response}</td>
 					</tr>
 				))}
 				</tbody>

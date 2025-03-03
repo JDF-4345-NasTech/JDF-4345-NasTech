@@ -38,7 +38,14 @@ const ClientRSVP = ({event, setIsRsvpOpen}) => {
 				body: JSON.stringify(rsvpData),
 			});
 
-			if (res.ok) {
+			const res2 = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/rsvpMail`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(rsvpData),});
+
+			if (res.ok && res2.ok) {
 				setSuccess(true);
 				setError('');
 				alert("RSVP submitted successfully!");

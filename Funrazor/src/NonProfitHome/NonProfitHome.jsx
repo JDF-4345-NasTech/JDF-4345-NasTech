@@ -1,7 +1,6 @@
 import './NonProfitHome.css';
 import CreateEvent from '../CreateEvent/CreateEvent';
 import EventListItem from "../EventListItem/EventListItem.jsx";
-import RSVPDashboard from "../RSVPDashboard/RSVPDashboard.jsx";
 
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
@@ -12,9 +11,8 @@ function NonProfitHome({ orgId }) {
     const { user, isAuthenticated } = useAuth0();
     const [events, setEvents] = useState([]);
     const [created, setCreated] = useState(false);
-    const [toggleEvents, setToggleEvents] = useState(true);
     const [organization, setOrganization] = useState([]);
-    const [startDate, setStartDate] = useState("");
+    const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
     const [endDate, setEndDate] = useState("");
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -46,7 +44,8 @@ function NonProfitHome({ orgId }) {
                 }
                 return response.json();
             })
-            .then(data => setEvents(data))
+            .then(data => {setEvents(data)
+                console.log(data)})
             .catch(error => console.error('Error fetching events', error));
     };
 
@@ -55,13 +54,8 @@ function NonProfitHome({ orgId }) {
     useEffect(() => {
         document.title = organization.name;
     }, []);
-
-    const today = new Date();
-    const currEvents = events.filter(event => new Date(event.date) >= today);
-    const pastEvents = events.filter(event => new Date(event.date) < today);
-    const filteredByToggle = toggleEvents ? currEvents : pastEvents;
-
-    const filteredEvents = filteredByToggle.filter((event) => {
+    
+    const filteredEvents = events.filter((event) => {
         const eventDate = new Date(event.date);
         const start = startDate ? new Date(startDate) : null;
         const end = endDate ? new Date(endDate) : null;
@@ -81,7 +75,7 @@ function NonProfitHome({ orgId }) {
                         <div id="non-profit-header">
                             <p id="non-profit-name">{organization.name}</p>
                             <p id="non-profit-details">{organization.description}</p>
-                            <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" />
+                            {/* <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" /> */}
                         </div>
                         <div id="event-buttons">
                             <div id="create-event-button">
@@ -89,25 +83,11 @@ function NonProfitHome({ orgId }) {
                                     <button>+ Create Event</button>
                                 </Link>
                             </div>
-                            <div id="event-filter">
-                                <div id="segmented-button">
-                                    <button
-                                        className={`segmented ${toggleEvents ? 'curr' : ''}`}
-                                        onClick={() => setToggleEvents(true)}
-                                    >
-                                        Current
-                                    </button>
-                                    <button
-                                        className={`segmented ${!toggleEvents ? 'curr' : ''}`}
-                                        onClick={() => setToggleEvents(false)}
-                                    >
-                                        Old
-                                    </button>
-                                </div>
-                                <div id="date-filter">
-                                    <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                                    <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-                                </div>
+                            <div className="date-filter">
+                                <label>Search from:</label> <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                            </div>
+                            <div className="date-filter">
+                                <label>Search up to:</label> <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                             </div>
                         </div>
                         <div id="event-list">
@@ -116,7 +96,7 @@ function NonProfitHome({ orgId }) {
                                     <EventListItem
                                         eventImage={event.eventImage || ''}
                                         eventName={event.name}
-                                        rsvps={event.rsvps || 0}
+                                        rsvps={event.rsvpResponses.length || 0}
                                         eventDate={event.date}
                                         eventDetails={event.description}
                                         eventDonationProgress={event.donationProgress || 0}
