@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 function CreateEvent( {updateEvents, orgId} ) {
     const history = useHistory();
     const [states, setStates] = useState([]);
+    const [subscribers, setSubscribers] = useState([]);
     const [cities, setCities] = useState([]);
     const [search, setSearch] = useState("");
     const [filteredStates, setFilteredStates] = useState([]);
@@ -77,8 +78,8 @@ function CreateEvent( {updateEvents, orgId} ) {
                 },
                 body: JSON.stringify({
                     name: `${formInput.target.elements.eventNameInput.value}`,
-	                date: `${formInput.target.elements.dateInput.value}`,
-	                location: `${formInput.target.elements.cityInput.value}, ${formInput.target.elements.stateInput.value}`,
+	                  date: `${formInput.target.elements.dateInput.value}`,
+	                  location: `${formInput.target.elements.cityInput.value}, ${formInput.target.elements.stateInput.value}`,
                     description: `${formInput.target.elements.eventDescriptionInput.value}`,
                     organizationId: orgId
                 })
@@ -88,10 +89,42 @@ function CreateEvent( {updateEvents, orgId} ) {
              if (!response.ok) {
                  throw new Error(`HTTP error! status: ${response.status}`);
              } else {
+                 emailSubscribers()
                 return response.json();
-              } 
+              }
         })
         .catch(error => {});
+    }
+
+    const emailSubscribers = async() => {
+        const res2 = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/subscribers`)
+            .then(response => response.json())
+            .then(data => {
+              setSubscribers(data);
+              console.log('Fetched Subscribers:', data);
+            })
+            .catch(error => console.error('Error fetching subscribers'));
+        if (res2.ok) {
+            subscribers.forEach(subscriber => {
+                sendEmail(subscriber);
+            })
+        }
+    }
+
+    const sendEmail = async(subscriber) => {
+        const res3 = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/eventNotification`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: `${subscriber}`,
+                eventName: `${formInput.target.elements.eventNameInput.value}`,
+                eventDate: `${formInput.target.elements.dateInput.value}`,
+                eventDescription: `${formInput.target.elements.eventDescriptionInput.value}`,
+                orgName: `${orgId.name}`,
+            })
+        });
     }
 
     const handleSearchChange = (event) => {

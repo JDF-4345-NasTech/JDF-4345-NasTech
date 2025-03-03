@@ -41,6 +41,27 @@ app.post('/rsvpMail', async (req, res) => {
   }
 });
 
+//Event Creation Route for notification email
+app.post('/eventNotification', async (req, res) => {
+  const { email, eventName, eventDate, eventDescription, orgName} = req.body;
+
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: `New ${eventName} Event from ${orgName}!`,
+    text: `We have a new event for you from ${orgName} who you subscribed to!\n\nEvent: ${eventName}\nDate: ${new Date(eventDate).toLocaleString()}\nAbout: ${eventDescription}\n\n Check ${orgName}'s page for more info! - Funrazor Team`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: 'Email notification sent!' });
+  } catch (error) {
+    console.error('Error sending email notification:', error);
+    res.status(500).json({ message: 'Email notification failed.' });
+  }
+});
+
 // DELETE to clear databases
 app.delete('/all', async (req, res) => {
   try {
