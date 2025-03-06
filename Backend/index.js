@@ -181,7 +181,7 @@ app.post('/organizations/:organizationId/subscribe', async (req, res) => {
   const { userId } = req.body;
 
   if (!userId) {
-    return res.status(400).json({ error: 'User ID is required.' });
+    return res.status(400).json({ error: 'No user ID.' });
   }
 
   try {
@@ -217,6 +217,45 @@ app.get('/organizations/:organizationId/subscribers', async (req, res) => {
   } catch (error) {
     console.error('Error fetching subscribers:', error);
     res.status(500).json({ error: 'Failed to fetch subscribers.' });
+  }
+});
+
+// GET endpoint for dynamic search for events or organizations depending on parameter
+app.get('/search', async (req, res) => {
+  const { type, query, organizationId } = req.query;
+
+  if (!type || !query) {
+    return res.status(400).json({ error: 'Missing required parameters: type and query.' });
+  }
+  try {
+    let results;
+    if (type === 'organizations') {
+      results = await prisma.organization.findMany({
+        where: {
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          },
+        },
+      });
+    } else if (type === 'events') {
+      results = await prisma.event.findMany({
+        where: {
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          },
+          ...(organizationId && { organizationId: parseInt(organizationId) }),
+        },
+      });
+    } else {
+      return res.status(400).json({ error: 'Invalid type parameter. Use "organizations" or "events".' });
+    }
+
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Error performing search:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
