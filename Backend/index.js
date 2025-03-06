@@ -175,6 +175,51 @@ app.post('/rsvp', async (req, res) => {
   }
 });
 
+// POST endpoint to subscribe a user to an organization
+app.post('/organizations/:organizationId/subscribe', async (req, res) => {
+  const { organizationId } = req.params;
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required.' });
+  }
+
+  try {
+    const newSubscription = await prisma.subscriptions.create({
+      data: {
+        userId,
+        organizationId: parseInt(organizationId),
+      },
+    });
+
+    res.status(201).json(newSubscription);
+  } catch (error) {
+    console.error('Error subscribing user:', error);
+    res.status(500).json({ error: 'Failed to subscribe user.' });
+  }
+});
+
+// GET endpoint to retrieve subscribers of an organization
+app.get('/organizations/:organizationId/subscribers', async (req, res) => {
+  const { organizationId } = req.params;
+
+  try {
+    const subscribers = await prisma.subscriptions.findMany({
+      where: {
+        organizationId: parseInt(organizationId),
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    res.status(200).json(subscribers);
+  } catch (error) {
+    console.error('Error fetching subscribers:', error);
+    res.status(500).json({ error: 'Failed to fetch subscribers.' });
+  }
+});
+
 // PATCH for changing user admin status
 app.patch('/userAdmin', async (req, res) => {
     const { userId, isOrgAdmin, organizationId } = req.body;

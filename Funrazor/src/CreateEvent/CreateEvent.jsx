@@ -96,20 +96,22 @@ function CreateEvent( {updateEvents, orgId} ) {
         .catch(error => {});
     }
 
-    const emailSubscribers = async() => {
-        const res2 = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/subscribers`)
-            .then(response => response.json())
-            .then(data => {
-              setSubscribers(data);
-              console.log('Fetched Subscribers:', data);
-            })
-            .catch(error => console.error('Error fetching subscribers'));
-        if (res2.ok) {
-            subscribers.forEach(subscriber => {
-                sendEmail(subscriber);
-            })
+    const emailSubscribers = async () => {
+        try {
+            const res2 = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/subscribers`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch subscribers: ${response.status}`);
+            }
+            const data = await res2.json();
+            console.log('Fetched Subscribers:', data);
+
+            data.forEach(subscriber => {
+                sendEmail(subscriber.email);
+            });
+        } catch (error) {
+            console.error('Error fetching subscribers:', error);
         }
-    }
+    };
 
     const sendEmail = async(subscriber) => {
         const res3 = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/eventNotification`, {
