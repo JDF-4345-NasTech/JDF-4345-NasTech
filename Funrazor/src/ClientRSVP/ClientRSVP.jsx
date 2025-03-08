@@ -6,7 +6,7 @@ import "./ClientRSVP.css";
 const ClientRSVP = ({event, setIsRsvpOpen}) => {
 	const {user, isAuthenticated} = useAuth0();
 	const [rsvpStatus, setRsvpStatus] = useState(null);
-	const [email, setEmail] = useState("");
+	const [subscribe, setSubscribe] = useState(false);
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState(false);
 
@@ -46,6 +46,9 @@ const ClientRSVP = ({event, setIsRsvpOpen}) => {
 				body: JSON.stringify(rsvpData),});
 
 			if (res.ok && res2.ok) {
+				if (subscribe) {
+					await subscribeToOrg();
+				}
 				setSuccess(true);
 				setError('');
 				alert("RSVP submitted successfully!");
@@ -59,10 +62,27 @@ const ClientRSVP = ({event, setIsRsvpOpen}) => {
 		}
 	};
 
+	const subscribeToOrg = async () => {
+		try {
+			const res = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${event.organizationId}/subscribers`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ email: user.name }),
+			});
+
+			if (!res.ok) {
+				throw new Error(`Failed to subscribe: ${res.status}`);
+			}
+			console.log("User subscribed successfully!");
+		} catch (err) {
+			console.error("Error subscribing user:", err);
+		}
+	};
+
 	// Close both RSVP modal and Success Popup
 	const handleSuccessClose = () => {
-		setSuccess(false);       // Close the Success Popup
-		setIsRsvpOpen(false);     // Close the RSVP modal
+		setSuccess(false);
+		setIsRsvpOpen(false);
 	};
 
 	return (
@@ -70,7 +90,7 @@ const ClientRSVP = ({event, setIsRsvpOpen}) => {
 			<div className="modal-overlay">
 				<div className="modal-content">
 					<h2>RSVP</h2>
-					{error && <p style={{color: 'red'}}>{error}</p>}
+					{error && <p style={{ color: 'red' }}>{error}</p>}
 					<div id='rsvp-buttons'>
 						<button onClick={() => setRsvpStatus('Yes')}
 										style={{fontWeight: rsvpStatus === 'Yes' ? 'bold' : 'normal'}}>Yes
@@ -81,6 +101,15 @@ const ClientRSVP = ({event, setIsRsvpOpen}) => {
 						<button onClick={() => setRsvpStatus('Maybe')}
 										style={{fontWeight: rsvpStatus === 'Maybe' ? 'bold' : 'normal'}}>Maybe
 						</button>
+					</div>
+					<div>
+						<label>
+							<input
+								type="checkbox"
+								checked={subscribe}
+								onChange={() => setSubscribe(!subscribe)}
+							/> Subscribe be updated about this organization's events!
+						</label>
 					</div>
 					<div id='rsvp-buttons'>
 						<button onClick={handleRsvpSubmit}>Confirm</button>
