@@ -49,6 +49,8 @@ model RSVPResponse {
   eventId Int
   event Event @relation(fields: [eventId], references: [id])
   timestamp DateTime @default(now())
+
+  @@unique([email, eventId])
 }
 
 model User {

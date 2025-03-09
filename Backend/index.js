@@ -158,17 +158,23 @@ app.post('/user', async (req, res) => {
 
 // POST endpoint to create an RSVP
 app.post('/rsvp', async (req, res) => {
-  const { email, response, eventId } = req.body;
+  const { email, response, eventId, eventName, eventDate } = req.body;
 
   try {
-      const newRSVP = await prisma.rSVPResponse.create({
-          data: {
-              email,
-              response,
-              eventId,
-          },
-      });
-      res.status(201).json(newRSVP);
+    const newRSVP = await prisma.rSVPResponse.upsert({
+      where: {
+        email_eventId: { email, eventId }
+      },
+      update: {
+        response, // Update existing RSVP with new response
+      },
+      create: {
+        email,
+        response,
+        eventId,
+      },
+    });
+    res.status(201).json(newRSVP);
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Failed to create RSVP' });
@@ -217,6 +223,24 @@ app.get('/organizations/:organizationId/subscribers', async (req, res) => {
   } catch (error) {
     console.error('Error fetching subscribers:', error);
     res.status(500).json({ error: 'Failed to fetch subscribers.' });
+  }
+});
+
+app.post('/organizations/:organizationId/unsubscribe', async (req, res) => {
+  const { organizationId } = req.params;
+  const { userId } = req.body;
+  try {    
+    const subscribers = await prisma.subscriptions.deleteMany({
+      where: {
+        userId: userId,
+        organizationId: parseInt(organizationId),
+      },
+    });
+
+    res.status(200).json({ message: 'Unsubscribed successfully' });
+  } catch (error) {
+    console.error('Error fetching subscribers:', error);
+    res.status(500).json({ message: 'Failed to delete subscribers.' });
   }
 });
 
