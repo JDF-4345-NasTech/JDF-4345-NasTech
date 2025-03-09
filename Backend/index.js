@@ -400,3 +400,31 @@ app.get('/rsvps/:eventId', async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch RSVPs' });
   }
 });
+
+// GET for donation amount
+app.get("/events/:eventId/donations", async (req, res) => {
+  const eventId = parseInt(req.params.eventId);
+
+  const totalDonations = await prisma.donation.aggregate({
+    where: { eventId },
+    _sum: { amount: true },
+  });
+
+  res.json({ total: totalDonations._sum.amount || 0 });
+});
+
+// PUT new donation
+app.put("/events/:eventId/donations", async (req, res) => {
+  const eventId = parseInt(req.params.eventId);
+  const { amount, donorName } = req.body;
+
+  if (!amount || amount <= 0) {
+    return res.status(400).json({ error: "Invalid donation amount" });
+  }
+
+  const donation = await prisma.donation.create({
+    data: { eventId, amount, donorName },
+  });
+
+  res.json(donation);
+});
