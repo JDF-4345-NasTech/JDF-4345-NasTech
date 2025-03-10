@@ -8,6 +8,41 @@
 
 ## Release Notes
 
+### Version 0.3.0
+---
+### Features
+
+1. **Donation Page**
+   - Users have the option to donate to an event
+   - Implemented with stripe.
+   - Donations are tracked on the Event page
+   
+2. **Organization Subsciptions**
+   - Introduced sevral ways for users to subscribe to non-profit organizations.
+   - Implemented backed and database support to add and remove a user
+   - Organizations will send an email to their subscribers when they form an event
+   
+3. **UI overhaul**
+   - Comprehensive updates to every existing page
+   - User navigation features were added and moved.
+   
+### Bug Fixes
+
+- **Fixed API call issues for fetching organizations**
+  - Improved error handling to avoid crashes when retrieving organization data.
+  
+- **Fixed RSVP API calls**
+  - RSVP counts now displays the correct numbers.
+  - Users are now limited to 1 RSVP per event, which they can update in the event page
+  - RSVP function is now functional
+
+### Known Issues
+
+- RSVP options are available for past events, which should be disabled.
+- UI could be modernized, with changes to page layout, icons, fonts and colors pending. 
+
+---
+
 ### Version 0.2.0
 
 This section outlines all updates and features introduced in the current release.
