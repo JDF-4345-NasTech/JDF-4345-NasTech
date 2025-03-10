@@ -3,10 +3,12 @@ const prisma = new PrismaClient();
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const Stripe = require('stripe');
 require('dotenv').config();
 
 const app = express();
 const port = 3000;
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.use(express.json());
 app.use(cors());
@@ -352,10 +354,6 @@ app.get('/user/:id', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-    console.log('starting');
-})
-
 // GET endpoint for retreiving an event
 app.get('/events/:id', async (req, res) => {
     const { id } = req.params;
@@ -400,3 +398,31 @@ app.get('/rsvps/:eventId', async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch RSVPs' });
   }
 });
+
+app.post('/create-checkout-session', async (req, res) => {
+	try {
+		const session = await stripe.checkout.sessions.create({
+			payment_method_types: ['card'],
+			line_items: [
+				{
+					price_data: {
+						currency: 'usd',
+						product_data: { name: 'Donation' },
+						unit_amount: Math.round(req.body.amount * 100),
+					},
+					quantity: 1,
+				},
+			],
+			mode: 'payment',
+			success_url: 'http://localhost:3000/success',
+			cancel_url: 'http://localhost:3000/cancel',
+		});
+		res.json({ id: session.id });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
+app.listen(port, () => {
+  console.log('starting');
+})
