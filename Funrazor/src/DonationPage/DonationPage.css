@@ -1,0 +1,60 @@
+.donation-container {
+	max-width: 400px;
+	margin: 40px auto;
+	padding: 20px;
+	background: #fff;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+	text-align: center;
+}
+
+h2 {
+	color: #333;
+	margin-bottom: 15px;
+}
+
+.donation-form {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+label {
+	font-size: 14px;
+	color: #555;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	text-align: left;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+.cover-fee {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	color: #444;
+}
+
+button {
+	background: #ff5a5f;
+	color: white;
+	font-size: 16px;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background 0.3s;
+}
+
+button:hover {
+	background: #e0484e;
+}
