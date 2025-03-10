@@ -39,6 +39,7 @@ model Event {
   organization Organization @relation(fields: [organizationId], references: [id])
   organizationId Int
   rsvpResponses RSVPResponse[]
+  donations     Donation[]
 }
 
 model RSVPResponse {
@@ -65,4 +66,13 @@ model Description {
   id          Int      @id @default(autoincrement())
   description String
   createdAt   DateTime @default(now())
+}
+
+model Donation {
+  id        Int     @id @default(autoincrement())
+  amount    Float
+  donorName String?
+  event     Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId   Int
+  createdAt DateTime @default(now())
 }
