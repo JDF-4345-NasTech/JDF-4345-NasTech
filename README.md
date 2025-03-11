@@ -34,13 +34,13 @@
 - **Fixed RSVP API calls**
   - RSVP counts now displays the correct numbers.
   - Users are now limited to 1 RSVP per event, which they can update in the event page
-  - RSVP function is now functional
+  - RSVP modal is now functional
 
 ### Known Issues
 
 - RSVP options are available for past events, which should be disabled.
 - UI could be modernized, with changes to page layout, icons, fonts and colors pending. 
-
+- Stripe donation still needs to be thoroughly tested
 ---
 
 ### Version 0.2.0
