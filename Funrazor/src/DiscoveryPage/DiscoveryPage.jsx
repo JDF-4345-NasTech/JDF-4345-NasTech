@@ -16,8 +16,7 @@ function DiscoveryPage() {
 	const [adminOrg, setAdminOrg] = useState(0);
 	const [isUserChecked, setIsUserChecked] = useState(false);
 	const [closeAdminButton, setCloseAdminButton] = useState(false);
-	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-	const [redirectToAdmin, setRedirectToAdmin] = useState(false);
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false); // To control dropdown visibility
 
 	useEffect(() => {
 		if (isAuthenticated && !isLoading && user) {
@@ -36,7 +35,6 @@ function DiscoveryPage() {
 			setIsOrgAdmin(userData.isOrgAdmin);
 			if (userData.isOrgAdmin) {
 				setAdminOrg(userData.organizationId);
-				setRedirectToAdmin(true);
 			}
 		} catch (error) {
 			console.error('Error fetching user status:', error);
@@ -48,11 +46,9 @@ function DiscoveryPage() {
 	const addUserToDatabase = async (user) => {
 		try {
 			await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/user`, {
-				method: 'POST',
-				headers: {
+				method: 'POST', headers: {
 					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ id: user.name }),
+				}, body: JSON.stringify({id: user.name}),
 			});
 		} catch (error) {
 			console.error('Error:', error);
@@ -62,11 +58,6 @@ function DiscoveryPage() {
 	return (
 		<Router>
 			<div className="page-container">
-				{redirectToAdmin && (
-					<Link to={`/organizations/${adminOrg}`} className="hidden-link">
-					</Link>
-				)}
-
 				<div className="account-dropdown">
 					<button
 						className="account-btn"
@@ -93,10 +84,7 @@ function DiscoveryPage() {
 					<Route path="/organizations/:orgId/events">
 						<EventListingWrapper/>
 					</Route>
-					<Route path="/client/events/:eventId" component={EventDetailsPage} />
-					<Route path="/organizations/:orgId">
-						<NonProfitHome orgId={adminOrg} />
-					</Route>
+          <Route path="/client/events/:eventId" component={EventDetailsPage} />
 				</Switch>
 			</div>
 		</Router>
