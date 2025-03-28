@@ -3,6 +3,8 @@ import {useState, useEffect} from 'react'
 import {useAuth0} from '@auth0/auth0-react'
 import { loadStripe } from '@stripe/stripe-js';
 
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
 function DonationPage() {
 	const {user, isAuthenticated} = useAuth0();
     const [amount, setAmount] = useState('');
@@ -13,7 +15,7 @@ function DonationPage() {
 
 	const handleCheckout = async () => {
 		const stripe = await stripePromise;
-		const response = await fetch('/create-checkout-session', {
+		const response = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/create-checkout-session`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ amount: totalAmount }),

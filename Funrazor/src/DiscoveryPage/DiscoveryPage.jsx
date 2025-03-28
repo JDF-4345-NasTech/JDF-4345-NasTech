@@ -8,6 +8,7 @@ import NonProfitHome from '../NonProfitHome/NonProfitHome';
 import Organizations from '../Organizations/Organizations';
 import EventListingPage from '../EventListingPage/EventListingPage';
 import EventDetailsPage from '../EventDetailsPage/EventDetailsPage';
+import DonationPage from '../DonationPage/DonationPage';
 import {BrowserRouter as Router, Route, Switch, Link, useParams} from 'react-router-dom';
 
 function DiscoveryPage() {
@@ -85,6 +86,7 @@ function DiscoveryPage() {
 						<EventListingWrapper/>
 					</Route>
           <Route path="/client/events/:eventId" component={EventDetailsPage} />
+          <Route path="/donate" component={DonationPage} />
 				</Switch>
 			</div>
 		</Router>
