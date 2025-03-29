@@ -380,7 +380,7 @@ app.get('/user/:id', async (req, res) => {
 
 // GET endpoint for retreiving an event
 app.get('/events/:id', async (req, res) => {
-    const { id } = req.params;
+  const id = parseInt(req.params.id, 10);
     try {
         const entry = await prisma.event.findUnique({
             where: { id: parseInt(id) },
@@ -466,8 +466,8 @@ app.post('/create-checkout-session', async (req, res) => {
 				},
 			],
 			mode: 'payment',
-			success_url: 'http://localhost:5173/success',
-			cancel_url: 'http://localhost:5173/cancel',
+			success_url: `http://localhost:5173/success?eventId=${req.body.eventId}`,
+			cancel_url: 'http://localhost:5173/donate',
 		});
 		res.json({ id: session.id });
 	} catch (error) {

@@ -42,7 +42,7 @@ const EventDetailsPage = ({}) => {
 					<progress value={event.donationProgress ?? 0} max="100" id="event-progress-bar"></progress>
 				</div>
 				<div id="donate-button-container">
-				<button onClick={() => history.push("/donate")}>Donate</button>
+				<button onClick={() => history.push(`/donate/${eventId}`)}>Donate</button>
 			</div>
 			</div>
 			<div id="back-button-container">
