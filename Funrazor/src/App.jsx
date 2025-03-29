@@ -4,7 +4,8 @@ import DiscoveryPage from './DiscoveryPage/DiscoveryPage'
 function App() {
 
   return (
-    <main >
+    <main>
+      <div id="title">Funrazor</div>
       <DiscoveryPage></DiscoveryPage>
     </main>
   )

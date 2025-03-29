@@ -1,11 +1,3 @@
-#title {
-    padding: 40px;
-    align-content: center;
-    background-color: #007bff;
-    color: #fff;
-    margin-bottom: 20px;
-}
-
 #organizations-container {
     display: grid;
     align-content: center;

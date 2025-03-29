@@ -9,6 +9,7 @@ import Organizations from '../Organizations/Organizations';
 import EventListingPage from '../EventListingPage/EventListingPage';
 import EventDetailsPage from '../EventDetailsPage/EventDetailsPage';
 import DonationPage from '../DonationPage/DonationPage';
+import { User } from 'lucide-react';
 import {BrowserRouter as Router, Route, Switch, Link, useParams} from 'react-router-dom';
 
 function DiscoveryPage() {
@@ -68,18 +69,18 @@ function DiscoveryPage() {
 						className="account-btn"
 						onClick={() => setIsDropdownOpen(!isDropdownOpen)}
 					>
-						Account
+						<User className="icon" size={20} />
 					</button>
 					{isDropdownOpen && (<div className="dropdown-content">
 						{isAuthenticated ? (<>
 							<p>{user.name}</p>
-							<LogoutButton/>
-							{isOrgAdmin && (
-								<button onClick={myOrgClick}>My Org</button>
-							)}
-						</>) : (<LoginButton/>)}
 						{isAuthenticated && !isOrgAdmin && isUserChecked && (
-							<AdminButton setCloseAdminButton={setCloseAdminButton} closeAdminButton={closeAdminButton}/>)}
+							<AdminButton style = {{backgroundColor: "#007bff"}} setCloseAdminButton={setCloseAdminButton} closeAdminButton={closeAdminButton}/>)}
+							{isOrgAdmin && (
+								<button style = {{backgroundColor: "#007bff"}} onClick={myOrgClick}>My Org</button>
+							)}
+						</>) : (<LoginButton style = {{backgroundColor: "#007bff"}}/>)}
+						<LogoutButton/>
 					</div>)}
 				</div>
 

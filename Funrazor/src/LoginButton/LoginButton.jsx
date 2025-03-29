@@ -5,7 +5,7 @@ function LoginButton() {
 
     return (
         !isAuthenticated && (
-            <button onClick={loginWithRedirect}>
+            <button style = {{backgroundColor: "#007bff"}} onClick={loginWithRedirect}>
                 Sign In
             </button>
         )

@@ -22,9 +22,6 @@ function Organizations() {
 
 	return (
 		<div id='organizations'>
-			<div id='title'>
-				<h1>FUNRAZOR</h1>
-			</div>
 			<h2 id='header'>Organizations to Support</h2>
 			<div className="organizations-container">
 				{organizations.map((org) => (

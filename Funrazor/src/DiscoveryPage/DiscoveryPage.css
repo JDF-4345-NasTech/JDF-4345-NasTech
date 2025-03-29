@@ -6,16 +6,26 @@
 }
 
 .account-btn {
-    background-color: #ffffff;
-    color: #0056b3;
-    border: darkgrey;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    align-items: start;
+    justify-content: center;
+    background-color: #f8f8f8;
+    margin-top: 0px;
 }
 
 .account-btn:hover {
-    background-color: #0056b3;
+    background-color: #f0f0f0; /* Slightly darker gray */
+}
+
+.account-btn .icon {
+    color: #4b5563; /* Dark gray */
+    transition: color 0.2s;
+}
+
+.account-btn:hover .icon {
+    color: #000; /* Black on hover */
 }
 
 .dropdown-content {
