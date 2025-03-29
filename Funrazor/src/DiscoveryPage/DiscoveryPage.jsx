@@ -55,6 +55,10 @@ function DiscoveryPage() {
 		}
 	};
 
+	const myOrgClick = () => {
+		window.location.href = "/";
+	};
+
 	return (
 		<Router>
 			<div className="page-container">
@@ -66,13 +70,16 @@ function DiscoveryPage() {
 						Account
 					</button>
 					{isDropdownOpen && (<div className="dropdown-content">
-							{isAuthenticated ? (<>
-									<p>{user.name}</p>
-									<LogoutButton/>
-								</>) : (<LoginButton/>)}
-							{isAuthenticated && !isOrgAdmin && isUserChecked && (
-								<AdminButton setCloseAdminButton={setCloseAdminButton} closeAdminButton={closeAdminButton}/>)}
-						</div>)}
+						{isAuthenticated ? (<>
+							<p>{user.name}</p>
+							<LogoutButton/>
+							{isOrgAdmin && (
+								<button onClick={myOrgClick}>My Org</button>
+							)}
+						</>) : (<LoginButton/>)}
+						{isAuthenticated && !isOrgAdmin && isUserChecked && (
+							<AdminButton setCloseAdminButton={setCloseAdminButton} closeAdminButton={closeAdminButton}/>)}
+					</div>)}
 				</div>
 
 				<Switch>

@@ -475,6 +475,34 @@ app.post('/create-checkout-session', async (req, res) => {
 	}
 });
 
+//Removes organization request relationship
+app.post('/organizations/:organizationId/remove-request', async (req, res) => {
+  const { organizationId } = req.params;
+  const { userId } = req.body;
+  try {
+    await prisma.organization.update({
+      where: { id: parseInt(organizationId) },
+      data: {
+        requests: {
+          disconnect: { id: userId },
+        },
+      },
+    });
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        requestedOrganizations: {
+          disconnect: { id: parseInt(organizationId) },
+        },
+      },
+    });
+    res.status(200).json({ message: 'Request denied successfully' });
+  } catch (error) {
+    console.error('Error denying request:', error);
+    res.status(500).json({ message: 'Failed to deny request.' });
+  }
+});
+
 app.listen(port, () => {
   console.log('starting');
 })
