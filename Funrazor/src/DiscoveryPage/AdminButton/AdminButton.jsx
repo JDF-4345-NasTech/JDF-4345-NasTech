@@ -55,6 +55,8 @@ function AdminButton({ setCloseAdminButton, closeAdminButton }) {
 
       if (response.ok) {
         closeModal();
+      } else if (response.status === 409) {
+        alert('An organization with this name already exists. Please choose a different name.');
       } else {
         alert(result.error || 'Failed to create organization.');
       }
