@@ -41,6 +41,9 @@ const EventDetailsPage = ({}) => {
 					<span id="event-progress-text">Donations:</span>
 					<progress value={event.donationProgress ?? 0} max="100" id="event-progress-bar"></progress>
 				</div>
+				<div id="donate-button-container">
+				<button onClick={() => history.push("/donate")}>Donate</button>
+			</div>
 			</div>
 			<div id="back-button-container">
 				<button 
@@ -50,7 +53,7 @@ const EventDetailsPage = ({}) => {
 					Back to Events
 				</button>
 			</div>
-			<h2 id="about-text"><strong>About Our Event</strong></h2>
+			<h2 id="about-text"><strong>About</strong></h2>
 			<div id="body-container">
 				<div id="event-body">
 					<div><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</div>
