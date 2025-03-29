@@ -1,26 +1,23 @@
-#event-header{
-    padding: 40px;
-    align-content: center;
-    background-color: #007bff;
-    color: #fff;
-    margin-bottom: 20px;
-}
-
-#event-name {
+#event-details-page-header {
     display: flex;
-    justify-items: flex-end;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-inline: 40px;
 }
 
-#about-text{
-    padding-inline: 40px;
-    margin: 0px;
+#event-details-page-name {
+    display: flex;
+    color:#007bff;
+    font-size: 80px;
+    justify-items: flex-end;
 }
 
 #body-container {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     align-items: flex-start;
-    width: 100%;
+    width: 95%;
     padding-top: 10px;
     padding-inline: 40px;
 }
@@ -116,24 +113,32 @@
     border-radius: 5px;
 }
 
-#back-button-container {
+#event-details-back-button-container {
     display: flex;
-    justify-content: flex-start; /* Align to the left */
-    margin-top: 8px;
+    margin-left: 30px;
     width: 150px;
-    margin-bottom: 16px;
-  }
-  
-  #back-button-container button {
-    font-size: 14px; 
-    padding: 6px 12px; 
+}
+
+#event-details-back-button-container button {
+    font-size: 14px;
     border-radius: 4px;
     background-color: #007bff;
     color: white;
-    border: none; 
+    border: none;
     cursor: pointer;
-  }
-  
-  #back-button-container button:hover {
-    background-color: #4b5563; 
-  }
+}
+
+#back-button-container button:hover {
+    background-color: #4b5563;
+}
+
+#donate-button-container{
+    display: flex;
+    margin-left: 30px;
+    width: 150px;
+}
+
+#donate-button{
+    background-color: #007bff;
+    color: white;
+}

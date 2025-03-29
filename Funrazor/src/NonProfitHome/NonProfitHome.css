@@ -7,20 +7,25 @@ body {
 
 #non-profit-header {
     text-align: center;
-    padding: 40px;
-    background-color: #007bff;
-    color: #fff;
+    padding: 20px;
+    padding-top: 0px;
 }
 
 #non-profit-name {
-    font-size: 1.8rem;
+    font-size: 100px;
+    color: #007bff;
+    font-family: Verdana, sans-serif;
     font-weight: bold;
+    font-stretch: expanded;
     margin: 0;
 }
 
 #non-profit-details {
+    color: darkslategray;
     font-size: 1.2rem;
     margin: 10px 0;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
 }
 
 #non-profit-image {
@@ -33,7 +38,9 @@ body {
 #event-buttons {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 35px;
+    margin-inline: 100px;
 }
 
 #create-event-button {
@@ -59,9 +66,10 @@ body {
 #event-list {
     margin: 0 auto;
     display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
     padding: 20px;
-    width: 80%;
+    width: 100%;
 }
 
 #event-list img {
@@ -177,13 +185,20 @@ body {
     cursor: pointer;
 }
 
+.date-filters {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 300px;
+    margin-right: 30px;
+}
+
 .date-filter {
-    width: 20%;
-    padding: 10px;
-    margin-left: 15px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    margin: 10px
 }
 
 input[type="date"] {

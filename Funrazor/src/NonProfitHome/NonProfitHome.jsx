@@ -79,15 +79,17 @@ function NonProfitHome({ orgId }) {
                         </div>
                         <div id="event-buttons">
                             <div id="create-event-button">
-                                <Link to='/create-event'>
+                                <Link to='/create-event' style={{ textDecoration: "none" }}>
                                     <button>+ Create Event</button>
                                 </Link>
                             </div>
-                            <div className="date-filter">
-                                <label>Search from:</label> <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                            </div>
-                            <div className="date-filter">
-                                <label>Search up to:</label> <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                            <div className="date-filters">
+                                <div className="date-filter">
+                                    <label>Search from:</label> <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                                </div>
+                                <div className="date-filter">
+                                    <label>Search up to:</label> <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                                </div>
                             </div>
                         </div>
                         <div id="event-list">

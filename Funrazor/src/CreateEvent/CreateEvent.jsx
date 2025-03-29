@@ -178,45 +178,45 @@ function CreateEvent( {updateEvents, orgId} ) {
             <div id="state">
                 <label>State</label>
                 <input
-                    type="text"
-                    id="stateInput"
-                    name="stateInput"
-                    value={search}
-                    onChange={handleSearchChange}
-                    placeholder="Start typing to search..."
-                    required
+                  type="text"
+                  id="stateInput"
+                  name="stateInput"
+                  value={search}
+                  onChange={handleSearchChange}
+                  placeholder="Start typing to search..."
+                  required
                 />
                 <ul className="suggestions">
                     {filteredStates && filteredStates.map((state) => (
-                        <li
-                            key={state.iso2}
-                            onClick={() => handleSelectState(state)}
-                        >
-                            {state.name}
-                        </li>
+                      <li
+                        key={state.iso2}
+                        onClick={() => handleSelectState(state)}
+                      >
+                          {state.name}
+                      </li>
                     ))}
                 </ul>
             </div>
             <div id="city">
                 <label>City</label>
                 <input
-                    type="text"
-                    id="cityInput"
-                    name="cityInput"
-                    value={searchCity}
-                    onChange={handleSearchCityChange}
-                    placeholder="Start typing to search city..."
-                    disabled={!isStateSelected}  // Disable city input until state is selected
-                    required
+                  type="text"
+                  id="cityInput"
+                  name="cityInput"
+                  value={searchCity}
+                  onChange={handleSearchCityChange}
+                  placeholder="Start typing to search city..."
+                  disabled={!isStateSelected}  // Disable city input until state is selected
+                  required
                 />
                 <ul className="suggestions">
                     {filteredCities && filteredCities.map((city) => (
-                        <li
-                            key={city.id}
-                            onClick={() => handleSelectCity(city)}
-                        >
-                            {city.name}
-                        </li>
+                      <li
+                        key={city.id}
+                        onClick={() => handleSelectCity(city)}
+                      >
+                          {city.name}
+                      </li>
                     ))}
                 </ul>
             </div>
@@ -224,9 +224,9 @@ function CreateEvent( {updateEvents, orgId} ) {
                 <label>Description</label>
                 <input type="text" id="eventDescriptionInput" name="eventDescriptionInput" required></input>
             </div>
-            <button type="submit">Create</button>
+            <button  style = {{backgroundColor: "#007bff"}} type="submit">Create</button>
+            <button onClick={() => history.push('/')}>Cancel</button>
         </form>
-        <button onClick={() => history.push('/')}>Cancel</button>
     </>
   )
 }

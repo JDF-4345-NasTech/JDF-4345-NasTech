@@ -1,1 +1,10 @@
-
+#title {
+    padding: 20px;
+    padding-top: 25px;
+    font-family: Copperplate-Bold;
+    font-style: italic;
+    font-size: 30px;
+    align-content: start;
+    background-color: #007bff;
+    color: #fff;
+}
