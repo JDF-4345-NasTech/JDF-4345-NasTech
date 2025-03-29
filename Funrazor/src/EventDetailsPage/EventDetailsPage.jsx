@@ -41,7 +41,10 @@ const EventDetailsPage = ({}) => {
 					<span id="event-progress-text">Donations:</span>
 					<progress value={event.donationProgress ?? 0} max="100" id="event-progress-bar"></progress>
 				</div>
-			</div>
+
+				<div id="donate-button-container">
+				  <button onClick={() => history.push(`/donate/${eventId}`)}>Donate</button>
+        </div>
 			<div id="event-details-back-button-container">
 				<button
 					onClick={() => history.goBack()} // Go back to the previous page

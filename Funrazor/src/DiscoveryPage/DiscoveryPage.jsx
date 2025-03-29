@@ -8,8 +8,10 @@ import NonProfitHome from '../NonProfitHome/NonProfitHome';
 import Organizations from '../Organizations/Organizations';
 import EventListingPage from '../EventListingPage/EventListingPage';
 import EventDetailsPage from '../EventDetailsPage/EventDetailsPage';
-import DonationPage from '../DonationPage/DonationPage';
 import { User } from 'lucide-react';
+import DonationPage from '../Donate/DonationPage/DonationPage';
+import DonateSuccess from '../Donate/DonateSuccess/DonateSuccess';
+
 import {BrowserRouter as Router, Route, Switch, Link, useParams} from 'react-router-dom';
 
 function DiscoveryPage() {
@@ -94,7 +96,8 @@ function DiscoveryPage() {
 						<EventListingWrapper/>
 					</Route>
           <Route path="/client/events/:eventId" component={EventDetailsPage} />
-          <Route path="/donate" component={DonationPage} />
+          <Route path="/donate/:eventId" component={DonationPage} />
+          <Route path="/success" component={DonateSuccess} />
 				</Switch>
 			</div>
 		</Router>
