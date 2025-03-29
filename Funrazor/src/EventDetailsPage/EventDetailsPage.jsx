@@ -41,10 +41,8 @@ const EventDetailsPage = ({}) => {
 					<span id="event-progress-text">Donations:</span>
 					<progress value={event.donationProgress ?? 0} max="100" id="event-progress-bar"></progress>
 				</div>
-
-				<div id="donate-button-container">
-				  <button onClick={() => history.push(`/donate/${eventId}`)}>Donate</button>
-        </div>
+			</div>
+	
 			<div id="event-details-back-button-container">
 				<button
 					onClick={() => history.goBack()} // Go back to the previous page
@@ -53,6 +51,7 @@ const EventDetailsPage = ({}) => {
 					Back to Events
 				</button>
 			</div>
+	
 			<div id="body-container">
 				<div id="event-body">
 					<div><strong>About</strong></div>
@@ -60,9 +59,10 @@ const EventDetailsPage = ({}) => {
 					<div><strong>RSVPs:</strong> {rsvpCount.total}</div>
 					<div>{event.description}</div>
 				</div>
+	
 				<div id="rsvp-button-container">
 					<div id="donate-button-container">
-						<button id="dontate-button" onClick={() => history.push("/donate")}>Donate</button>
+						<button onClick={() => history.push(`/donate/${eventId}`)}>Donate</button>
 					</div>
 					<button onClick={() => setIsRsvpOpen(true)} className="bg-blue-500 text-white p-2 rounded-lg mt-2">
 						RSVP Now
@@ -72,12 +72,18 @@ const EventDetailsPage = ({}) => {
 					<p>❌ No: {rsvpCount.no}</p>
 				</div>
 			</div>
-			{isRsvpOpen && (<div className="modal-overlay">
-				<div className="modal-content">
-					<ClientRSVP event={event} setIsRsvpOpen={setIsRsvpOpen}/>
+	
+			{/* Modal for RSVP */}
+			{isRsvpOpen && (
+				<div className="modal-overlay">
+					<div className="modal-content">
+						<ClientRSVP event={event} setIsRsvpOpen={setIsRsvpOpen}/>
+					</div>
 				</div>
-			</div>)}
-		</div>);
+			)}
+		</div>
+	);
+	
 };
 
 export default EventDetailsPage;
