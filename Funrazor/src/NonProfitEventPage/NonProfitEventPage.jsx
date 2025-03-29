@@ -40,7 +40,7 @@ function NonProfitEventPage({event}) {
 					<div>{event.description}</div>
 				</div>
 				<div id="rsvp-button-container">
-					<button id="rsvp-button" onClick={() => setIsModalOpen(true)}>RSVP Information</button>
+					<button style = {{backgroundColor: "#007bff"}} id="rsvp-button" onClick={() => setIsModalOpen(true)}>RSVP Information</button>
 				</div>
 			</div>
 

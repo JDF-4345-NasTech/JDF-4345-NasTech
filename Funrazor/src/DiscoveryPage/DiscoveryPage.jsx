@@ -8,6 +8,10 @@ import NonProfitHome from '../NonProfitHome/NonProfitHome';
 import Organizations from '../Organizations/Organizations';
 import EventListingPage from '../EventListingPage/EventListingPage';
 import EventDetailsPage from '../EventDetailsPage/EventDetailsPage';
+import { User } from 'lucide-react';
+import DonationPage from '../Donate/DonationPage/DonationPage';
+import DonateSuccess from '../Donate/DonateSuccess/DonateSuccess';
+
 import {BrowserRouter as Router, Route, Switch, Link, useParams} from 'react-router-dom';
 
 function DiscoveryPage() {
@@ -55,6 +59,10 @@ function DiscoveryPage() {
 		}
 	};
 
+	const myOrgClick = () => {
+		window.location.href = "/";
+	};
+
 	return (
 		<Router>
 			<div className="page-container">
@@ -63,16 +71,19 @@ function DiscoveryPage() {
 						className="account-btn"
 						onClick={() => setIsDropdownOpen(!isDropdownOpen)}
 					>
-						Account
+						<User className="icon" size={20} />
 					</button>
 					{isDropdownOpen && (<div className="dropdown-content">
-							{isAuthenticated ? (<>
-									<p>{user.name}</p>
-									<LogoutButton/>
-								</>) : (<LoginButton/>)}
-							{isAuthenticated && !isOrgAdmin && isUserChecked && (
-								<AdminButton setCloseAdminButton={setCloseAdminButton} closeAdminButton={closeAdminButton}/>)}
-						</div>)}
+						{isAuthenticated ? (<>
+							<p>{user.name}</p>
+						{isAuthenticated && !isOrgAdmin && isUserChecked && (
+							<AdminButton style = {{backgroundColor: "#007bff"}} setCloseAdminButton={setCloseAdminButton} closeAdminButton={closeAdminButton}/>)}
+							{isOrgAdmin && (
+								<button style = {{backgroundColor: "#007bff"}} onClick={myOrgClick}>My Org</button>
+							)}
+						</>) : (<LoginButton style = {{backgroundColor: "#007bff"}}/>)}
+						<LogoutButton/>
+					</div>)}
 				</div>
 
 				<Switch>
@@ -85,6 +96,8 @@ function DiscoveryPage() {
 						<EventListingWrapper/>
 					</Route>
           <Route path="/client/events/:eventId" component={EventDetailsPage} />
+          <Route path="/donate/:eventId" component={DonationPage} />
+          <Route path="/success" component={DonateSuccess} />
 				</Switch>
 			</div>
 		</Router>

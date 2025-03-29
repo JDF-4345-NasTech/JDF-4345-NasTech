@@ -408,7 +408,7 @@ app.get('/user/:id', async (req, res) => {
 
 // GET endpoint for retreiving an event
 app.get('/events/:id', async (req, res) => {
-    const { id } = req.params;
+  const id = parseInt(req.params.id, 10);
     try {
         const entry = await prisma.event.findUnique({
             where: { id: parseInt(id) },
@@ -494,13 +494,41 @@ app.post('/create-checkout-session', async (req, res) => {
 				},
 			],
 			mode: 'payment',
-			success_url: 'http://localhost:3000/success',
-			cancel_url: 'http://localhost:3000/cancel',
+			success_url: `http://localhost:5173/success?eventId=${req.body.eventId}`,
+			cancel_url: 'http://localhost:5173/donate',
 		});
 		res.json({ id: session.id });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
+});
+
+//Removes organization request relationship
+app.post('/organizations/:organizationId/remove-request', async (req, res) => {
+  const { organizationId } = req.params;
+  const { userId } = req.body;
+  try {
+    await prisma.organization.update({
+      where: { id: parseInt(organizationId) },
+      data: {
+        requests: {
+          disconnect: { id: userId },
+        },
+      },
+    });
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        requestedOrganizations: {
+          disconnect: { id: parseInt(organizationId) },
+        },
+      },
+    });
+    res.status(200).json({ message: 'Request denied successfully' });
+  } catch (error) {
+    console.error('Error denying request:', error);
+    res.status(500).json({ message: 'Failed to deny request.' });
+  }
 });
 
 app.listen(port, () => {

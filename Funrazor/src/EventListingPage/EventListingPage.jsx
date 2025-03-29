@@ -119,23 +119,39 @@ const EventListingPage = () => {
 
   return (
     <div>
-      <div id="event-header">
-        <h1>{organization ? organization.name : 'Organization'} Events</h1>
+      <div id="non-profit-header">
+        <div id="non-profit-name">{organization ? organization.name : 'Organization'} Events</div>
+        <p id="non-profit-details">{organization.description}</p>
+          {/* <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" /> */}
       </div>
       <div id="header-buttons">
-        <div className="subscribe-button-container">
-          <button
-            onClick={handleSubscription} // Using history.push for navigation
-            className="back-button"
-          >
-            {subscribe ? "Unsubscribe" : 'Subscribe'}
-          </button>
+        <div id="back-subscribe">
+          <div className="back-button-container">
+            <button
+              onClick={() => history.push('/')} // Using history.push for navigation
+              className="back-button"
+            >
+              Back to Organizations
+            </button>
+          </div>
+          <div className="subscribe-button-container">
+            <button
+              onClick={handleSubscription} // Using history.push for navigation
+              className="subscribe-button"
+            >
+              {subscribe ? "Unsubscribe" : 'Subscribe'}
+            </button>
+          </div>
         </div>
-        <div className="date-filter">
-            <label>Search from:</label> <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-        </div>
-        <div className="date-filter">
-            <label>Search up to:</label> <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+        <div className="date-filters">
+          <div className="date-filter">
+            <label>Search from:</label> <input type="date" value={startDate}
+                                               onChange={(e) => setStartDate(e.target.value)}/>
+          </div>
+          <div className="date-filter">
+            <label>Search up to:</label> <input type="date" value={endDate}
+                                                onChange={(e) => setEndDate(e.target.value)}/>
+          </div>
         </div>
       </div>
       <div className="max-w-4xl mx-auto p-6">
@@ -145,39 +161,35 @@ const EventListingPage = () => {
           <div id="event-list" className="space-y-6">
             {selectedEvents.map((event) => (
               <Link
-				to={`/client/events/${event.id}`}
-				key={event.id}
-				style={{ textDecoration: 'none' }}
-			>
-			  <EventListItem
-				eventImage={event.eventImage || ''}
-				eventName={event.name}
-				eventDate={new Date(event.date).toLocaleDateString()}
-				rsvps={event.rsvpResponses ? event.rsvpResponses.length : 0}
-				eventDonationProgress={event.donationProgress || 0}
-				eventDetails={event.description}
-			  />
-			</Link>
+                to={`/client/events/${event.id}`}
+                key={event.id}
+                style={{textDecoration: 'none'}}
+              >
+                <EventListItem
+                  eventImage={event.eventImage || ''}
+                  eventName={event.name}
+                  eventDate={new Date(event.date).toLocaleDateString()}
+                  rsvps={event.rsvpResponses ? event.rsvpResponses.length : 0}
+                  eventDonationProgress={event.donationProgress || 0}
+                  eventDetails={event.description}
+                />
+              </Link>
             ))}
           </div>
         )}
       </div>
       <div>
-        <div className="back-button-container">
-          <button
-            onClick={() => history.push('/')} // Using history.push for navigation
-            className="back-button"
-          >
-            Back to Organizations
-          </button>
-        </div>
-      {totalPages > 1 && (
+        {totalPages > 1 && (
           <div id="pagination-controls">
-              <button id="pagination-buttons" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
-              <span> Page {currentPage} of {totalPages} </span>
-              <button id="pagination-buttons" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+            <button id="pagination-buttons" disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(currentPage - 1)}>Previous
+            </button>
+            <span> Page {currentPage} of {totalPages} </span>
+            <button id="pagination-buttons" disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(currentPage + 1)}>Next
+            </button>
           </div>
-      )}
+        )}
       </div>
     </div>
   );
