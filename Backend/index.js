@@ -123,6 +123,7 @@ app.post('/events', async (req, res) => {
                 location,
                 description,
                 organizationId,
+                donationTotal: 0,
             },
         });
 
@@ -451,7 +452,9 @@ app.put("/events/:eventId/donations", async (req, res) => {
   res.json(donation);
 });
 
+// Stripe donation
 app.post('/create-checkout-session', async (req, res) => {
+  const { amount, eventId, userEmail, tipIncluded } = req.body;
 	try {
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ['card'],
@@ -466,7 +469,7 @@ app.post('/create-checkout-session', async (req, res) => {
 				},
 			],
 			mode: 'payment',
-			success_url: `http://localhost:5173/success?eventId=${req.body.eventId}`,
+			success_url: `http://localhost:5173/success?eventId=${eventId}&amount=${amount}&userEmail=${encodeURIComponent(userEmail)}&tipIncluded=${tipIncluded}`,
 			cancel_url: 'http://localhost:5173/donate',
 		});
 		res.json({ id: session.id });
@@ -475,7 +478,7 @@ app.post('/create-checkout-session', async (req, res) => {
 	}
 });
 
-//Removes organization request relationship
+// Removes organization request relationship
 app.post('/organizations/:organizationId/remove-request', async (req, res) => {
   const { organizationId } = req.params;
   const { userId } = req.body;
@@ -500,6 +503,26 @@ app.post('/organizations/:organizationId/remove-request', async (req, res) => {
   } catch (error) {
     console.error('Error denying request:', error);
     res.status(500).json({ message: 'Failed to deny request.' });
+  }
+});
+
+// create donation
+app.post('/donation/success', async (req, res) => {
+  const { eventId, amount, userEmail, tipIncluded } = req.body;
+  
+  try {
+    const newDonation = await prisma.donation.create({
+      data: {
+        amount: parseFloat(amount),
+        donorName: userEmail,
+        eventId: parseInt(eventId),
+        tipIncluded: tipIncluded,
+      },
+    });
+    
+    res.status(201).json({ message: 'Donation created successfully', donation: newDonation });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create donation' });
   }
 });
 

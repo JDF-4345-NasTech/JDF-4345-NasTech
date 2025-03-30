@@ -70,6 +70,16 @@ function CreateEvent( {updateEvents, orgId} ) {
     Creates a new event with form input using POST
     */
     const createEvent = (formInput) => {
+
+        const eventData = {
+            name: formInput.target.elements.eventNameInput.value,
+            date: formInput.target.elements.dateInput.value,
+            location: `${formInput.target.elements.cityInput.value}, ${formInput.target.elements.stateInput.value}`,
+            description: formInput.target.elements.eventDescriptionInput.value,
+            organizationId: orgId
+        };
+        console.log(eventData);
+        
         fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/events`,
             {
                 method: "POST",
@@ -92,7 +102,9 @@ function CreateEvent( {updateEvents, orgId} ) {
                  emailSubscribers()
                 return response.json();
               }
-        })
+        }).then( event => {
+            console.log(event)}
+        )
         .catch(error => {});
     }
 
