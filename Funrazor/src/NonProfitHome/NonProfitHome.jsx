@@ -104,9 +104,10 @@ function NonProfitHome({ orgId }) {
     };
 
     const fetchRequests = () => {
-        fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/requests`)
+        fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/org/${orgId}/requests`)
             .then(response => response.json())
-            .then(data => setRequests(data))
+            .then(data => { setRequests(data)
+            console.log(data) })
             .catch(error => console.error('Error fetching requests:', error));
     };
 
@@ -144,6 +145,27 @@ function NonProfitHome({ orgId }) {
                             </div>
                             {/* <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" /> */}
                         </div>
+                        {showRequestsModal && (
+                            <div className="modal">
+                                <div className="modal-content">
+                                    <span className="close-button" onClick={closeRequestsModal}>×</span>
+                                    <h2>Requests</h2>
+                                    {requests.length === 0 ? (
+                                        <p>No requests at the moment.</p>
+                                    ) : (
+                                        <ul>
+                                            {requests.map((request) => (
+                                                <li key={request.id}>
+                                                    <p>{request.id}</p>
+                                                    <button onClick={() => handleAccept(request.id)}>Accept</button>
+                                                    <button onClick={() => handleDeny(request.id)}>Deny</button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                         <div id="event-buttons">
                             <div id="create-event-button">
                                 <Link to='/create-event' style={{ textDecoration: "none" }}>

@@ -373,6 +373,9 @@ app.get('/organizations/:organizationId', async (req, res) => {
   try {
     const organization = await prisma.organization.findUnique({
       where: { id: parseInt(organizationId) },
+      include: {
+        requests: true, // Include the list of users who have requested to join
+      },
     });
 
     if (!organization) {
@@ -528,8 +531,9 @@ app.get('/donations/:eventId', async (req, res) => {
 });
 
 // GET endpoint to fetch the requests for an organization
-app.get('/organizations/:id/requests', async (req, res) => {
+app.get('/org/:id/requests', async (req, res) => {
   const { id } = req.params;
+  console.log("looking for org requests")
   try {
     const org = await prisma.organization.findUnique({
       where: { id: parseInt(id) },
