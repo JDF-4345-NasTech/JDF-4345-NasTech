@@ -91,6 +91,14 @@ app.post('/organizations', async (req, res) => {
   }
 
   try {
+    const existingOrg = await prisma.organization.findFirst({
+      where: { name },
+    });
+
+    if (existingOrg) {
+      return res.status(409).json({ error: 'An organization with this name already exists.' });
+    }
+
     const newOrganization = await prisma.organization.create({
       data: {
         name,
@@ -111,7 +119,27 @@ app.post('/organizations', async (req, res) => {
       res.status(400).json({ error: 'Failed to create organization' });
     }
 });
-  
+
+//PUT endpoint for updating an org's description
+app.put('/orgdesc/:organizationId', async (req, res) => {
+    const { organizationId } = req.params;
+    const { description } = req.body;
+
+    try {
+        const updatedUser = await prisma.organization.update({
+          where: { id: parseInt(organizationId) },
+          data: {
+            description,
+          },
+        });
+    
+        res.status(200).json(updatedUser);
+      } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Failed to update user.' });
+      }
+  });
+
 // POST endpoint for creating an event
 app.post('/events', async (req, res) => {
     const { name, date, location, description, organizationId } = req.body;

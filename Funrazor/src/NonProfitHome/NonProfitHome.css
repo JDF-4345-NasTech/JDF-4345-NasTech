@@ -24,8 +24,29 @@ body {
     color: darkslategray;
     font-size: 1.2rem;
     margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     margin-bottom: 0px;
     padding-bottom: 0px;
+}
+
+#non-profit-details p {
+    /*margin: 0;
+    flex-grow: 1;*/
+    text-align: right;
+}
+
+#non-profit-details input {
+    width: 65%;
+}
+
+#non-profit-details button {
+    width: 5%;
+    background: 'none';
+    border: 'none';
+    cursor: 'pointer'
 }
 
 #non-profit-image {

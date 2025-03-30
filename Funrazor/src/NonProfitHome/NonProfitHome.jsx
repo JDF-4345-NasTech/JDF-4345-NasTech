@@ -5,6 +5,7 @@ import EventListItem from "../EventListItem/EventListItem.jsx";
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import { FaPencilAlt } from 'react-icons/fa';
 import NonProfitEventPage from "../NonProfitEventPage/NonProfitEventPage.jsx";
 
 function NonProfitHome({ orgId }) {
@@ -15,6 +16,8 @@ function NonProfitHome({ orgId }) {
     const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
     const [endDate, setEndDate] = useState("");
 
+    const [isEditing, setIsEditing] = useState(false);
+    const [newDescription, setNewDescription] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(10);
 
@@ -35,6 +38,28 @@ function NonProfitHome({ orgId }) {
           .catch(error => console.error('Error fetching organization', error));
     };
 
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleSave = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/orgdesc/${orgId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ description: newDescription }),
+            });
+
+            if (response.ok) {
+                setOrganization({ ...organization, description: newDescription });
+                setIsEditing(false);
+            } else {
+                console.error('Failed to update description');
+            }
+        } catch (error) {
+            console.error('Error updating description', error);
+        }
+    };
 
     const fetchEvents = () => {
         fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/events`)
@@ -74,7 +99,25 @@ function NonProfitHome({ orgId }) {
                     <Route exact path='/'>
                         <div id="non-profit-header">
                             <p id="non-profit-name">{organization.name}</p>
-                            <p id="non-profit-details">{organization.description}</p>
+                            <div id="non-profit-details">
+                                {isEditing ? (
+                                    <>
+                                        <input
+                                            type="text"
+                                            value={newDescription}
+                                            onChange={(e) => setNewDescription(e.target.value)}
+                                        />
+                                        <button onClick={handleSave}>Save</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p>{organization.description}</p>
+                                        <button onClick={handleEditClick}>
+                                            <FaPencilAlt />
+                                        </button>
+                                    </>
+                                )}
+                            </div>
                             {/* <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" /> */}
                         </div>
                         <div id="event-buttons">
