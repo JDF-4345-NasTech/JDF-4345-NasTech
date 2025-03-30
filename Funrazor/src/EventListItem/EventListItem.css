@@ -62,8 +62,8 @@
 }
 
 /* Progress bar styling */
-#event-progress-bar {
-    width: 100%;
+#event-item-progress-bar {
+    width: 600px;
     height: 10px;
     border-radius: 5px;
     overflow: hidden;
@@ -71,17 +71,17 @@
     appearance: none;
 }
 
-#event-progress-bar::-webkit-progress-bar {
+#event-item-progress-bar::-webkit-progress-bar {
     background-color: #eee;
     border-radius: 5px;
 }
 
-#event-progress-bar::-webkit-progress-value {
+#event-item-progress-bar::-webkit-progress-value {
     background-color: #007bff;
     border-radius: 5px;
 }
 
-#event-progress-bar::-moz-progress-bar {
+#event-item-progress-bar::-moz-progress-bar {
     background-color: #007bff;
     border-radius: 5px;
 }

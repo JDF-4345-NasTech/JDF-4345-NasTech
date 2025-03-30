@@ -170,7 +170,7 @@ const EventListingPage = () => {
                   eventName={event.name}
                   eventDate={new Date(event.date).toLocaleDateString()}
                   rsvps={event.rsvpResponses ? event.rsvpResponses.length : 0}
-                  eventDonationProgress={event.donationProgress || 0}
+                  eventDonationProgress={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0}
                   eventDetails={event.description}
                 />
               </Link>
