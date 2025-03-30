@@ -1,0 +1,66 @@
+#donation-stats {
+    margin: 20px;
+    text-align: center;
+}
+
+#donation_list {
+    margin: auto;
+    color: blue;
+    text-align: center;
+    font-size: 16px;
+    width: 90%;
+    border-style: solid;
+    border-color: black;
+    border-collapse: collapse;  /* Ensures borders are collapsed into single lines */
+}
+
+#donation_list th, #donation_list td {
+    border: 1px solid black;  /* Adds grid lines to both headers and data cells */
+    padding: 8px;  /* Adds padding for better readability */
+    text-align: left;  /* Aligns text to the left for better readability */
+}
+
+#donation_list #donation-header {
+    background-color: lightgrey;
+    color: black;
+}
+
+#donation_list .donation-row {
+    color: black;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#donation_list .donation-row:nth-child(even) {
+    background: #FFF;  /* White background for even rows */
+}
+
+#donation_list .donation-row:nth-child(odd) {
+    background: Gainsboro;  /* Light gray background for odd rows */
+}
+
+#donation_list #email-header {
+    width: 50%;
+}
+
+#donation_list #amount-header {
+    width: 50%;
+}
+
+#donation-button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#donation-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#donation-button:hover {
+    background-color: LightSkyBlue;
+}

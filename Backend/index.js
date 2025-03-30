@@ -465,6 +465,42 @@ app.get("/events/:eventId/donations", async (req, res) => {
   res.json({ total: totalDonations._sum.amount || 0 });
 });
 
+// GET endpoint for retrieving donations for a specific event
+app.get('/donations/:eventId', async (req, res) => {
+  const { eventId } = req.params;
+  
+  if (!eventId) {
+    return res.status(400).json({ error: 'Missing event ID.' });
+  }
+
+  try {
+    const donations = await prisma.donation.findMany({
+      where: {
+        eventId: parseInt(eventId, 10),
+      },
+      select: {
+        donorName: true, 
+        amount: true, 
+      },
+    });
+
+    if (!donations || donations.length === 0) {
+      return res.status(404).json({ error: 'No donations found for this event.' });
+    }
+    const totalDonations = donations.reduce((total, donation) => total + donation.amount, 0);
+
+    res.status(200).json({
+      eventId: eventId,
+      donations: donations,
+      totalDonations: parseFloat(totalDonations.toFixed(2)),
+    });
+  } catch (error) {
+    console.error('Error fetching donations:', error);
+    res.status(500).json({ error: 'Failed to fetch donations.' });
+  }
+});
+
+
 // PUT new donation
 app.put("/events/:eventId/donations", async (req, res) => {
   const eventId = parseInt(req.params.eventId);
