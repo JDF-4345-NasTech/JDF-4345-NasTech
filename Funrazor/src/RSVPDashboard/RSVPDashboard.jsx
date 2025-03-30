@@ -21,6 +21,30 @@ const RSVPDashboard = ({event}) => {
 		return <div>Loading...</div>;
 	}
 
+	const handleExport = () => {
+		// Convert the RSVPs array into a CSV format
+		const headers = ['Name', 'Email', 'Status'];
+		const rows = rsvps.map(rsvp => [rsvp.name, rsvp.email, rsvp.response]);
+	  
+		// Combine headers and rows
+		const csvContent = [
+		  headers.join(','), // Join headers with commas
+		  ...rows.map(row => row.join(',')) // Join each row's data with commas
+		].join('\n'); // Join rows with newline
+	  
+		// Create a Blob from the CSV content
+		const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+	  
+		// Create a link element to download the file
+		const link = document.createElement('a');
+		const url = URL.createObjectURL(blob);
+		link.setAttribute('href', url);
+		link.setAttribute('download', `${event.name}_RSVPs.csv`);
+		link.click();
+		URL.revokeObjectURL(url);
+	  };
+	  
+
 	return (
 		<>
 			<h1>Event: {event.name}</h1>
@@ -41,6 +65,7 @@ const RSVPDashboard = ({event}) => {
 				</tr>
 				</tbody>
 			</table>
+			<button onClick={handleExport}>Export RSVPs</button>
 			<h3>RSVP List</h3>
 			<table id='rsvp_list'>
 				<thead>
