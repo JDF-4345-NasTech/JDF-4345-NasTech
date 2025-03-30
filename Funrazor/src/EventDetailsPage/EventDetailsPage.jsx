@@ -7,6 +7,8 @@ const EventDetailsPage = ({}) => {
 	const eventId = useParams().eventId;
 	const [event, setEvent] = useState([]);
 	const history = useHistory();
+	const { orgId } = useParams();
+
 	const [isRsvpOpen, setIsRsvpOpen] = useState(false);
 	const [rsvpCount, setRsvpCount] = useState({confirmed: 0, maybe: 0, no: 0, total: 0});
 
@@ -49,10 +51,10 @@ const EventDetailsPage = ({}) => {
 	
 			<div id="event-details-back-button-container">
 				<button
-					onClick={() => history.goBack()} // Go back to the previous page
+					onClick={() => history.push(`/organizations/${orgId}/events`)} // Go back to the previous page
 					className="bg-gray-500 text-white p-2 rounded-lg mt-4"
 				>
-					Back to Events
+					All events
 				</button>
 			</div>
 	
