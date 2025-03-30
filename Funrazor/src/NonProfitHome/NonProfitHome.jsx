@@ -302,7 +302,7 @@ function NonProfitHome({ orgId }) {
                         )}
                     </Route>
                     <Route path='/create-event'>
-                        <CreateEvent updateEvents={updateEvents} orgId={orgId} />
+                        <CreateEvent updateEvents={updateEvents} orgId={orgId} orgName={organization.name} />
                     </Route>
                     <Route
                         path='/events/:eventId'
