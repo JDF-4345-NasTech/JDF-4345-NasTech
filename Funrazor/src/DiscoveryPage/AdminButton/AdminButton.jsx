@@ -7,6 +7,8 @@ function AdminButton({ setCloseAdminButton, closeAdminButton }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [organizationName, setOrganizationName] = useState('');
   const [organizationDescription, setOrganizationDescription] = useState('');
+  const [existingOrg, setExistingOrg] = useState(null);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -25,6 +27,28 @@ function AdminButton({ setCloseAdminButton, closeAdminButton }) {
 
   const handleDescriptionChange = (e) => {
     setOrganizationDescription(e.target.value);
+  };
+
+  const checkOrganizationExists = async (name) => {
+    console.log('Checking for organization with name:', name);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organization/search?name=${name}`);
+      if (!response.ok) {
+        throw new Error('Failed to check organization existence');
+      }
+      const data = await response.json();
+
+      if (data) {
+        console.log("found matching org")
+        setExistingOrg(data); // If organization exists, show the modal to request join
+        setIsJoinModalOpen(true); // Open the join request modal
+      } else {
+        setExistingOrg(null); // Organization does not exist
+      }
+    } catch (error) {
+      console.error('Error checking organization existence:', error);
+      alert('Error checking organization.');
+    }
   };
 
   const handleCreateOrganization = async () => {
@@ -56,7 +80,8 @@ function AdminButton({ setCloseAdminButton, closeAdminButton }) {
       if (response.ok) {
         closeModal();
       } else if (response.status === 409) {
-        alert('An organization with this name already exists. Please choose a different name.');
+        console.log("org exists")
+        checkOrganizationExists(organizationName);
       } else {
         alert(result.error || 'Failed to create organization.');
       }
@@ -66,6 +91,34 @@ function AdminButton({ setCloseAdminButton, closeAdminButton }) {
     }
   };
 
+  const handleRequestToJoin = () => {
+    if (existingOrg) {
+      fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${existingOrg.id}/request-join`, {
+        method: 'POST',
+        body: JSON.stringify({
+          userId: user.name,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(() => {
+          alert('Request to join organization sent!');
+          setIsJoinModalOpen(false);
+        })
+        .catch(error => {
+          console.error('Error sending join request:', error);
+          alert('Error sending join request.');
+        });
+    }
+  };
+
+  const closeJoinModal = () => {
+    setIsJoinModalOpen(false);
+    setOrganizationName('');
+    setOrganizationDescription('');
+  };
 
   return (
     <>
@@ -91,6 +144,17 @@ function AdminButton({ setCloseAdminButton, closeAdminButton }) {
             />
             <button onClick={handleCreateOrganization}>Create Organization</button>
             <button onClick={closeModal}>Cancel</button>
+          </div>
+        </div>
+      )}
+      {/* Join Modal */}
+      {isJoinModalOpen && existingOrg && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Organization already exists</h2>
+            <p>{existingOrg.name} is an existing organization.</p>
+            <button onClick={handleRequestToJoin}>Request to Join</button>
+            <button onClick={closeJoinModal}>Cancel</button>
           </div>
         </div>
       )}

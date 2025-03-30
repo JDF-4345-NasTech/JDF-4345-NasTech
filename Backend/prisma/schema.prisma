@@ -15,7 +15,7 @@ datasource db {
 
 model Organization {
   id Int @id @default(autoincrement())
-  name String
+  name String @unique
   description String
   events Event[]
   admins User[]
@@ -64,8 +64,9 @@ model User {
   isOrgAdmin     Boolean       @default(false)
   organization   Organization? @relation(fields: [organizationId], references: [id])
   organizationId Int?
+  requestedOrganization Organization? @relation("OrganizationRequests", fields: [requestedOrganizationId], references: [id])
+  requestedOrganizationId Int?
   subscribed_organizations Subscriptions[]
-  requestedOrganizations     Organization[] @relation("OrganizationRequests")
 }
 
 model Description {
