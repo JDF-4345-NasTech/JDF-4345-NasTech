@@ -142,7 +142,7 @@ app.put('/orgdesc/:organizationId', async (req, res) => {
 
 // POST endpoint for creating an event
 app.post('/events', async (req, res) => {
-    const { name, date, location, description, organizationId } = req.body;
+    const { name, date, location, description, organizationId, donationGoal } = req.body;
     try {
         const newEvent = await prisma.event.create({
             data: {
@@ -151,6 +151,8 @@ app.post('/events', async (req, res) => {
                 location,
                 description,
                 organizationId,
+                donationGoal: parseFloat(donationGoal),
+                donationTotal: 0,
             },
         });
 
@@ -479,7 +481,9 @@ app.put("/events/:eventId/donations", async (req, res) => {
   res.json(donation);
 });
 
+// Stripe donation
 app.post('/create-checkout-session', async (req, res) => {
+  const { amount, eventId, userEmail, tipIncluded } = req.body;
 	try {
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ['card'],
@@ -494,7 +498,7 @@ app.post('/create-checkout-session', async (req, res) => {
 				},
 			],
 			mode: 'payment',
-			success_url: `http://localhost:5173/success?eventId=${req.body.eventId}`,
+			success_url: `http://localhost:5173/success?eventId=${eventId}&amount=${amount}&userEmail=${encodeURIComponent(userEmail)}&tipIncluded=${tipIncluded}`,
 			cancel_url: 'http://localhost:5173/donate',
 		});
 		res.json({ id: session.id });
@@ -503,7 +507,7 @@ app.post('/create-checkout-session', async (req, res) => {
 	}
 });
 
-//Removes organization request relationship
+// Removes organization request relationship
 app.post('/organizations/:organizationId/remove-request', async (req, res) => {
   const { organizationId } = req.params;
   const { userId } = req.body;
@@ -528,6 +532,43 @@ app.post('/organizations/:organizationId/remove-request', async (req, res) => {
   } catch (error) {
     console.error('Error denying request:', error);
     res.status(500).json({ message: 'Failed to deny request.' });
+  }
+});
+
+// create donation
+app.post('/donation/success', async (req, res) => {
+  const { eventId, amount, userEmail, tipIncluded } = req.body;
+  
+  try {
+    const parsedAmount = parseFloat(amount);
+    const finalAmount = tipIncluded ? parsedAmount * 0.95 : parsedAmount;
+
+    const [newDonation, updatedEvent] = await prisma.$transaction([
+      prisma.donation.create({
+        data: {
+          amount: parsedAmount,
+          donorName: userEmail,
+          eventId: parseInt(eventId),
+          tipIncluded: tipIncluded,
+        },
+      }),
+      prisma.event.update({
+        where: { id: parseInt(eventId) },
+        data: {
+          donationTotal: {
+            increment: Math.round(finalAmount),
+          },
+        },
+      }),
+    ]);
+
+    res.status(201).json({ 
+      message: 'Donation created successfully', 
+      donation: newDonation, 
+      updatedEvent 
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create donation' });
   }
 });
 

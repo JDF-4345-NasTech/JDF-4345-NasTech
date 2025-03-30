@@ -144,7 +144,7 @@ function NonProfitHome({ orgId }) {
                                         rsvps={event.rsvpResponses.length || 0}
                                         eventDate={event.date}
                                         eventDetails={event.description}
-                                        eventDonationProgress={event.donationProgress || 0}
+                                        eventDonationProgress={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0}
                                     />
                                 </Link>
                             ))}

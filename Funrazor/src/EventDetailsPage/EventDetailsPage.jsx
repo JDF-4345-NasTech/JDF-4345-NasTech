@@ -38,8 +38,12 @@ const EventDetailsPage = ({}) => {
 			<div id="event-details-page-header">
 				<h1 id="event-details-page-name">{event.name}</h1>
 				<div id="event-progress-container">
-					<span id="event-progress-text">Donations:</span>
-					<progress value={event.donationProgress ?? 0} max="100" id="event-progress-bar"></progress>
+					<span id="event-progress-text">Donations: ${event.donationTotal?.toFixed(2)} / ${event.donationGoal?.toFixed(2)}</span>
+					<progress 
+						value={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0} 
+						max="100" 
+						id="event-progress-bar"
+					></progress>
 				</div>
 			</div>
 	

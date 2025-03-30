@@ -41,6 +41,8 @@ model Event {
   organizationId Int
   rsvpResponses RSVPResponse[]
   donations     Donation[]
+  donationGoal Float
+  donationTotal Float
 }
 
 model RSVPResponse {
@@ -79,4 +81,5 @@ model Donation {
   event     Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId   Int
   createdAt DateTime @default(now())
+  tipIncluded Boolean
 }
