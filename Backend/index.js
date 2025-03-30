@@ -114,7 +114,7 @@ app.post('/organizations', async (req, res) => {
   
 // POST endpoint for creating an event
 app.post('/events', async (req, res) => {
-    const { name, date, location, description, organizationId } = req.body;
+    const { name, date, location, description, organizationId, donationGoal } = req.body;
     try {
         const newEvent = await prisma.event.create({
             data: {
@@ -123,6 +123,7 @@ app.post('/events', async (req, res) => {
                 location,
                 description,
                 organizationId,
+                donationGoal: parseFloat(donationGoal),
                 donationTotal: 0,
             },
         });

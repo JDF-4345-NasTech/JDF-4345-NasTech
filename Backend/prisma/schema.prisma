@@ -41,7 +41,8 @@ model Event {
   organizationId Int
   rsvpResponses RSVPResponse[]
   donations     Donation[]
-  donationTotal Int
+  donationGoal Float
+  donationTotal Float
 }
 
 model RSVPResponse {

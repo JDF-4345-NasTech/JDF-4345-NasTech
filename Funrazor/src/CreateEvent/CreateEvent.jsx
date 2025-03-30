@@ -79,7 +79,7 @@ function CreateEvent( {updateEvents, orgId} ) {
             organizationId: orgId
         };
         console.log(eventData);
-        
+
         fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/events`,
             {
                 method: "POST",
@@ -88,10 +88,11 @@ function CreateEvent( {updateEvents, orgId} ) {
                 },
                 body: JSON.stringify({
                     name: `${formInput.target.elements.eventNameInput.value}`,
-	                  date: `${formInput.target.elements.dateInput.value}`,
-	                  location: `${formInput.target.elements.cityInput.value}, ${formInput.target.elements.stateInput.value}`,
+	                date: `${formInput.target.elements.dateInput.value}`,
+	                location: `${formInput.target.elements.cityInput.value}, ${formInput.target.elements.stateInput.value}`,
                     description: `${formInput.target.elements.eventDescriptionInput.value}`,
-                    organizationId: orgId
+                    organizationId: orgId,
+                    donationGoal: parseFloat(formInput.target.elements.donationGoalInput.value)
                 })
             }
         )
@@ -231,6 +232,10 @@ function CreateEvent( {updateEvents, orgId} ) {
                       </li>
                     ))}
                 </ul>
+            </div>
+            <div id="donationGoal">
+                <label>Donation Goal ($)</label>
+                <input type="number" id="donationGoalInput" name="donationGoalInput" step="0.01" required></input>
             </div>
             <div id="eventDescription">
                 <label>Description</label>
