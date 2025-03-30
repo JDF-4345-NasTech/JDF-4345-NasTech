@@ -367,6 +367,7 @@ app.get('/organizations', async (req, res) => {
 
 // GET endpoint for retrieving an organization
 app.get('/organizations/:organizationId', async (req, res) => {
+  console.log('Fetching organization with ID:', req.params.organizationId);
   const { organizationId } = req.params; // Extract organizationId from params
 
   try {
@@ -384,6 +385,32 @@ app.get('/organizations/:organizationId', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching the organization.' });
   }
 });
+
+// Backend API to search for an organization by name
+app.get('/organization/search', async (req, res) => {
+  const { name } = req.query;
+  console.log("Looking for org")
+  console.log(name)
+  if (!name) {
+    return res.status(400).json({ error: 'Organization name is required.' });
+  }
+
+  try {
+    const organization = await prisma.organization.findUnique({
+      where: { name: name },
+    });
+
+    if (organization) {
+      res.status(200).json(organization);
+    } else {
+      res.status(404).json(null); // No organization found
+    }
+  } catch (error) {
+    console.error('Error checking organization:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 // GET endpoint to retrieve a user admin status and their organization
 app.get('/user/:id', async (req, res) => {
@@ -500,6 +527,25 @@ app.get('/donations/:eventId', async (req, res) => {
   }
 });
 
+// GET endpoint to fetch the requests for an organization
+app.get('/organizations/:id/requests', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const org = await prisma.organization.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        requests: true, // Include the list of users who have requested to join
+      },
+    });
+    if (!org) {
+      return res.status(404).json({ error: 'Organization not found.' });
+    }
+    res.status(200).json(org.requests);
+  } catch (error) {
+    console.error('Error fetching requests:', error);
+    res.status(500).json({ error: 'Failed to fetch requests.' });
+  }
+});
 
 // PUT new donation
 app.put("/events/:eventId/donations", async (req, res) => {
@@ -542,6 +588,51 @@ app.post('/create-checkout-session', async (req, res) => {
 		res.status(500).json({ error: error.message });
 	}
 });
+
+// POST endpoint to request to join an organization
+app.post('/organizations/:organizationId/request-join', async (req, res) => {
+  const { organizationId } = req.params;
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'No user ID provided.' });
+  }
+
+  try {
+    // Check if the organization exists
+    const organization = await prisma.organization.findUnique({
+      where: { id: parseInt(organizationId) },
+    });
+
+    if (!organization) {
+      return res.status(404).json({ error: 'Organization not found.' });
+    }
+
+    // Check if the user is already a part of the organization (either as an admin or subscriber)
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { organization: true },
+    });
+
+    if (existingUser && existingUser.organizationId === organization.id) {
+      return res.status(400).json({ error: 'User is already a part of this organization.' });
+    }
+
+    // Add the user to the requests list for that organization
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        requestedOrganizationId: parseInt(organizationId), // Set the requested org id
+      },
+    });
+
+    res.status(200).json({ message: 'Request to join the organization sent.', user: updatedUser });
+  } catch (error) {
+    console.error('Error processing join request:', error);
+    res.status(500).json({ error: 'Failed to process the join request.' });
+  }
+});
+
 
 // Removes organization request relationship
 app.post('/organizations/:organizationId/remove-request', async (req, res) => {

@@ -20,6 +20,8 @@ function NonProfitHome({ orgId }) {
     const [newDescription, setNewDescription] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(10);
+    const [showRequestsModal, setShowRequestsModal] = useState(false);
+    const [requests, setRequests] = useState([]);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -92,6 +94,22 @@ function NonProfitHome({ orgId }) {
     const startIndex = (currentPage - 1) * postsPerPage;
     const selectedEvents = filteredEvents.slice(startIndex, startIndex + postsPerPage);
 
+    const openRequestsModal = () => {
+        fetchRequests();
+        setShowRequestsModal(true);
+    };
+
+    const closeRequestsModal = () => {
+        setShowRequestsModal(false);
+    };
+
+    const fetchRequests = () => {
+        fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/requests`)
+            .then(response => response.json())
+            .then(data => setRequests(data))
+            .catch(error => console.error('Error fetching requests:', error));
+    };
+
     return (
         isAuthenticated && (
             <Router>
@@ -116,6 +134,12 @@ function NonProfitHome({ orgId }) {
                                             <FaPencilAlt />
                                         </button>
                                     </>
+                                )}
+                                {/* Requests Button */}
+                                {organization.requests && organization.requests.length > 0 && (
+                                    <button onClick={openRequestsModal}>
+                                        Requests ({organization.requests.length})
+                                    </button>
                                 )}
                             </div>
                             {/* <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" /> */}
@@ -175,3 +199,4 @@ function NonProfitHome({ orgId }) {
 }
 
 export default NonProfitHome;
+
