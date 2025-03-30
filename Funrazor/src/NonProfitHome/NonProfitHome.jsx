@@ -39,6 +39,7 @@ function NonProfitHome({ orgId }) {
           .then(response => response.json())
           .then(data => {
               setOrganization(data);
+              setNewDescription(data.description);
               console.log("Fetched Organization Data:", data); // Log the data here
           })
           .catch(error => console.error('Error fetching organization', error));

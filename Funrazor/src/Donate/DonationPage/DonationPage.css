@@ -44,7 +44,7 @@ input, select {
 	color: #444;
 }
 
-button {
+.donate-button {
 	background: #ff5a5f;
 	color: white;
 	font-size: 16px;
@@ -55,6 +55,6 @@ button {
 	transition: background 0.3s;
 }
 
-button:hover {
+.donate-button:hover {
 	background: #e0484e;
 }

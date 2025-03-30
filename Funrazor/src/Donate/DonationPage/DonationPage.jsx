@@ -50,7 +50,7 @@ function DonationPage() {
 					/>
 					<label>Cover the service fee (+5%)</label>
 				</div>
-				<button onClick={handleCheckout}>Donate ${totalAmount}</button>
+				<button className="donate-button" onClick={handleCheckout}>Donate ${totalAmount}</button>
 			</div>
 		</div>
 	);
