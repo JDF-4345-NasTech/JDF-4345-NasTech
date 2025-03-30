@@ -23,6 +23,10 @@ function NonProfitHome({ orgId }) {
     const [showRequestsModal, setShowRequestsModal] = useState(false);
     const [requests, setRequests] = useState([]);
 
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [userToAccept, setUserToAccept] = useState(null);  // Store the user ID for whom confirmation is needed
+
+
     useEffect(() => {
         if (isAuthenticated) {
             fetchEvents();
@@ -111,6 +115,88 @@ function NonProfitHome({ orgId }) {
             .catch(error => console.error('Error fetching requests:', error));
     };
 
+    const handleAccept = (userId) => {
+        setUserToAccept(userId);  // Store the user ID for confirmation
+        setShowConfirmModal(true);
+      };
+
+      const handleConfirmAccept = () => {
+        if (!userToAccept) return;
+      
+        const requestBody = {
+          userId: userToAccept, 
+          isOrgAdmin: true, 
+          organizationId: orgId, 
+        };
+      
+        // Send the PATCH request to update user admin status
+        fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/userAdmin`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log('User updated:', data);
+
+            fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/remove-request`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                userId: userToAccept, 
+              }),
+            })
+              .then(response => response.json())
+              .then(() => {
+                // Handle success for request removal
+                console.log('Request removed from the organization');
+                setRequests(prev => prev.filter(req => req.id !== userToAccept));
+              })
+              .catch(error => {
+                console.error('Error removing request:', error);
+                alert('Error removing request');
+              });
+          })
+          .catch(error => {
+            console.error('Error accepting user:', error);
+            alert('Error accepting user');
+          });
+      
+        // Close the confirmation modal
+        setShowConfirmModal(false);
+      };
+
+      const handleCancelAccept = () => {
+        setShowConfirmModal(false);  // Close the confirmation modal
+      };
+      
+      const handleDeny = (userId) => {
+        // Send a PATCH request to remove the request from the organization
+        fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/remove-request`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: userId, 
+          }),
+        })
+          .then(response => response.json())
+          .then(() => {
+            console.log('Request denied and removed from the organization');
+            setRequests(prev => prev.filter(req => req.id !== userId));
+          })
+          .catch(error => {
+            console.error('Error denying request:', error);
+            alert('Error denying request');
+          });
+      };
+      
+
     return (
         isAuthenticated && (
             <Router>
@@ -164,6 +250,18 @@ function NonProfitHome({ orgId }) {
                                         </ul>
                                     )}
                                 </div>
+                            </div>
+                        )}
+                        {/* Confirmation Modal */}
+                        {showConfirmModal && (
+                            <div className="modal">
+                            <div className="modal-content">
+                                <span className="close-button" onClick={handleCancelAccept}>×</span>
+                                <h2>Are you sure you want to make this user an admin?</h2>
+                                <p>This action will grant them admin privileges for the organization.</p>
+                                <button onClick={handleConfirmAccept}>Yes, accept</button>
+                                <button onClick={handleCancelAccept}>Cancel</button>
+                            </div>
                             </div>
                         )}
                         <div id="event-buttons">
