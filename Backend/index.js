@@ -511,16 +511,33 @@ app.post('/donation/success', async (req, res) => {
   const { eventId, amount, userEmail, tipIncluded } = req.body;
   
   try {
-    const newDonation = await prisma.donation.create({
-      data: {
-        amount: parseFloat(amount),
-        donorName: userEmail,
-        eventId: parseInt(eventId),
-        tipIncluded: tipIncluded,
-      },
+    const parsedAmount = parseFloat(amount);
+    const finalAmount = tipIncluded ? parsedAmount * 0.95 : parsedAmount;
+
+    const [newDonation, updatedEvent] = await prisma.$transaction([
+      prisma.donation.create({
+        data: {
+          amount: parsedAmount,
+          donorName: userEmail,
+          eventId: parseInt(eventId),
+          tipIncluded: tipIncluded,
+        },
+      }),
+      prisma.event.update({
+        where: { id: parseInt(eventId) },
+        data: {
+          donationTotal: {
+            increment: Math.round(finalAmount),
+          },
+        },
+      }),
+    ]);
+
+    res.status(201).json({ 
+      message: 'Donation created successfully', 
+      donation: newDonation, 
+      updatedEvent 
     });
-    
-    res.status(201).json({ message: 'Donation created successfully', donation: newDonation });
   } catch (error) {
     res.status(500).json({ error: 'Failed to create donation' });
   }
