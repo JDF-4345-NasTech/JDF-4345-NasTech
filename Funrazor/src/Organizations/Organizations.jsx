@@ -22,7 +22,7 @@ function Organizations() {
 
 	return (
 		<div id='organizations'>
-			<h2 id='header'>Organizations to Support</h2>
+			<h2 id='header'>Organizations</h2>
 			<div className="organizations-container">
 				{organizations.map((org) => (
 					<OrganizationItem

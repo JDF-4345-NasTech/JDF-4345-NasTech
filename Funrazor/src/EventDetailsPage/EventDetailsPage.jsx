@@ -2,13 +2,18 @@ import {useState, useEffect} from "react";
 import { useParams, useHistory } from "react-router-dom";
 import './EventDetailsPage.css';
 import ClientRSVP from "../ClientRSVP/ClientRSVP.jsx";
+import {useAuth0} from '@auth0/auth0-react'
 
 const EventDetailsPage = ({}) => {
+	const {user, isAuthenticated} = useAuth0();
 	const eventId = useParams().eventId;
 	const [event, setEvent] = useState([]);
 	const history = useHistory();
+	const { orgId } = useParams();
+
 	const [isRsvpOpen, setIsRsvpOpen] = useState(false);
 	const [rsvpCount, setRsvpCount] = useState({confirmed: 0, maybe: 0, no: 0, total: 0});
+	const [userRsvpStatus, setUserRsvpStatus] = useState(null);
 
 	useEffect(() => {
 		fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/events/${eventId}`)
@@ -25,8 +30,11 @@ const EventDetailsPage = ({}) => {
 	
 				counts.total = counts.confirmed + counts.maybe + counts.no; // Add total count
 	
-				console.log(counts);
 				setRsvpCount(counts);
+				const userRsvp = rsvpResponses.find(rsvp => rsvp.email === user?.name);
+				if (userRsvp) {
+				setUserRsvpStatus(userRsvp.response);
+				}
 			})
 			.catch((err) => console.error("Error fetching RSVP data:", err));
 	}, [eventId, isRsvpOpen]);
@@ -49,10 +57,10 @@ const EventDetailsPage = ({}) => {
 	
 			<div id="event-details-back-button-container">
 				<button
-					onClick={() => history.goBack()} // Go back to the previous page
+					onClick={() => history.push(`/organizations/${orgId}/events`)} // Go back to the previous page
 					className="bg-gray-500 text-white p-2 rounded-lg mt-4"
 				>
-					Back to Events
+					All events
 				</button>
 			</div>
 	
@@ -68,9 +76,28 @@ const EventDetailsPage = ({}) => {
 					<div id="donate-button-container">
 						<button onClick={() => history.push(`/donate/${eventId}`)}>Donate</button>
 					</div>
-					<button onClick={() => setIsRsvpOpen(true)} className="bg-blue-500 text-white p-2 rounded-lg mt-2">
+
+					{userRsvpStatus ? (
+						<>
+						<p>Your RSVP: {userRsvpStatus}</p>
+						<button
+							onClick={() => setIsRsvpOpen(true)}
+							className="bg-blue-500 text-white p-2 rounded-lg mt-2"
+						>
+							Change RSVP
+						</button>
+						</>
+					) : (
+						<button
+						onClick={() => setIsRsvpOpen(true)}
+						className="bg-blue-500 text-white p-2 rounded-lg mt-2"
+						>
 						RSVP Now
-					</button>
+						</button>
+					)}
+					{/* <button onClick={() => setIsRsvpOpen(true)} className="bg-blue-500 text-white p-2 rounded-lg mt-2">
+						RSVP Now
+					</button> */}
 					<p>✅ Confirmed: {rsvpCount.confirmed}</p>
 					<p>🤔 Maybe: {rsvpCount.maybe}</p>
 					<p>❌ No: {rsvpCount.no}</p>
