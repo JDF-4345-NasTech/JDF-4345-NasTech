@@ -28,7 +28,9 @@ function Organizations() {
 
 	return (
 		<div id='organizations'>
-			<h2 id='header'>Organizations</h2>
+            { isAuthenticated &&
+			(<>
+            <h2 id='header'>Organizations</h2>
 			<div className="organizations-container">
 				{organizations.map((org) => (
 					<OrganizationItem
@@ -38,7 +40,27 @@ function Organizations() {
 						description={org.description}
 					/>
 				))}
-			</div>
+			</div> </>)}
+            {!isAuthenticated && (
+                <div id='landing-page' className="landing-page">
+              
+                <section className="landing-content">
+                  <h1 className="landing-title">Welcome to Funrazor</h1>
+                  <p className="landing-description">
+                    A central platform that helps non-profit organizations manage their fundraising efforts with ease.
+                  </p>
+              
+                  <p className="landing-info">
+                    Join a community of passionate individuals and organizations dedicated to making a difference. Create or explore fundraising campaigns and help drive change.
+                  </p>
+                </section>
+              
+                <footer className="landing-footer">
+                  <p>© 2025 Funrazor | All Rights Reserved</p>
+                </footer>
+              </div>
+              
+            )}
 		</div>
 	);
 }
