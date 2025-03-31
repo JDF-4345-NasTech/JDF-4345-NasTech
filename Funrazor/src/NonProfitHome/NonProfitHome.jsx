@@ -32,7 +32,7 @@ function NonProfitHome({ orgId }) {
             fetchEvents();
             fetchOrganization();
         }
-    }, [isAuthenticated, orgId, created]);
+    }, [isAuthenticated, orgId, created, showRequestsModal]);
 
     const fetchOrganization = () => {
         fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}`)
