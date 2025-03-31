@@ -57,7 +57,7 @@ const EventListingPage = () => {
         return false;
       }
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/subscribers`);
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/subscribers/${orgId}`);
         if (!res.ok) {
           return false;
         };
@@ -131,7 +131,7 @@ const EventListingPage = () => {
               onClick={() => history.push('/')} // Using history.push for navigation
               className="bg-blue-500 text-white p-2 rounded-lg mt-2"
             >
-              Back to Organizations
+              All organizations
             </button>
           </div>
           <div className="subscribe-button-container">
@@ -161,7 +161,7 @@ const EventListingPage = () => {
           <div id="event-list-grid">
             {selectedEvents.map((event) => (
               <Link
-                to={`/client/events/${event.id}`}
+			  to={`/organizations/${orgId}/events/${event.id}`}
                 key={event.id}
                 style={{textDecoration: 'none'}}
               >

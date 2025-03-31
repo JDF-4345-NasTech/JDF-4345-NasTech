@@ -32,7 +32,7 @@ function NonProfitHome({ orgId }) {
             fetchEvents();
             fetchOrganization();
         }
-    }, [isAuthenticated, orgId, created]);
+    }, [isAuthenticated, orgId, created, showRequestsModal]);
 
     const fetchOrganization = () => {
         fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}`)
@@ -303,7 +303,7 @@ function NonProfitHome({ orgId }) {
                         )}
                     </Route>
                     <Route path='/create-event'>
-                        <CreateEvent updateEvents={updateEvents} orgId={orgId} />
+                        <CreateEvent updateEvents={updateEvents} orgId={orgId} orgName={organization.name} />
                     </Route>
                     <Route
                         path='/events/:eventId'
