@@ -41,6 +41,7 @@ const EventListingPage = () => {
         console.error("Error fetching events:", err);
         setLoading(false);
       });
+
   }, [orgId]);
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const EventListingPage = () => {
     };
   
     fetchSubscriptionStatus();
+	checkSubscription();
   }, [user]);
 
   const checkSubscription = async () => {
@@ -63,7 +65,7 @@ const EventListingPage = () => {
         };
     
         const subscribers = await res.json();
-        return subscribers.some(subscriber => subscriber.userId === user.id); // Returns true if user is in the list
+        return subscribers.some(subscriber => subscriber.userId === user.name); // Returns true if user is in the list
       } catch (error) {
         console.error("Error checking subscription:", error);
         return false;

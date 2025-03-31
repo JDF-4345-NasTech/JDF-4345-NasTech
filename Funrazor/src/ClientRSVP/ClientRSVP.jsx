@@ -102,7 +102,7 @@ const ClientRSVP = ({event, setIsRsvpOpen}) => {
 										style={{fontWeight: rsvpStatus === 'Maybe' ? 'bold' : 'normal'}}>Maybe
 						</button>
 					</div>
-					<div>
+					{/* <div>
 						<label>
 							<input
 								type="checkbox"
@@ -110,7 +110,7 @@ const ClientRSVP = ({event, setIsRsvpOpen}) => {
 								onChange={() => setSubscribe(!subscribe)}
 							/> Subscribe be updated about this organization's events!
 						</label>
-					</div>
+					</div> */}
 					<div id='rsvp-buttons'>
 						<button onClick={handleRsvpSubmit}>Confirm</button>
 						<button style={{ backgroundColor: '#8B0000' }} onClick={() => setIsRsvpOpen(false)}>Cancel</button>
