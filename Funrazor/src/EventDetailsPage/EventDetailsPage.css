@@ -228,3 +228,44 @@
     font-weight: normal;
     margin-top: 8px;
 }
+
+#user-rsvp-status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    width: fit-content;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rsvp-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-right: 8px;
+}
+
+.rsvp-value {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.rsvp-value.yes {
+    color: #155724;
+    background-color: #d4edda;
+}
+
+.rsvp-value.maybe {
+    color: #856404;
+    background-color: #fff3cd;
+}
+
+.rsvp-value.no {
+    color: #721c24;
+    background-color: #f8d7da;
+}
