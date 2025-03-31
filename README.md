@@ -8,6 +8,38 @@
 
 ## Release Notes
 
+### Version 0.4.0
+---
+### Features
+
+1. **Admin requests**
+   - Users have the ability to request admin access to an organization, allowing them to make events
+   - Admins can view requests and accept or deny them
+   
+2. **Export RSVP list**
+   - Event admins can now export the event's rsvps via a csv file
+   
+3. **UI overhaul**
+   - Modernization updates to every existing page
+   - Fonts, colors, placements, and sizes were changed to appear more professional
+   
+### Bug Fixes
+
+1. **Improved Stripe interface**
+   - The Donations page now fully updates the bar
+   - Donators are displayed on the admin end 
+   - Funrazor validates donations by sending receipts
+
+2. **UI bugs were fixed**
+   - CSS rules are no longer unintentionally affecting components from other pages
+
+### Known Issues
+
+- Process of creating an admin request will be overhauled
+- RSVPs aren't created with the names, leading to empty slots
+- RSVP options are available for past events, which should be disabled.
+---
+
 ### Version 0.3.0
 ---
 ### Features
