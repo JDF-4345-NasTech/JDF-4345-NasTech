@@ -161,8 +161,9 @@
 
 #donate-button-container{
     display: flex;
-    margin-left: 35px;
-    width: 150px;
+    justify-content: flex-end;
+    margin-left: 240px;
+    width: 400px;
 }
 
 #donation-status-container{
@@ -189,6 +190,7 @@
     width: 100%;
     padding-left: 40px;
     margin-top: 60px;
+    margin-right: 25px;
     padding-bottom: 20px; /* Add padding to the bottom */
 }
 

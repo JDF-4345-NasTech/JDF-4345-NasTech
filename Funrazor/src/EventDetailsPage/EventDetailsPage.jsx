@@ -58,7 +58,7 @@ const EventDetailsPage = ({}) => {
 			<div id="event-details-back-button-container">
 				<div id="event-column">
 					<button
-					  onClick={() => history.push(`/organizations/${orgId}/events`)} // Go back to the previous page
+						onClick={() => history.push(`/organizations/${orgId}/events`)} // Go back to the previous page
 						className="bg-gray-500 text-white p-2 rounded-lg mt-4"
 					>
 						Back to Events
@@ -75,45 +75,46 @@ const EventDetailsPage = ({}) => {
 				<div id="rsvp-button-container">
 					<div id="donate-button-container">
 						<button onClick={() => history.push(`/donate/${eventId}`)}>Donate</button>
+						{userRsvpStatus ? (
+							<>
+								<button id="rsvp-button"
+												onClick={() => setIsRsvpOpen(true)}
+												className="bg-blue-500 text-white p-2 rounded-lg mt-2"
+								>
+									Change RSVP
+								</button>
+								<div id="user-rsvp-status">
+									<span className="rsvp-label">Your RSVP:</span>
+									<span className={`rsvp-value ${userRsvpStatus.toLowerCase()}`}>{userRsvpStatus}</span>
+								</div>
+							</>
+						) : (
+							<button
+								id="rsvp-button"
+								onClick={() => setIsRsvpOpen(true)}
+								className="bg-blue-500 text-white p-2 rounded-lg mt-2"
+							>
+								RSVP Now
+							</button>
+						)}
 					</div>
-					{userRsvpStatus ? (
-						<>
-						<button id="rsvp-button"
-							onClick={() => setIsRsvpOpen(true)}
-							className="bg-blue-500 text-white p-2 rounded-lg mt-2"
-						  >
-							Change RSVP
-						</button>
-						<div id="user-rsvp-status">
-							<span className="rsvp-label">Your RSVP:</span>
-							<span className={`rsvp-value ${userRsvpStatus.toLowerCase()}`}>{userRsvpStatus}</span>
+					<div id="rsvp-status-container">
+						<div className="rsvp-status-box green">
+							<div className="rsvp-status-number">{rsvpCount.confirmed}</div>
+							<div className="rsvp-status-label">Yes</div>
 						</div>
-						</>
-					) : (
-						<button
-              id="rsvp-button"
-              onClick={() => setIsRsvpOpen(true)}
-              className="bg-blue-500 text-white p-2 rounded-lg mt-2"
-              >
-						  RSVP Now
-						</button>
-					)}
+						<div className="rsvp-status-box yellow">
+							<div className="rsvp-status-number">{rsvpCount.maybe}</div>
+							<div className="rsvp-status-label">Maybe</div>
+						</div>
+						<div className="rsvp-status-box red">
+							<div className="rsvp-status-number">{rsvpCount.no}</div>
+							<div className="rsvp-status-label">No</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div id="rsvp-status-container">
-				<div className="rsvp-status-box green">
-					<div className="rsvp-status-number">{rsvpCount.confirmed}</div>
-					<div className="rsvp-status-label">Yes</div>
-				</div>
-				<div className="rsvp-status-box yellow">
-					<div className="rsvp-status-number">{rsvpCount.maybe}</div>
-					<div className="rsvp-status-label">Maybe</div>
-				</div>
-				<div className="rsvp-status-box red">
-					<div className="rsvp-status-number">{rsvpCount.no}</div>
-					<div className="rsvp-status-label">No</div>
-				</div>
-			</div>
+
 
 			{/* Modal for RSVP */}
 			{isRsvpOpen && (
