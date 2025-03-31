@@ -16,13 +16,19 @@ function Organizations() {
 	const fetchOrganizations = () => {
 		fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations`)
 			.then(response => response.json())
-			.then(data => setOrganizations(data))
-			.catch(error => console.error('Error fetching organization', error));
+			.then(data => {
+				if (Array.isArray(data)) {
+					setOrganizations(data);
+				} else {
+					console.error('Expected an array but got:', data);
+					setOrganizations([]);  // Default to empty array
+				}
+			}).catch(error => console.error('Error fetching organization', error));
 	}
 
 	return (
 		<div id='organizations'>
-			<h2 id='header'>Organizations to Support</h2>
+			<h2 id='header'>Organizations</h2>
 			<div className="organizations-container">
 				{organizations.map((org) => (
 					<OrganizationItem

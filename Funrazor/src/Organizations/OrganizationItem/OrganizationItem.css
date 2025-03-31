@@ -1,5 +1,6 @@
 .organizations-container {
     display: grid;
+    text-decoration: none;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
     padding: 20px;
@@ -13,6 +14,7 @@
     text-align: center;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
+
 
 .organization-item:hover {
     transform: translateY(-5px);

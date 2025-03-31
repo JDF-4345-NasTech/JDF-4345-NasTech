@@ -15,12 +15,10 @@
   margin: 0;
 }
 
-#event-list {
-  margin: 0 auto;
-  margin-top: 0px;
+#event-list-grid {
   display: grid;
+  margin: 0 auto;
   gap: 20px;
-  padding: 20px;
   padding-top: 0px;
   width: 80%;
 }

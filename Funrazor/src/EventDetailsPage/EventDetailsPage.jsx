@@ -34,41 +34,42 @@ const EventDetailsPage = ({}) => {
 	if (!event) return <p>Loading event details...</p>;
 
 	return (
-		<div className="max-w-3xl mx-auto p-6">
+		<div>
 			<div id="event-details-page-header">
 				<h1 id="event-details-page-name">{event.name}</h1>
-				<div id="event-progress-container">
-					<span id="event-progress-text">Donations: ${event.donationTotal?.toFixed(2)} / ${event.donationGoal?.toFixed(2)}</span>
-					<progress 
-						value={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0} 
-						max="100" 
-						id="event-progress-bar"
+				<div id="event-details-progress-container">
+					<span id="event-details-progress-text">Donations: ${event.donationTotal?.toFixed(2)} / ${event.donationGoal?.toFixed(2)}</span>
+					<progress
+						value={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0}
+						max="100"
+						id="event-details-progress-bar"
 					></progress>
 				</div>
 			</div>
-	
+
 			<div id="event-details-back-button-container">
-				<button
-					onClick={() => history.goBack()} // Go back to the previous page
-					className="bg-gray-500 text-white p-2 rounded-lg mt-4"
-				>
-					Back to Events
-				</button>
-			</div>
-	
-			<div id="body-container">
-				<div id="event-body">
-					<div><strong>About</strong></div>
-					<div><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</div>
-					<div><strong>RSVPs:</strong> {rsvpCount.total}</div>
-					<div>{event.description}</div>
+				<div id="event-column">
+					<button
+						onClick={() => history.goBack()} // Go back to the previous page
+						className="bg-gray-500 text-white p-2 rounded-lg mt-4"
+					>
+						Back to Events
+					</button>
+					<div id="body-container">
+						<div id="event-body">
+							<div id="event-details-about-card">About</div>
+							<div id="event-details-about-info">Date: {new Date(event.date).toLocaleDateString()}</div>
+							<div id="event-details-about-info">RSVPs: {rsvpCount.total}</div>
+							<div id="event-details-about-info">{event.description}</div>
+						</div>
+					</div>
 				</div>
-	
 				<div id="rsvp-button-container">
 					<div id="donate-button-container">
 						<button onClick={() => history.push(`/donate/${eventId}`)}>Donate</button>
 					</div>
-					<button onClick={() => setIsRsvpOpen(true)} className="bg-blue-500 text-white p-2 rounded-lg mt-2">
+					<button id="rsvp-button" onClick={() => setIsRsvpOpen(true)}
+									className="bg-blue-500 text-white p-2 rounded-lg mt-2">
 						RSVP Now
 					</button>
 					<p>✅ Confirmed: {rsvpCount.confirmed}</p>
@@ -76,7 +77,7 @@ const EventDetailsPage = ({}) => {
 					<p>❌ No: {rsvpCount.no}</p>
 				</div>
 			</div>
-	
+
 			{/* Modal for RSVP */}
 			{isRsvpOpen && (
 				<div className="modal-overlay">
@@ -87,7 +88,7 @@ const EventDetailsPage = ({}) => {
 			)}
 		</div>
 	);
-	
+
 };
 
 export default EventDetailsPage;

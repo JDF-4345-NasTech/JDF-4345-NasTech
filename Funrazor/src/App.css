@@ -6,5 +6,6 @@
     font-size: 30px;
     align-content: start;
     background-color: #007bff;
-    color: #fff;
+    color: white;
+    background: linear-gradient(135deg, #007bff, #90caff);
 }
