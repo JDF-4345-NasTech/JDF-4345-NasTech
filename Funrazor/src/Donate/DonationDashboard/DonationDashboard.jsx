@@ -12,7 +12,7 @@ const DonationDashboard = ({event}) => {
 			.then((data) => {
                 console.log(data)
 				setDonations(data.donations);
-				setDonationTotal(data.totalDonations);
+				setDonationTotal(event.donationTotal);
 			})
 			.catch((err) => console.error('Error fetching donations:', err));
 	}, [event]);
@@ -40,7 +40,10 @@ const DonationDashboard = ({event}) => {
 				{donations.map((donation, index) => (
 					<tr key={index} className="donation-row">
 						<td>{donation.donorName}</td>
-						<td>{donation.amount.toFixed(2)}</td>
+						{donation.tipIncluded 
+                        ? (donation.amount / 1.05).toFixed(2)  // Display only 95% of the amount when tipIncluded is true
+                        : donation.amount.toFixed(2)
+                        }
 					</tr>
 				))}
 				</tbody>
