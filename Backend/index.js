@@ -31,7 +31,7 @@ app.post('/rsvpMail', async (req, res) => {
           from: process.env.EMAIL_USER,
           to: email,
           subject: `RSVP Confirmation for ${eventName}`,
-          text: `Hello,\n\nYou have successfully RSVP'd with response: ${response}\n\nEvent: ${eventName}\nDate: ${new Date(eventDate).toLocaleString()}\n\nThank you for your response!\n\n- Funrazor Team`,
+          text: `Hello,\n\nYou have successfully RSVP'd with response: ${response}\n\nEvent: ${eventName}\nDate: ${new Date(eventDate).toLocaleDateString()}\n\nThank you for your response!\n\n- Funrazor Team`,
       };
 
       await transporter.sendMail(mailOptions);
