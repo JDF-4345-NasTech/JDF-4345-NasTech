@@ -4,17 +4,33 @@ import {useState, useEffect} from 'react';
 const DonationDashboard = ({event}) => {
 	const [donations, setDonations] = useState([]);
 	const [donationTotal, setDonationTotal] = useState(0);
+	const [errorMessage, setErrorMessage] = useState([]);
 
 	useEffect(() => {
 		fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/donations/${event.id}`)
-			.then((res) => res.json())
+			.then((res) => {
+				if (!res.ok) {
+					if (res.status === 404) {
+						setErrorMessage("No donations found for this event.");
+						return null;
+					}
+					throw new Error("Failed to fetch donations.");
+				}
+				return res.json();
+			})
 			.then((data) => {
-                console.log(data)
-				setDonations(data.donations);
-				setDonationTotal(event.donationTotal);
+                if(data){
+					setDonations(data.donations);
+					setErrorMessage("");
+					setDonationTotal(event.donationTotal);
+				}
 			})
 			.catch((err) => console.error('Error fetching donations:', err));
 	}, [event]);
+
+	if (errorMessage) {
+		return <div>{errorMessage}</div>;
+	}
 
 	if (!donations) {
 		return <div>Loading...</div>;
