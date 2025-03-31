@@ -6,7 +6,6 @@ const DonationDashboard = ({event}) => {
 	const [donationTotal, setDonationTotal] = useState(0);
 
 	useEffect(() => {
-		// Assuming an endpoint that fetches donations for the event
 		fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/donations/${event.id}`)
 			.then((res) => res.json())
 			.then((data) => {
