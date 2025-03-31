@@ -4,6 +4,16 @@ import './EventDetailsPage.css';
 import ClientRSVP from "../ClientRSVP/ClientRSVP.jsx";
 import {useAuth0} from '@auth0/auth0-react'
 
+const downloadJSON = (data, filename = "rsvps.json") => {
+	const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+	const link = document.createElement("a");
+	link.href = URL.createObjectURL(blob);
+	link.download = filename;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+};
+
 const EventDetailsPage = ({}) => {
 	const {user, isAuthenticated} = useAuth0();
 	const eventId = useParams().eventId;
@@ -68,6 +78,15 @@ const EventDetailsPage = ({}) => {
 							<div id="event-details-about-card">About</div>
 							<div id="event-details-about-info">Date: {new Date(event.date).toLocaleDateString()}</div>
 							<div id="event-details-about-info">RSVPs: {rsvpCount.total}</div>
+							{event.rsvpResponses?.length > 0 && (
+								<button
+									onClick={() => downloadJSON(event.rsvpResponses)}
+									className="bg-green-500 text-white p-2 rounded-lg mt-2"
+									style={{ width: '150px', marginTop: '10px' }}
+								>
+									Download RSVPs
+								</button>
+							)}
 							<div id="event-details-about-info">{event.description}</div>
 						</div>
 					</div>
