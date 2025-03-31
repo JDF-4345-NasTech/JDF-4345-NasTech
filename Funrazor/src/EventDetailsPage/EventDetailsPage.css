@@ -182,3 +182,49 @@
     background-color: #007bff;
     color: white;
 }
+
+#rsvp-status-container {
+    display: flex;
+    justify-content: flex-start; /* Center the boxes horizontally */
+    width: 100%;
+    padding-left: 40px;
+    margin-top: 60px;
+    padding-bottom: 20px; /* Add padding to the bottom */
+}
+
+.rsvp-status-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 8px;
+    width: 150px; /* Make the boxes wider */
+    height: 150px;
+    text-align: center;
+    color: white;
+    margin: 0 5px; /* Reduce the horizontal spacing between boxes */
+}
+
+.rsvp-status-box.green {
+    background-color: #b2f2b2; /* Light Green */
+}
+
+.rsvp-status-box.yellow {
+    background-color: #f8e47d; /* Yellow */
+}
+
+.rsvp-status-box.red {
+    background-color: #f8b2b2; /* Red */
+}
+
+.rsvp-status-number {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.rsvp-status-label {
+    font-size: 16px;
+    font-weight: normal;
+    margin-top: 8px;
+}
