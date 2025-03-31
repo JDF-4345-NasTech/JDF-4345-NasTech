@@ -84,7 +84,7 @@ body {
     background-color: #0056b3;
 }
 
-#event-list {
+#npe-event-list {
     display: grid;
     margin: 0 auto;
     gap: 20px;
@@ -203,6 +203,11 @@ body {
     border-radius: 8px;
     width: 80%;
     max-width: 600px;
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
 }
 
 /*#close-modal {
@@ -213,6 +218,12 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }*/
+
+#requests-button {
+    display: flex;
+    min-width: 120px;
+    height: 40px;
+}
 
 .date-filters {
     display: flex;

@@ -225,7 +225,7 @@ function NonProfitHome({ orgId }) {
                                 )}
                                 {/* Requests Button */}
                                 {organization.requests && organization.requests.length > 0 && (
-                                    <button onClick={openRequestsModal}>
+                                    <button id="requests-button" onClick={openRequestsModal}>
                                         Requests ({organization.requests.length})
                                     </button>
                                 )}
@@ -280,7 +280,7 @@ function NonProfitHome({ orgId }) {
                                 </div>
                             </div>
                         </div>
-                        <div id="event-list">
+                        <div id="npe-event-list">
                             {selectedEvents.map((event, index) => (
                                 <Link to={`/events/${event.id}`} key={index} style={{ textDecoration: 'none' }}>
                                     <EventListItem

@@ -1,24 +1,24 @@
 /* Container for each event item */
-#event-list-item {
+#event-card-list-item {
     display: flex;
     align-items: flex-start;
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
     margin: 10px 0;
-    width: 500px;
+    width: 1150px;
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-#event-list-item:hover {
+#event-card-list-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Event image */
-#event-image {
+#event-card-image {
     width: 100px;
     height: 100px;
     object-fit: cover;
@@ -27,14 +27,14 @@
 }
 
 /* Event details container */
-#event-details {
+#event-card-details {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
 /* Event title */
-#event-title {
+#event-card-title {
     font-size: 1.5rem;
     font-weight: bold;
     margin: 0 0 10px;
@@ -42,28 +42,28 @@
 }
 
 /* Event date and RSVP info */
-#event-date,
-#event-rsvps {
+#event-card-date,
+#event-card-rsvps {
     font-size: 1rem;
     color: #555;
     margin: 5px 0;
 }
 
 /* Donation progress bar container */
-#event-progress-container {
+#event-card-progress-container {
     display: flex;
     align-items: center;
     margin: 10px 0;
 }
 
-#event-progress-text {
+#event-card-progress-text {
     font-size: 1rem;
     color: #333;
     margin-right: 10px;
 }
 
 /* Progress bar styling */
-#event-item-progress-bar {
+#event-card-item-progress-bar {
     width: 900px;
     height: 10px;
     border-radius: 5px;
@@ -72,23 +72,23 @@
     appearance: none;
 }
 
-#event-item-progress-bar::-webkit-progress-bar {
+#event-card-item-progress-bar::-webkit-progress-bar {
     background-color: #eee;
     border-radius: 5px;
 }
 
-#event-item-progress-bar::-webkit-progress-value {
+#event-card-item-progress-bar::-webkit-progress-value {
     background-color: #007bff;
     border-radius: 5px;
 }
 
-#event-item-progress-bar::-moz-progress-bar {
+#event-card-item-progress-bar::-moz-progress-bar {
     background-color: #007bff;
     border-radius: 5px;
 }
 
 /* Event details text */
-#event-details-text {
+#event-card-details-text {
     font-size: 0.9rem;
     color: #555;
     margin-top: 10px;

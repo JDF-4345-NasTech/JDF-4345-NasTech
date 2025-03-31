@@ -113,7 +113,7 @@ const ClientRSVP = ({event, setIsRsvpOpen}) => {
 					</div>
 					<div id='rsvp-buttons'>
 						<button onClick={handleRsvpSubmit}>Confirm</button>
-						<button onClick={() => setIsRsvpOpen(false)}>Cancel</button>
+						<button style={{ backgroundColor: '#8B0000' }} onClick={() => setIsRsvpOpen(false)}>Cancel</button>
 					</div>
 				</div>
 			</div>

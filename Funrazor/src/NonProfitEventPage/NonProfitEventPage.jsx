@@ -75,7 +75,7 @@ function NonProfitEventPage({event}) {
 					<div className="modal-overlay">
 					<div className="modal-content">
 						<RSVPDashboard event={event} />
-						<button id="close-modal" onClick={closeRSVPModal}>Close</button>
+						<button style={{ backgroundColor: '#8B0000' }} id="close-modal" onClick={closeRSVPModal}>Close</button>
 					</div>
 					</div>
 				)}
@@ -85,7 +85,7 @@ function NonProfitEventPage({event}) {
 					<div className="modal-overlay">
 					<div className="modal-content">
 						<DonationDashboard event={event} />
-						<button id="close-modal" onClick={closeDonationModal}>Close</button>
+						<button style={{ backgroundColor: '#8B0000' }} id="close-modal" onClick={closeDonationModal}>Close</button>
 					</div>
 					</div>
 				)}
