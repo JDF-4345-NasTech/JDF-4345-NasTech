@@ -9,7 +9,13 @@
     display: flex;
     color:#007bff;
     font-size: 80px;
-    justify-items: flex-end;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+#event-details-page-name-container{
+    display: flex;
+    justify-content: flex-start;
 }
 
 #body-container {
@@ -32,20 +38,23 @@
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
 #event-details-about-card{
     font-family: sans-serif;
     color: #000000;
     font-size: 40px;
 }
+
 #event-details-about-info{
     font-size: 20px;
     color: #525252;
-
 }
+
 #rsvp-button-container {
     display: flex;
-    justify-content: flex-end;
-    flex-grow: .75;
+    flex-direction: column;
+    align-content: flex-end;
+    margin-left:565px;
 }
 
 #rsvp-button {
@@ -150,8 +159,21 @@
 
 #donate-button-container{
     display: flex;
-    margin-left: 30px;
+    margin-left: 35px;
     width: 150px;
+}
+
+#donation-status-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 5px;
+}
+
+#event-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 #donate-button{

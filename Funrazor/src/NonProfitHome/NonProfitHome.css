@@ -85,12 +85,11 @@ body {
 }
 
 #event-list {
-    margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    margin: 0 auto;
     gap: 20px;
-    padding: 20px;
-    width: 100%;
+    padding-top: 0px;
+    width: 80%;
 }
 
 #event-list img {
@@ -162,10 +161,6 @@ body {
         font-size: 1.5rem;
     }
 
-    #non-profit-details {
-        font-size: 1rem;
-    }
-
     #create-event-button button {
         font-size: 0.9rem;
         padding: 8px 16px;
@@ -174,6 +169,19 @@ body {
     #event-list {
         grid-template-columns: 1fr;
     }
+}
+
+#non-profit-details {
+    font-size: 1rem;
+    gap: 10px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+}
+#non-profit-details p {
+    text-align: center;
 }
 
 .modal-overlay {

@@ -159,22 +159,25 @@ const EventListingPage = () => {
           <p>No upcoming events.</p>
         ) : (
           <div id="event-list-grid">
-            {selectedEvents.map((event) => (
-              <Link
-                to={`/client/events/${event.id}`}
-                key={event.id}
-                style={{textDecoration: 'none'}}
-              >
-                <EventListItem
-                  eventImage={event.eventImage || ''}
-                  eventName={event.name}
-                  eventDate={new Date(event.date).toLocaleDateString()}
-                  rsvps={event.rsvpResponses ? event.rsvpResponses.length : 0}
-                  eventDonationProgress={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0}
-                  eventDetails={event.description}
-                />
-              </Link>
-            ))}
+            {selectedEvents.map((event) => {
+              if (!event) return null;
+              return (
+                <Link
+                  to={`/client/events/${event.id}`}
+                  key={event.id}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <EventListItem
+                    eventImage={event.eventImage || ''}
+                    eventName={event.name}
+                    eventDate={new Date(event.date).toLocaleDateString()}
+                    rsvps={event.rsvpResponses ? event.rsvpResponses.length : 0}
+                    eventDonationProgress={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0}
+                    eventDetails={event.description}
+                  />
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>

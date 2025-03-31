@@ -21,39 +21,40 @@ function NonProfitEventPage({event}) {
 
 	return (
 		<div className="non-profit-event-page">
-			<div id="event-header">
-				<h1 id="event-name">{event.name}</h1>
-				<div id="event-progress-container">
-					<span id="event-progress-text">Donations: ${event.donationTotal?.toFixed(2)} / ${event.donationGoal?.toFixed(2)}</span>
-					<progress 
-						value={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0} 
-						max="100" 
-						id="event-progress-bar"
+			<div id="npe-event-header">
+				<div id="npe-title-container">
+					<div id="npe-event-name">{event.name}</div>
+				</div>
+				<div id="npe-event-details-progress-container">
+					<span
+						id="npe-event-details-progress-text">Donations: ${event.donationTotal?.toFixed(2)} / ${event.donationGoal?.toFixed(2)}</span>
+					<progress
+						value={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0}
+						max="100"
+						id="npe-event-details-progress-bar"
 					></progress>
 				</div>
 			</div>
 			<div id="back-button-container">
-                <button
-                    onClick={() => history.push('/')}
-                    className="bg-gray-500 text-white p-2 rounded-lg mt-4"
-                >
-                    Home
-                </button>
-            </div>
-			<h2 id="about-text">
-				<strong>About</strong>
-			</h2>
+				<button
+					onClick={() => history.push('/')}
+					className="bg-gray-500 text-white p-2 rounded-lg mt-4"
+				>
+					Home
+				</button>
+			</div>
 			<div id="body-container">
 				<div id="event-body">
-					<div><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</div>
-					<div><strong>RSVPs:</strong> {event.rsvpResponses ? event.rsvpResponses.length : 0}</div>
-					<div>{event.description}</div>
-					</div>
-					<div id="button-container">
+					<div id="npe-details-about-card">About</div>
+					<div id="npe-details-about-info">Date: {new Date(event.date).toLocaleDateString()}</div>
+					<div id="npe-details-about-info">RSVPs: {event.rsvpResponses ? event.rsvpResponses.length : 0}</div>
+					<div id="npe-details-about-info">{event.description}</div>
+				</div>
+				<div id="button-container">
 					{/* RSVP Button */}
 					<button
 						style={{ backgroundColor: "#007bff" }}
-						id="rsvp-button"
+						id="npe-rsvp-button"
 						onClick={() => setIsRSVPModalOpen(true)}
 					>
 						RSVP Information
