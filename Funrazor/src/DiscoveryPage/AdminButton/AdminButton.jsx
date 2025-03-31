@@ -147,7 +147,6 @@ function AdminButton({ setCloseAdminButton, closeAdminButton }) {
           </div>
         </div>
       )}
-      {/* Join Modal */}
       {isJoinModalOpen && existingOrg && (
         <div className="modal">
           <div className="modal-content">

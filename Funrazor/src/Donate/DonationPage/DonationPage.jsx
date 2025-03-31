@@ -20,7 +20,7 @@ function DonationPage() {
 		const response = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/create-checkout-session`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ amount: totalAmount, eventId: eventId }),
+			body: JSON.stringify({ amount: totalAmount, eventId: eventId, tipIncluded: coverFees }),
 		});
 
 		const session = await response.json();

@@ -511,6 +511,7 @@ app.get('/donations/:eventId', async (req, res) => {
       select: {
         donorName: true, 
         amount: true, 
+        tipIncluded: true,
       },
     });
 
