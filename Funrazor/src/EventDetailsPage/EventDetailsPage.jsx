@@ -29,7 +29,7 @@ const EventDetailsPage = ({}) => {
 				};
 	
 				counts.total = counts.confirmed + counts.maybe + counts.no; // Add total count
-	
+
 				setRsvpCount(counts);
 				const userRsvp = rsvpResponses.find(rsvp => rsvp.email === user?.name);
 				if (userRsvp) {
