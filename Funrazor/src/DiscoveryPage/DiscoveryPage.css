@@ -12,7 +12,9 @@
     align-items: start;
     justify-content: center;
     background-color: #f8f8f8;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin-top: 0px;
+
 }
 
 .account-btn:hover {

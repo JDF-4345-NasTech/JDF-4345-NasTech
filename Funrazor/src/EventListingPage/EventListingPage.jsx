@@ -21,7 +21,7 @@ const EventListingPage = () => {
 
   useEffect(() => {
     // Fetch organization details
-    fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}`)
+    fetch(`${import.meta. env.VITE_BACKEND_ADDRESS}/organizations/${orgId}`)
       .then((res) => res.json())
       .then((data) => {
         setOrganization(data);
@@ -63,7 +63,7 @@ const EventListingPage = () => {
         };
     
         const subscribers = await res.json();
-        return subscribers.some(subscriber => subscriber.userId === user.name); // Returns true if user is in the list
+        return subscribers.some(subscriber => subscriber.userId === user.id); // Returns true if user is in the list
       } catch (error) {
         console.error("Error checking subscription:", error);
         return false;
@@ -129,7 +129,7 @@ const EventListingPage = () => {
           <div className="back-button-container">
             <button
               onClick={() => history.push('/')} // Using history.push for navigation
-              className="back-button"
+              className="bg-blue-500 text-white p-2 rounded-lg mt-2"
             >
               All organizations
             </button>
@@ -137,7 +137,7 @@ const EventListingPage = () => {
           <div className="subscribe-button-container">
             <button
               onClick={handleSubscription} // Using history.push for navigation
-              className="subscribe-button"
+              className="bg-blue-500 text-white p-2 rounded-lg mt-2"
             >
               {subscribe ? "Unsubscribe" : 'Subscribe'}
             </button>
@@ -154,11 +154,11 @@ const EventListingPage = () => {
           </div>
         </div>
       </div>
-      <div className="max-w-4xl mx-auto p-6">
+      <div>
         {selectedEvents.length === 0 ? (
           <p>No upcoming events.</p>
         ) : (
-          <div id="event-list" className="space-y-6">
+          <div id="event-list-grid">
             {selectedEvents.map((event) => (
               <Link
 			  to={`/organizations/${orgId}/events/${event.id}`}
