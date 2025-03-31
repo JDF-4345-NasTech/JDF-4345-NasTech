@@ -269,3 +269,17 @@
     color: #721c24;
     background-color: #f8d7da;
 }
+
+#download-rsvp-button {
+	background-color: #28a745;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+#download-rsvp-button:hover {
+	background-color: #218838;
+}
