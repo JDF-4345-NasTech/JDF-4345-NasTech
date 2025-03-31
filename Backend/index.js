@@ -31,7 +31,7 @@ app.post('/rsvpMail', async (req, res) => {
           from: process.env.EMAIL_USER,
           to: email,
           subject: `RSVP Confirmation for ${eventName}`,
-          text: `Hello,\n\nYou have successfully RSVP'd with response: ${response}\n\nEvent: ${eventName}\nDate: ${new Date(eventDate).toLocaleString()}\n\nThank you for your response!\n\n- Funrazor Team`,
+          text: `Hello,\n\nYou have successfully RSVP'd with response: ${response}\n\nEvent: ${eventName}\nDate: ${new Date(eventDate).toLocaleDateString()}\n\nThank you for your response!\n\n- Funrazor Team`,
       };
 
       await transporter.sendMail(mailOptions);
@@ -52,7 +52,7 @@ app.post('/eventNotification', async (req, res) => {
       from: process.env.EMAIL_USER,
       to: email,
       subject: `New ${eventName} Event from ${orgName}!`,
-    text: `We have a new event for you from ${orgName} who you subscribed to!\n\nEvent: ${eventName}\nDate: ${new Date(eventDate).toLocaleString()}\nAbout: ${eventDescription}\n\n Check ${orgName}'s page for more info! - Funrazor Team`,
+      text: `${orgName} posted a new event!\n\nEvent: ${eventName}\nDate: ${new Date(eventDate).toLocaleDateString()}\nAbout: ${eventDescription}\n\n Check ${orgName}'s page for more info on attending or donating to this event! - Funrazor Team`,
     };
 
     await transporter.sendMail(mailOptions);
@@ -238,7 +238,7 @@ app.post('/organizations/:organizationId/subscribe', async (req, res) => {
 });
 
 // GET endpoint to retrieve subscribers of an organization
-app.get('/organizations/:organizationId/subscribers', async (req, res) => {
+app.get('/subscribers/:organizationId', async (req, res) => {
   const { organizationId } = req.params;
 
   try {

@@ -18,8 +18,7 @@ const DonateSuccess = () => {
 
 	useEffect(() => {
 		if (eventId) {
-            const eventIdInt = parseInt(eventId, 10);
-			fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/events/${eventIdInt}`)
+			fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/events/${eventId}`)
 				.then((res) => res.json())
 				.then((data) => {
 					setEvent(data);
@@ -70,12 +69,13 @@ const DonateSuccess = () => {
 			)}
 			<button
 				className="back-to-event-btn"
-				onClick={() => history.push(`/client/events/${eventId}`)} // Navigate back to the event page
+				onClick={() => history.push(`/organizations/${event.organizationId}/events/${event.id}`)} // Navigate back to the event page
 			>
-				Back to Event Page
+				Return
 			</button>
 		</div>
 	);
 };
+
 
 export default DonateSuccess;

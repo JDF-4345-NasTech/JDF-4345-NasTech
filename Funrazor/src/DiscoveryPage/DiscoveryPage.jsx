@@ -92,10 +92,10 @@ function DiscoveryPage() {
 							{isOrgAdmin ? (<NonProfitHome orgId={adminOrg}/>) : (<Organizations/>)}
 						</main>
 					</Route>
-					<Route path="/organizations/:orgId/events">
-						<EventListingWrapper/>
+					<Route path="/organizations/:orgId/events" exact>
+						<EventListingPage/>
 					</Route>
-          <Route path="/client/events/:eventId" component={EventDetailsPage} />
+          <Route path="/organizations/:orgId/events/:eventId" component={EventDetailsPage} />
           <Route path="/donate/:eventId" component={DonationPage} />
           <Route path="/success" component={DonateSuccess} />
 				</Switch>

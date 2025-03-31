@@ -57,7 +57,7 @@ const EventListingPage = () => {
         return false;
       }
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/subscribers`);
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/subscribers/${orgId}`);
         if (!res.ok) {
           return false;
         };
@@ -131,7 +131,7 @@ const EventListingPage = () => {
               onClick={() => history.push('/')} // Using history.push for navigation
               className="bg-blue-500 text-white p-2 rounded-lg mt-2"
             >
-              Back to Organizations
+              All organizations
             </button>
           </div>
           <div className="subscribe-button-container">
@@ -159,25 +159,22 @@ const EventListingPage = () => {
           <p>No upcoming events.</p>
         ) : (
           <div id="event-list-grid">
-            {selectedEvents.map((event) => {
-              if (!event) return null;
-              return (
-                <Link
-                  to={`/client/events/${event.id}`}
-                  key={event.id}
-                  style={{ textDecoration: 'none' }}
-                >
-                  <EventListItem
-                    eventImage={event.eventImage || ''}
-                    eventName={event.name}
-                    eventDate={new Date(event.date).toLocaleDateString()}
-                    rsvps={event.rsvpResponses ? event.rsvpResponses.length : 0}
-                    eventDonationProgress={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0}
-                    eventDetails={event.description}
-                  />
-                </Link>
-              );
-            })}
+            {selectedEvents.map((event) => (
+              <Link
+			  to={`/organizations/${orgId}/events/${event.id}`}
+                key={event.id}
+                style={{textDecoration: 'none'}}
+              >
+                <EventListItem
+                  eventImage={event.eventImage || ''}
+                  eventName={event.name}
+                  eventDate={new Date(event.date).toLocaleDateString()}
+                  rsvps={event.rsvpResponses ? event.rsvpResponses.length : 0}
+                  eventDonationProgress={event.donationGoal > 0 ? (event.donationTotal / event.donationGoal) * 100 : 0}
+                  eventDetails={event.description}
+                />
+              </Link>
+            ))}
           </div>
         )}
       </div>

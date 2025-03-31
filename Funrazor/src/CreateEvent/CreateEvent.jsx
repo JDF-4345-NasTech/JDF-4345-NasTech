@@ -2,7 +2,7 @@ import './CreateEvent.css'
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-function CreateEvent( {updateEvents, orgId} ) {
+function CreateEvent( {updateEvents, orgId, orgName} ) {
     const history = useHistory();
     const [states, setStates] = useState([]);
     const [subscribers, setSubscribers] = useState([]);
@@ -100,7 +100,7 @@ function CreateEvent( {updateEvents, orgId} ) {
              if (!response.ok) {
                  throw new Error(`HTTP error! status: ${response.status}`);
              } else {
-                 emailSubscribers()
+                 emailSubscribers(eventData)
                 return response.json();
               }
         }).then( event => {
@@ -109,24 +109,25 @@ function CreateEvent( {updateEvents, orgId} ) {
         .catch(error => {});
     }
 
-    const emailSubscribers = async () => {
+    const emailSubscribers = async (eventData) => {
         try {
-            const res2 = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/subscribers`);
+            console.log("emailing subscribers")
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/subscribers/${orgId}`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch subscribers: ${response.status}`);
             }
-            const data = await res2.json();
+            const data = await response.json();
             console.log('Fetched Subscribers:', data);
 
             data.forEach(subscriber => {
-                sendEmail(subscriber.email);
+                sendEmail(subscriber.userId, eventData);
             });
         } catch (error) {
             console.error('Error fetching subscribers:', error);
         }
     };
 
-    const sendEmail = async(subscriber) => {
+    const sendEmail = async(subscriber, eventData) => {
         const res3 = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/eventNotification`, {
             method: 'POST',
             headers: {
@@ -134,10 +135,10 @@ function CreateEvent( {updateEvents, orgId} ) {
             },
             body: JSON.stringify({
                 email: `${subscriber}`,
-                eventName: `${formInput.target.elements.eventNameInput.value}`,
-                eventDate: `${formInput.target.elements.dateInput.value}`,
-                eventDescription: `${formInput.target.elements.eventDescriptionInput.value}`,
-                orgName: `${orgId.name}`,
+                eventName: eventData.name,
+                eventDate: eventData.date,
+                eventDescription: eventData.description,
+                orgName: orgName,
             })
         });
     }
