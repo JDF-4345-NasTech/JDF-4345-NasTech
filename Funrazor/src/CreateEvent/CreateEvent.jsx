@@ -242,8 +242,8 @@ function CreateEvent( {updateEvents, orgId, orgName} ) {
                 <label>Description</label>
                 <input type="text" id="eventDescriptionInput" name="eventDescriptionInput" required></input>
             </div>
-            <button  style = {{backgroundColor: "#007bff"}} type="submit">Create</button>
-            <button onClick={() => history.push('/')}>Cancel</button>
+            <button style = {{backgroundColor: "#007bff"}} type="submit">Create</button>
+            <button style={{ backgroundColor: '#8B0000' }} onClick={() => history.push('/')}>Cancel</button>
         </form>
     </>
   )

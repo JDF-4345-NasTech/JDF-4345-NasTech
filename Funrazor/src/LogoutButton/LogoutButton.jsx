@@ -5,7 +5,7 @@ function LogoutButton() {
 
     return (
         isAuthenticated && (
-            <button onClick={logout}>
+            <button style={{ backgroundColor: '#cc2727' }} onClick={logout}>
                 Sign Out
             </button>
         )
