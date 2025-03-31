@@ -78,14 +78,16 @@ const EventDetailsPage = ({}) => {
 					</div>
 					{userRsvpStatus ? (
 						<>
-						<p>Your RSVP: {userRsvpStatus}</p>
-						<button
-              id="rsvp-button"
+						<button id="rsvp-button"
 							onClick={() => setIsRsvpOpen(true)}
 							className="bg-blue-500 text-white p-2 rounded-lg mt-2"
 						  >
 							Change RSVP
 						</button>
+						<div id="user-rsvp-status">
+							<span className="rsvp-label">Your RSVP:</span>
+							<span className={`rsvp-value ${userRsvpStatus.toLowerCase()}`}>{userRsvpStatus}</span>
+						</div>
 						</>
 					) : (
 						<button
@@ -96,12 +98,20 @@ const EventDetailsPage = ({}) => {
 						  RSVP Now
 						</button>
 					)}
-					{/* <button onClick={() => setIsRsvpOpen(true)} className="bg-blue-500 text-white p-2 rounded-lg mt-2">
-						RSVP Now
-					</button> */}
-					<p>✅ Confirmed: {rsvpCount.confirmed}</p>
-					<p>🤔 Maybe: {rsvpCount.maybe}</p>
-					<p>❌ No: {rsvpCount.no}</p>
+				</div>
+			</div>
+			<div id="rsvp-status-container">
+				<div className="rsvp-status-box green">
+					<div className="rsvp-status-number">{rsvpCount.confirmed}</div>
+					<div className="rsvp-status-label">Yes</div>
+				</div>
+				<div className="rsvp-status-box yellow">
+					<div className="rsvp-status-number">{rsvpCount.maybe}</div>
+					<div className="rsvp-status-label">Maybe</div>
+				</div>
+				<div className="rsvp-status-box red">
+					<div className="rsvp-status-number">{rsvpCount.no}</div>
+					<div className="rsvp-status-label">No</div>
 				</div>
 			</div>
 

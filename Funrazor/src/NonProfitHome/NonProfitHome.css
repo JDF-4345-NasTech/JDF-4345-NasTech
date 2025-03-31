@@ -203,21 +203,13 @@ body {
     border-radius: 8px;
     width: 80%;
     max-width: 600px;
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
 }
 
-/*#close-modal {
-    background-color: #f44336;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}*/
+.modal-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
 #requests-button {
     display: flex;
