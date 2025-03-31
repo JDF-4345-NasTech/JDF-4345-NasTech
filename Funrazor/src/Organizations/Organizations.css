@@ -22,3 +22,90 @@
     flex-direction: column;
     justify-content: center;
 }
+
+/* General Styles */
+.landing-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Adjusting the content to be centered with less space on top */
+    align-items: center;
+    background-color: #f9f9f9;
+    text-align: center;
+    padding: 0 20px;
+  }
+  
+  
+  /* Landing content styles */
+  .landing-content {
+    max-width: 800px;
+    margin: 90px auto; /* Adding margin to create space from the top */
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+  }
+  
+  .landing-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #007bff; /* Adding a light blue color */
+    margin-bottom: 20px;
+    letter-spacing: 2px; /* More dynamic spacing */
+  }
+  
+  .landing-description {
+    font-size: 1.3rem;
+    color: #666;
+    margin: 20px 0;
+    line-height: 1.6;
+    font-weight: 300; /* Lighter weight for better contrast */
+  }
+  
+  .landing-info {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+  
+  /* Footer styling */
+  .landing-footer {
+    margin-top: 40px;
+    font-size: 0.875rem;
+    color: #777;
+  }
+  
+  /* Adding hover effect for footer */
+  .landing-footer:hover {
+    background-color: #e0e0e0;
+  }
+  
+  @media (max-width: 768px) {
+    .landing-title {
+      font-size: 2.8rem;
+    }
+  
+    .landing-description {
+      font-size: 1.125rem;
+    }
+  
+    .landing-info {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .landing-title {
+      font-size: 2.2rem;
+    }
+  
+    .landing-description {
+      font-size: 1rem;
+    }
+  
+    .landing-info {
+      font-size: 0.9rem;
+    }
+  }
+  
