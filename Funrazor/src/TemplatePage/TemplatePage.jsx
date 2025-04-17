@@ -2,7 +2,7 @@ import './TemplatePage.css';
 import { useState, useEffect } from 'react';
 
 function TemplatePage({ orgId }) {
-    const [activeType, setActiveType] = useState('donor'); // 'donor' or 'grant'
+    const [activeType, setActiveType] = useState('donor');
     const [templates, setTemplates] = useState([]);
     const [newTemplateTitle, setNewTemplateTitle] = useState('');
     const [newTemplateContent, setNewTemplateContent] = useState('');
@@ -13,6 +13,7 @@ function TemplatePage({ orgId }) {
 
     const fetchTemplates = () => {
         const endpoint = activeType === 'donor' ? 'donor-templates' : 'grant-templates';
+        console.log("fetching templates")
         fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/${endpoint}`)
             .then(res => res.json())
             .then(data => setTemplates(data))
@@ -20,6 +21,7 @@ function TemplatePage({ orgId }) {
     };
 
     const handleCreateTemplate = () => {
+        console.log("creating")
         const endpoint = activeType === 'donor' ? 'donor-templates' : 'grant-templates';
         const template = {
             organizationId: orgId,
@@ -37,6 +39,7 @@ function TemplatePage({ orgId }) {
                 setTemplates([...templates, createdTemplate]);
                 setNewTemplateTitle('');
                 setNewTemplateContent('');
+                console.log("created")
             })
             .catch(err => console.error(`Error creating ${activeType} template:`, err));
     };

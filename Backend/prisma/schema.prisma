@@ -21,6 +21,9 @@ model Organization {
   admins User[]
   subscribers Subscriptions[]
   requests User[] @relation("OrganizationRequests")
+
+  grantTemplates GrantTemplate[]
+  donorTemplates DonorTemplate[]
 }
 
 model Subscriptions {
