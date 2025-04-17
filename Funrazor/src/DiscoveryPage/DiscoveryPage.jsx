@@ -11,6 +11,7 @@ import EventDetailsPage from '../EventDetailsPage/EventDetailsPage';
 import { User } from 'lucide-react';
 import DonationPage from '../Donate/DonationPage/DonationPage';
 import DonateSuccess from '../Donate/DonateSuccess/DonateSuccess';
+import TemplatePage from '../TemplatePage/TemplatePage';
 
 import {BrowserRouter as Router, Route, Switch, Link, useParams} from 'react-router-dom';
 
@@ -95,9 +96,12 @@ function DiscoveryPage() {
 					<Route path="/organizations/:orgId/events" exact>
 						<EventListingPage/>
 					</Route>
-          <Route path="/organizations/:orgId/events/:eventId" component={EventDetailsPage} />
-          <Route path="/donate/:eventId" component={DonationPage} />
-          <Route path="/success" component={DonateSuccess} />
+					<Route path="/organizations/:orgId/events/:eventId" component={EventDetailsPage} />
+					<Route path="/donate/:eventId" component={DonationPage} />
+					<Route path="/success" component={DonateSuccess} />
+					<Route path="/templates">
+						<TemplatePage orgId={adminOrg} />
+					</Route>
 				</Switch>
 			</div>
 		</Router>

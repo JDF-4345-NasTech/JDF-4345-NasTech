@@ -697,6 +697,82 @@ app.post('/donation/success', async (req, res) => {
   }
 });
 
+// GET all grant templates for an organization
+app.get('/organizations/:orgId/grant-templates', async (req, res) => {
+  const orgId = parseInt(req.params.orgId);
+  try {
+    const templates = await prisma.grantTemplate.findMany({
+      where: { organizationId: orgId },
+      orderBy: { id: 'desc' },
+    });
+    res.json(templates);
+  } catch (error) {
+    console.error('Error fetching grant templates:', error);
+    res.status(500).json({ error: 'Failed to fetch grant templates' });
+  }
+});
+
+// POST a new grant template
+app.post('/grant-templates', async (req, res) => {
+  const { organizationId, title, content } = req.body;
+
+  if (!organizationId || !title || !content) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    const newTemplate = await prisma.grantTemplate.create({
+      data: {
+        organizationId,
+        title,
+        content,
+      },
+    });
+    res.status(201).json(newTemplate);
+  } catch (error) {
+    console.error('Error creating grant template:', error);
+    res.status(500).json({ error: 'Failed to create grant template' });
+  }
+});
+
+// GET all donor templates for an organization
+app.get('/organizations/:orgId/donor-templates', async (req, res) => {
+  const orgId = parseInt(req.params.orgId);
+  try {
+    const templates = await prisma.donorTemplate.findMany({
+      where: { organizationId: orgId },
+      orderBy: { id: 'desc' },
+    });
+    res.json(templates);
+  } catch (error) {
+    console.error('Error fetching donor templates:', error);
+    res.status(500).json({ error: 'Failed to fetch donor templates' });
+  }
+});
+
+// POST a new donor template
+app.post('/donor-templates', async (req, res) => {
+  const { organizationId, title, content } = req.body;
+
+  if (!organizationId || !title || !content) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    const newTemplate = await prisma.donorTemplate.create({
+      data: {
+        organizationId,
+        title,
+        content,
+      },
+    });
+    res.status(201).json(newTemplate);
+  } catch (error) {
+    console.error('Error creating donor template:', error);
+    res.status(500).json({ error: 'Failed to create donor template' });
+  }
+});
+
 app.listen(port, () => {
   console.log('starting');
 })

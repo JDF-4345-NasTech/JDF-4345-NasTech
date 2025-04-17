@@ -21,6 +21,9 @@ model Organization {
   admins User[]
   subscribers Subscriptions[]
   requests User[] @relation("OrganizationRequests")
+
+  grantTemplates GrantTemplate[]
+  donorTemplates DonorTemplate[]
 }
 
 model Subscriptions {
@@ -83,4 +86,22 @@ model Donation {
   eventId   Int
   createdAt DateTime @default(now())
   tipIncluded Boolean
+}
+
+model GrantTemplate {
+  id             Int      @id @default(autoincrement())
+  organizationId Int
+  title          String
+  content        String
+  
+  organization   Organization @relation(fields: [organizationId], references: [id])
+}
+
+model DonorTemplate {
+  id             Int      @id @default(autoincrement())
+  organizationId Int
+  title          String
+  content        String
+  
+  organization   Organization @relation(fields: [organizationId], references: [id])
 }
