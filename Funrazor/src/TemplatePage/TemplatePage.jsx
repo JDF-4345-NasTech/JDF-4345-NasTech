@@ -6,7 +6,9 @@ function TemplatePage({ orgId }) {
     const [templates, setTemplates] = useState([]);
     const [newTemplateTitle, setNewTemplateTitle] = useState('');
     const [newTemplateContent, setNewTemplateContent] = useState('');
-    const [selectedTemplate, setSelectedTemplate] = useState(null); // for modal
+    const [selectedTemplate, setSelectedTemplate] = useState(null);
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
+
 
     useEffect(() => {
         if (orgId) fetchTemplates();
@@ -55,6 +57,34 @@ function TemplatePage({ orgId }) {
                 </button>
             </div>
 
+            <div className="template-section collapsible-section">
+                <div
+                    className="collapsible-header"
+                    onClick={() => setIsCreateOpen(prev => !prev)}
+                >
+                    <h2>
+                    {isCreateOpen ? '▼' : '▶'} Create {activeType === 'donor' ? 'letter' : 'grant'} template
+                    </h2>
+                </div>
+
+                {isCreateOpen && (
+                    <div className="collapsible-body">
+                    <input
+                        type="text"
+                        placeholder="Template Title"
+                        value={newTemplateTitle}
+                        onChange={(e) => setNewTemplateTitle(e.target.value)}
+                    />
+                    <textarea
+                        placeholder="Template Content"
+                        value={newTemplateContent}
+                        onChange={(e) => setNewTemplateContent(e.target.value)}
+                    />
+                    <button onClick={handleCreateTemplate}>Create</button>
+                    </div>
+                )}
+            </div>
+
             <div className="template-section">
                 <h2>{activeType === 'donor' ? 'Subscriber letter templates' : 'Grant request templates'}</h2>
                 {templates.length === 0 ? (
@@ -69,22 +99,6 @@ function TemplatePage({ orgId }) {
                         ))}
                     </div>
                 )}
-            </div>
-
-            <div className="template-section">
-                <h2>Create {activeType === 'donor' ? 'letter' : 'grant'} template</h2>
-                <input
-                    type="text"
-                    placeholder="Template Title"
-                    value={newTemplateTitle}
-                    onChange={(e) => setNewTemplateTitle(e.target.value)}
-                />
-                <textarea
-                    placeholder="Template Content"
-                    value={newTemplateContent}
-                    onChange={(e) => setNewTemplateContent(e.target.value)}
-                />
-                <button onClick={handleCreateTemplate}>Create</button>
             </div>
             {selectedTemplate && (
             <div className="modal-overlay">

@@ -148,4 +148,29 @@
     background-color: #005fcc;
 }
 
-
+.collapsible-header {
+    cursor: pointer;
+    padding: 10px 0;
+    user-select: none;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .collapsible-header h2 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .collapsible-body {
+    padding-top: 10px;
+  }
+  
+  .collapsible-body input,
+  .collapsible-body textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
