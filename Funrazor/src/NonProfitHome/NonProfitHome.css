@@ -86,10 +86,9 @@ body {
 
 #npe-event-list {
     display: grid;
-    margin: 0 auto;
+    justify-items: center;
     gap: 20px;
     padding-top: 0px;
-    width: 80%;
 }
 
 #event-list img {

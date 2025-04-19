@@ -17,10 +17,9 @@
 
 #event-list-grid {
   display: grid;
-  margin: 0 auto;
+  justify-content: center;
   gap: 20px;
   padding-top: 0px;
-  width: 80%;
 }
 
 .date-filters {
