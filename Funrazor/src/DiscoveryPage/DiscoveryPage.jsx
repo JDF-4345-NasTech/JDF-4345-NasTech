@@ -64,6 +64,10 @@ function DiscoveryPage() {
 		window.location.href = "/";
 	};
 
+	const templateClick = () => {
+		window.location.href = "/templates";
+	};
+
 	return (
 		<Router>
 			<div className="page-container">
@@ -79,8 +83,9 @@ function DiscoveryPage() {
 							<p>{user.name}</p>
 						{isAuthenticated && !isOrgAdmin && isUserChecked && (
 							<AdminButton style = {{backgroundColor: "#007bff"}} setCloseAdminButton={setCloseAdminButton} closeAdminButton={closeAdminButton}/>)}
-							{isOrgAdmin && (
+							{isOrgAdmin && (<>
 								<button style = {{backgroundColor: "#007bff"}} onClick={myOrgClick}>My Org</button>
+								<button style = {{backgroundColor: "#007bff"}} onClick={templateClick}>Templates</button></>
 							)}
 						</>) : (<LoginButton style = {{backgroundColor: "#007bff"}}/>)}
 						<LogoutButton/>

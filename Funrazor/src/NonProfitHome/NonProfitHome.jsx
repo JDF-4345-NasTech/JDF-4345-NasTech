@@ -265,11 +265,6 @@ function NonProfitHome({ orgId }) {
                             </div>
                             </div>
                         )}
-                        <div id="template-button">
-                            <Link to="/templates" style={{ textDecoration: 'none' }}>
-                                <button>📄 Manage Templates</button>
-                            </Link>
-                        </div>
                         <div id="event-buttons">
                             <div id="create-event-button">
                                 <Link to='/create-event' style={{ textDecoration: "none" }}>
