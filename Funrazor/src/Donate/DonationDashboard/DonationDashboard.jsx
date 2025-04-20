@@ -55,10 +55,10 @@ const DonationDashboard = ({event}) => {
 				{donations.map((donation, index) => (
 					<tr key={index} className="donation-row">
 						<td>{donation.donorName}</td>
-						{donation.tipIncluded 
+						<td>{donation.tipIncluded 
                         ? (donation.amount / 1.05).toFixed(2)  // Display only 95% of the amount when tipIncluded is true
                         : donation.amount.toFixed(2)
-                        }
+                        }</td>
 					</tr>
 				))}
 				</tbody>

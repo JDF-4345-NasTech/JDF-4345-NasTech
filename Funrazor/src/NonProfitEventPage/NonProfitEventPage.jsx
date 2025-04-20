@@ -72,7 +72,7 @@ function NonProfitEventPage({event}) {
 
 				{/* RSVP Modal */}
 				{isRSVPModalOpen && (
-					<div className="modal-overlay">
+					<div className="modal-overlay"> 
 					<div className="modal-content">
 						<RSVPDashboard event={event} />
 						<button style={{ backgroundColor: '#8B0000' }} id="close-modal" onClick={closeRSVPModal}>Close</button>
@@ -83,10 +83,19 @@ function NonProfitEventPage({event}) {
 				{/* Donation Modal */}
 				{isDonationModalOpen && (
 					<div className="modal-overlay">
-					<div className="modal-content">
-						<DonationDashboard event={event} />
-						<button style={{ backgroundColor: '#8B0000' }} id="close-modal" onClick={closeDonationModal}>Close</button>
-					</div>
+						<div className="modal-content">
+							<DonationDashboard event={event} />
+							<div className="modal-buttons">
+								<button 
+									style={{ backgroundColor: '#8B0000' }} id="close-modal" 
+									onClick={closeDonationModal}> Close 
+								</button>
+								<button
+									style={{ backgroundColor: '#2E8B57'}} id="send-to-donors"
+									onClick={() => history.push('/donor-letter')}> Send to Donors
+								</button>
+							</div>
+						</div>
 					</div>
 				)}
 			</div>
