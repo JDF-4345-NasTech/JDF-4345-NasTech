@@ -5,7 +5,7 @@ import './DonateSuccess.css';
 
 const DonateSuccess = () => {
     const {user, isAuthenticated, isLoading} = useAuth0();
-	const [event, setEvent] = useState(null);
+	  const [event, setEvent] = useState(null);
     const history = useHistory();
     const location = useLocation();
 

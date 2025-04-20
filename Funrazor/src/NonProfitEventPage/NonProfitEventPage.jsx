@@ -3,13 +3,15 @@ import {useState} from 'react';
 import RSVPDashboard from "../RSVPDashboard/RSVPDashboard.jsx";
 import DonationDashboard from '../Donate/DonationDashboard/DonationDashboard';
 import {useAuth0} from '@auth0/auth0-react'
-import { useHistory } from 'react-router-dom'; 
+import { useHistory } from 'react-router-dom';
+import CreateDonorLetter from '../CreateDonorLetter/CreateDonorLetter';
 
 function NonProfitEventPage({event}) {
 	const {user, isAuthenticated} = useAuth0();
 	const history = useHistory();
 	const [isRSVPModalOpen, setIsRSVPModalOpen] = useState(false);
 	const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+	const [isDonorModalOpen, setIsDonorModalOpen] = useState(false);
 
 	function closeRSVPModal() {
 		setIsRSVPModalOpen(false);
@@ -18,6 +20,11 @@ function NonProfitEventPage({event}) {
 	function closeDonationModal() {
 		setIsDonationModalOpen(false);
 	}
+
+	const sendDonorsClick = () => {
+		setIsDonationModalOpen(false);
+		setIsDonorModalOpen(true);
+	};
 
 	return (
 		<div className="non-profit-event-page">
@@ -72,7 +79,7 @@ function NonProfitEventPage({event}) {
 
 				{/* RSVP Modal */}
 				{isRSVPModalOpen && (
-					<div className="modal-overlay">
+					<div className="modal-overlay"> 
 					<div className="modal-content">
 						<RSVPDashboard event={event} />
 						<button style={{ backgroundColor: '#8B0000' }} id="close-modal" onClick={closeRSVPModal}>Close</button>
@@ -83,10 +90,27 @@ function NonProfitEventPage({event}) {
 				{/* Donation Modal */}
 				{isDonationModalOpen && (
 					<div className="modal-overlay">
-					<div className="modal-content">
-						<DonationDashboard event={event} />
-						<button style={{ backgroundColor: '#8B0000' }} id="close-modal" onClick={closeDonationModal}>Close</button>
+						<div className="modal-content">
+							<DonationDashboard event={event} />
+							<div className="modal-buttons">
+								<button 
+									style={{ backgroundColor: '#8B0000' }} id="close-modal" 
+									onClick={closeDonationModal}> Close 
+								</button>
+								<button
+									style={{ backgroundColor: '#2E8B57'}} id="send-to-donors"
+									onClick={(sendDonorsClick)}> Send to Donors
+								</button>
+							</div>
+						</div>
 					</div>
+				)}
+
+				{isDonorModalOpen && (
+					<div className="modal-overlay">
+						<div className="modal-content">
+							<CreateDonorLetter event={event} onClose={() => setIsDonorModalOpen(false)} />
+						</div>
 					</div>
 				)}
 			</div>
