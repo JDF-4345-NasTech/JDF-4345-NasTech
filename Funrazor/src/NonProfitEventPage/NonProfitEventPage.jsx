@@ -3,13 +3,15 @@ import {useState} from 'react';
 import RSVPDashboard from "../RSVPDashboard/RSVPDashboard.jsx";
 import DonationDashboard from '../Donate/DonationDashboard/DonationDashboard';
 import {useAuth0} from '@auth0/auth0-react'
-import { useHistory } from 'react-router-dom'; 
+import { useHistory } from 'react-router-dom';
+import CreateDonorLetter from '../CreateDonorLetter/CreateDonorLetter';
 
 function NonProfitEventPage({event}) {
 	const {user, isAuthenticated} = useAuth0();
 	const history = useHistory();
 	const [isRSVPModalOpen, setIsRSVPModalOpen] = useState(false);
 	const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+	const [isDonorModalOpen, setIsDonorModalOpen] = useState(false);
 
 	function closeRSVPModal() {
 		setIsRSVPModalOpen(false);
@@ -18,6 +20,11 @@ function NonProfitEventPage({event}) {
 	function closeDonationModal() {
 		setIsDonationModalOpen(false);
 	}
+
+	const sendDonorsClick = () => {
+		setIsDonationModalOpen(false);
+		setIsDonorModalOpen(true);
+	};
 
 	return (
 		<div className="non-profit-event-page">
@@ -92,9 +99,17 @@ function NonProfitEventPage({event}) {
 								</button>
 								<button
 									style={{ backgroundColor: '#2E8B57'}} id="send-to-donors"
-									onClick={() => history.push('/donor-letter')}> Send to Donors
+									onClick={(sendDonorsClick)}> Send to Donors
 								</button>
 							</div>
+						</div>
+					</div>
+				)}
+
+				{isDonorModalOpen && (
+					<div className="modal-overlay">
+						<div className="modal-content">
+							<CreateDonorLetter event={event} onClose={() => setIsDonorModalOpen(false)} />
 						</div>
 					</div>
 				)}

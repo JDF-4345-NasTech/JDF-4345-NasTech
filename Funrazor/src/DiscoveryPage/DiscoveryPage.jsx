@@ -12,7 +12,6 @@ import { User } from 'lucide-react';
 import DonationPage from '../Donate/DonationPage/DonationPage';
 import DonateSuccess from '../Donate/DonateSuccess/DonateSuccess';
 import TemplatePage from '../TemplatePage/TemplatePage';
-import CreateDonorLetter from '../CreateDonorLetter/CreateDonorLetter';
 import {BrowserRouter as Router, Route, Switch, Link, useParams} from 'react-router-dom';
 
 function DiscoveryPage() {
@@ -104,7 +103,6 @@ function DiscoveryPage() {
 					<Route path="/organizations/:orgId/events/:eventId" component={EventDetailsPage} />
 					<Route path="/donate/:eventId" component={DonationPage} />
 					<Route path="/success" component={DonateSuccess} />
-					<Route path="/donor-letter" component={CreateDonorLetter} />
 					<Route path="/templates">
 						<TemplatePage orgId={adminOrg} />
 					</Route>
