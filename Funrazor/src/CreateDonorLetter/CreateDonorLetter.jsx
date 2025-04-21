@@ -8,7 +8,6 @@ function CreateDonorLetter({ event, onClose }) {
     const [templates, setTemplates] = useState([]);
     const [newTemplateContent, setNewTemplateContent] = useState('');
     const history = useHistory();
-    const { emailconfirmation } = useState(false);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -27,12 +26,36 @@ function CreateDonorLetter({ event, onClose }) {
       }, [event.organizationId]);
 
 
-    const handleDonorSending = () => {
-        console.log("Sending Emails to Donors");
+    const handleDonorSending = async () => {
+        if (!isAuthenticated) {
+			alert("Please log in to RSVP.");
+			return;
+		}
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/donorMail/${event.id}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                eventName : event.name, 
+                messageBody: newTemplateContent,
+              }),
+            });
+        
+            const result = await response.json();
+        
+            if (response.ok) {
+              alert(result.message);
+            } else {
+              alert(`Error: ${result.error}`);
+            }
+        } catch (err) {
+            console.error('Failed to send emails:', err);
+            alert('An error occurred while sending donor emails.');
+        }
     };
 
-
-    console.log(event.organizationId);
     return (
         <><div className="non-profit-event-page">
 			<button id='cdl-back' onClick={onClose}>
@@ -63,20 +86,6 @@ function CreateDonorLetter({ event, onClose }) {
             />
             <button onClick={handleDonorSending}>Send to Donors</button>
             </div>
-            {/*emailconfirmation && (
-            <div className="modal-overlay">
-                <div className="modal-content email-style-modal">
-                <h2>Email Preview</h2>
-
-                <div className="email-field">
-                    <label><strong>Message:</strong></label>
-                    <div className="email-box">{newTemplateContent}</div>
-                </div>
-
-                <button className="send-button" onClick={() => alert("Open recipient selector")}>Send to</button>
-                </div>
-            </div>
-        )*/}
         </div>
     </>
     );

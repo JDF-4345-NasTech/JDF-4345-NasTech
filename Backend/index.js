@@ -777,3 +777,43 @@ app.listen(port, () => {
   console.log('starting');
 })
 
+
+// Route for confirmation email
+app.post('/donorMail/:eventId', async (req, res) => {
+  const { eventId } = req.params;
+  const { eventName, messageBody } = req.body;
+
+  if (!messageBody) {
+    return res.status(400).json({ error: 'messageBody is required' });
+  }
+
+  try {
+    const donations = await prisma.donation.findMany({
+      where: { eventId: parseInt(eventId) },
+    });
+
+    const donorEmails = [
+      ...new Set(
+        donations
+          .map((donation) => donation.donorName)
+          .filter((email) => email && email.includes('@'))
+      ),
+    ];
+
+    const emailPromises = donorEmails.map((email) =>
+      transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: `A message from the organizers of ${eventName}`,
+        text: messageBody,
+      })
+    );
+
+    await Promise.all(emailPromises);
+
+    res.status(200).json({ message: `Emails sent to ${donorEmails.length} donor(s).` });
+  } catch (err) {
+    console.error('Failed to send emails:', err);
+    res.status(500).json({ error: 'Failed to send emails to donors' });
+  }
+}); 
