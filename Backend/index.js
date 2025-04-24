@@ -813,7 +813,7 @@ app.get('/invitations/:userId', async (req, res) => {
   }
 });
 
-// DELETE: Remove a specific invitation (organization uninvites user)
+// DELETE: User responds to an invitation
 app.delete('/invitations', async (req, res) => {
   const { userId, organizationId } = req.body;
 
@@ -827,10 +827,10 @@ app.delete('/invitations', async (req, res) => {
       }
     });
 
-    res.json({ message: 'Invitation deleted.' });
+    res.json({ message: 'Invitation removed after response.' });
   } catch (error) {
-    console.error('Error deleting invitation:', error);
-    res.status(500).json({ error: 'Failed to delete invitation.' });
+    console.error('Error removing invitation:', error);
+    res.status(500).json({ error: 'Failed to remove invitation.' });
   }
 });
 
