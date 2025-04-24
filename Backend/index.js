@@ -773,6 +773,67 @@ app.post('/donor-templates', async (req, res) => {
   }
 });
 
+// POST: Invite a user to an organization
+app.post('/invitations', async (req, res) => {
+  const { userId, organizationId } = req.body;
+
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        invitations: {
+          connect: { id: organizationId }
+        }
+      }
+    });
+
+    res.status(201).json({ message: 'Invitation created.' });
+  } catch (error) {
+    console.error('Error creating invitation:', error);
+    res.status(500).json({ error: 'Failed to create invitation.' });
+  }
+});
+
+// GET: Fetch organizations that have invited the user
+app.get('/invitations/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        invitations: true
+      }
+    });
+
+    res.json(user.invitations);
+  } catch (error) {
+    console.error('Error fetching invitations:', error);
+    res.status(500).json({ error: 'Failed to fetch invitations.' });
+  }
+});
+
+// DELETE: Remove a specific invitation (organization uninvites user)
+app.delete('/invitations', async (req, res) => {
+  const { userId, organizationId } = req.body;
+
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        invitations: {
+          disconnect: { id: organizationId }
+        }
+      }
+    });
+
+    res.json({ message: 'Invitation deleted.' });
+  } catch (error) {
+    console.error('Error deleting invitation:', error);
+    res.status(500).json({ error: 'Failed to delete invitation.' });
+  }
+});
+
 app.listen(port, () => {
   console.log('starting');
 })
