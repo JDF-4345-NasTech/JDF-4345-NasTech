@@ -64,6 +64,41 @@ app.post('/eventNotification', async (req, res) => {
   }
 });
 
+// POST /templateMail
+app.post('/templateMail', async (req, res) => {
+  const { emails, subject, text, orgId } = req.body;
+
+  try {
+    // fetch the org’s name
+    const org = await prisma.organization.findUnique({
+      where: { id: parseInt(orgId, 10) },
+      select: { name: true }
+    });
+
+    const orgName = org?.name || '';
+    const mailSubject = orgName
+      ? `${subject} from ${orgName}`
+      : subject;
+
+    // send to each address
+    await Promise.all(
+      emails.map(email =>
+        transporter.sendMail({
+          from: process.env.EMAIL_USER,
+          to: email,
+          subject: mailSubject,
+          text
+        })
+      )
+    );
+
+    res.status(200).json({ message: 'Template emails sent!' });
+  } catch (error) {
+    console.error('Error in /templateMail:', error);
+    res.status(500).json({ message: 'Failed to send template emails.' });
+  }
+});
+
 // DELETE to clear databases
 app.delete('/all', async (req, res) => {
   try {
@@ -838,3 +873,43 @@ app.listen(port, () => {
   console.log('starting');
 })
 
+
+// Route for confirmation email
+app.post('/donorMail/:eventId', async (req, res) => {
+  const { eventId } = req.params;
+  const { eventName, messageBody } = req.body;
+
+  if (!messageBody) {
+    return res.status(400).json({ error: 'messageBody is required' });
+  }
+
+  try {
+    const donations = await prisma.donation.findMany({
+      where: { eventId: parseInt(eventId) },
+    });
+
+    const donorEmails = [
+      ...new Set(
+        donations
+          .map((donation) => donation.donorName)
+          .filter((email) => email && email.includes('@'))
+      ),
+    ];
+
+    const emailPromises = donorEmails.map((email) =>
+      transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: `A message from the organizers of ${eventName}`,
+        text: messageBody,
+      })
+    );
+
+    await Promise.all(emailPromises);
+
+    res.status(200).json({ message: `Emails sent to ${donorEmails.length} donor(s).` });
+  } catch (err) {
+    console.error('Failed to send emails:', err);
+    res.status(500).json({ error: 'Failed to send emails to donors' });
+  }
+}); 

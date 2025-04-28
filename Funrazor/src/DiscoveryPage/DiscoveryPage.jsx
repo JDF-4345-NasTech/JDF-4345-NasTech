@@ -12,7 +12,6 @@ import { User } from 'lucide-react';
 import DonationPage from '../Donate/DonationPage/DonationPage';
 import DonateSuccess from '../Donate/DonateSuccess/DonateSuccess';
 import TemplatePage from '../TemplatePage/TemplatePage';
-
 import {BrowserRouter as Router, Route, Switch, Link, useParams} from 'react-router-dom';
 
 function DiscoveryPage() {
