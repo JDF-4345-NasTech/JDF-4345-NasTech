@@ -1,5 +1,6 @@
 import './TemplatePage.css';
 import { useState, useEffect } from 'react';
+import jsPDF from 'jspdf';
 
 function TemplatePage({ orgId }) {
   const [activeType, setActiveType] = useState('donor');
@@ -26,14 +27,15 @@ function TemplatePage({ orgId }) {
       .catch(err => console.error(`Error fetching ${activeType} templates:`, err));
   };
 
-  // Fetch subscribers once
+  // Fetch subscribers once (only used for donor)
   useEffect(() => {
-    if (!orgId) return;
-    fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/subscribers/${orgId}`)
-      .then(res => res.json())
-      .then(data => setSubscribers(data.map(s => s.user)))
-      .catch(err => console.error('Error fetching subscribers:', err));
-  }, [orgId]);
+    if (orgId && activeType === 'donor') {
+      fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/subscribers/${orgId}`)
+        .then(res => res.json())
+        .then(data => setSubscribers(data.map(s => s.user)))
+        .catch(err => console.error('Error fetching subscribers:', err));
+    }
+  }, [orgId, activeType]);
 
   const handleCreateTemplate = () => {
     const endpoint = activeType === 'donor' ? 'donor-templates' : 'grant-templates';
@@ -80,7 +82,7 @@ function TemplatePage({ orgId }) {
     fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/templateMail`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ emails, subject: selectedTemplate.title, text: selectedTemplate.content, orgId: orgId }),
+      body: JSON.stringify({ emails, subject: selectedTemplate.title, text: selectedTemplate.content, orgId }),
     })
       .then(res => res.json())
       .then(() => {
@@ -92,6 +94,17 @@ function TemplatePage({ orgId }) {
         console.error('Error sending template emails:', err);
         alert('Failed to send emails.');
       });
+  };
+
+  // Download selected grant as PDF
+  const downloadGrantPdf = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text(selectedTemplate.title, 10, 20);
+    doc.setFontSize(12);
+    const lines = doc.splitTextToSize(selectedTemplate.content, 180);
+    doc.text(lines, 10, 30);
+    doc.save(`${selectedTemplate.title}.pdf`);
   };
 
   return (
@@ -150,7 +163,7 @@ function TemplatePage({ orgId }) {
         <div className="modal-overlay">
           <div className="modal-content email-style-modal">
             <span className="close-button" onClick={() => setSelectedTemplate(null)}>×</span>
-            <h2>Email Preview</h2>
+            <h2>Preview</h2>
 
             <div className="email-field">
               <label><strong>Title:</strong></label>
@@ -162,29 +175,36 @@ function TemplatePage({ orgId }) {
               <div className="email-box">{selectedTemplate.content}</div>
             </div>
 
-            {!showSendDialog ? (
-              <button className="send-button" onClick={() => setShowSendDialog(true)}>
-                Send to…
-              </button>
-            ) : (
-              <div className="subscriber-selection">
-                <label>
-                  <input type="checkbox" checked={selectAll} onChange={toggleSelectAll} /> Select All
-                </label>
-                <div className="subscriber-list">
-                  {subscribers.map(u => (
-                    <label key={u.id}>
-                      <input
-                        type="checkbox"
-                        checked={selectedEmails.has(u.id)}
-                        onChange={() => toggleEmail(u.id)}
-                      />
-                      {u.firstName} {u.lastName} ({u.id})
-                    </label>
-                  ))}
+            {/* Conditional actions */}
+            {activeType === 'donor' ? (
+              !showSendDialog ? (
+                <button className="send-button" onClick={() => setShowSendDialog(true)}>
+                  Send to
+                </button>
+              ) : (
+                <div className="subscriber-selection">
+                  <label>
+                    <input type="checkbox" checked={selectAll} onChange={toggleSelectAll} /> Select All
+                  </label>
+                  <div className="subscriber-list">
+                    {subscribers.map(u => (
+                      <label key={u.id}>
+                        <input
+                          type="checkbox"
+                          checked={selectedEmails.has(u.id)}
+                          onChange={() => toggleEmail(u.id)}
+                        />
+                        {u.firstName} {u.lastName} ({u.id})
+                      </label>
+                    ))}
+                  </div>
+                  <button onClick={sendTemplateEmails}>Confirm Send</button>
                 </div>
-                <button onClick={sendTemplateEmails}>Confirm Send</button>
-              </div>
+              )
+            ) : (
+              <button className="send-button" onClick={downloadGrantPdf}>
+                Download as PDF
+              </button>
             )}
           </div>
         </div>
