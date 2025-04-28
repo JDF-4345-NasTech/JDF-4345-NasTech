@@ -194,7 +194,9 @@ function TemplatePage({ orgId }) {
                           checked={selectedEmails.has(u.id)}
                           onChange={() => toggleEmail(u.id)}
                         />
-                        {u.firstName} {u.lastName} ({u.id})
+                        <span className="subscriber-text">
+                            {u.firstName} {u.lastName} {u.id}
+                        </span>
                       </label>
                     ))}
                   </div>
