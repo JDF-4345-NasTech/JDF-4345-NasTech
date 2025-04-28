@@ -173,4 +173,95 @@
     border-radius: 5px;
     border: 1px solid #ccc;
   }
+
+.subscriber-selection > label {
+    display: grid;
+    grid-template-columns: auto 1fr;  /* checkbox | text */
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+
+.subscriber-selection {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+  }
+  
+  .subscriber-list {
+    max-height: 180px;
+    overflow-y: auto;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fafafa;
+    margin: 0.75rem 0 1.25rem;
+  }
+  
+  .subscriber-selection .subscriber-list label {
+    display: grid;
+    grid-template-columns: auto 1fr;   /* checkbox | text */
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.95rem;
+  }
+  
+  /* remove bottom border on last item */
+  .subscriber-selection .subscriber-list label:last-child {
+    border-bottom: none;
+  }
+  
+  /* checkbox always flush left */
+  .subscriber-selection .subscriber-list label input[type="checkbox"] {
+    margin: 0;
+    flex-shrink: 0;
+  }
+  
+  /* text next to the box, no parentheses */
+  .subscriber-selection .subscriber-list label .subscriber-text {
+    overflow-wrap: anywhere;
+  }
+  
+  .send-button,
+  .subscriber-selection > button {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+  .send-button:hover,
+  .subscriber-selection > button:hover {
+    background-color: #0056b3;
+  }
+
+  .modal-content {
+    max-width: 600px;
+    width: 90%;
+    box-sizing: border-box;
+  }
+  
+  .send-button,
+  .subscriber-selection > button {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+  .send-button:hover,
+  .subscriber-selection > button:hover {
+    background-color: #0056b3;
+  }
   
