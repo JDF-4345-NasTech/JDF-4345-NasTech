@@ -162,7 +162,8 @@ function TemplatePage({ orgId }) {
       {selectedTemplate && (
         <div className="modal-overlay">
           <div className="modal-content email-style-modal">
-            <span className="close-button" onClick={() => setSelectedTemplate(null)}>×</span>
+            <span className="close-button" onClick={() => {setSelectedTemplate(null)
+                                                            setShowSendDialog(false)}}>×</span>
             <h2>Preview</h2>
 
             <div className="email-field">
@@ -184,7 +185,7 @@ function TemplatePage({ orgId }) {
               ) : (
                 <div className="subscriber-selection">
                   <label>
-                    <input type="checkbox" checked={selectAll} onChange={toggleSelectAll} /> Select All
+                    <input type="checkbox" checked={selectAll} onChange={toggleSelectAll} /> Select all subscribers
                   </label>
                   <div className="subscriber-list">
                     {subscribers.map(u => (
