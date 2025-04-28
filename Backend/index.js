@@ -64,6 +64,41 @@ app.post('/eventNotification', async (req, res) => {
   }
 });
 
+// POST /templateMail
+app.post('/templateMail', async (req, res) => {
+  const { emails, subject, text, orgId } = req.body;
+
+  try {
+    // fetch the org’s name
+    const org = await prisma.organization.findUnique({
+      where: { id: parseInt(orgId, 10) },
+      select: { name: true }
+    });
+
+    const orgName = org?.name || '';
+    const mailSubject = orgName
+      ? `${subject} from ${orgName}`
+      : subject;
+
+    // send to each address
+    await Promise.all(
+      emails.map(email =>
+        transporter.sendMail({
+          from: process.env.EMAIL_USER,
+          to: email,
+          subject: mailSubject,
+          text
+        })
+      )
+    );
+
+    res.status(200).json({ message: 'Template emails sent!' });
+  } catch (error) {
+    console.error('Error in /templateMail:', error);
+    res.status(500).json({ message: 'Failed to send template emails.' });
+  }
+});
+
 // DELETE to clear databases
 app.delete('/all', async (req, res) => {
   try {
