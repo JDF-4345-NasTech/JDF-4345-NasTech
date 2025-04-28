@@ -1,8 +1,9 @@
 import './TemplatePage.css';
 import { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
+import GrantTemplate from './GrantTemplate/GrantTemplate';
 
-function TemplatePage({ orgId }) {
+export default function TemplatePage({ orgId }) {
   const [activeType, setActiveType] = useState('donor');
   const [templates, setTemplates] = useState([]);
   const [newTemplateTitle, setNewTemplateTitle] = useState('');
@@ -14,49 +15,27 @@ function TemplatePage({ orgId }) {
   const [selectAll, setSelectAll] = useState(false);
   const [showSendDialog, setShowSendDialog] = useState(false);
 
-  // Fetch templates when org or type changes
+  // fetch templates
   useEffect(() => {
-    if (orgId) fetchTemplates();
+    if (!orgId) return;
+    const ep = activeType === 'donor' ? 'donor-templates' : 'grant-templates';
+    fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/${ep}`)
+      .then(r => r.json())
+      .then(setTemplates)
+      .catch(console.error);
   }, [orgId, activeType]);
 
-  const fetchTemplates = () => {
-    const endpoint = activeType === 'donor' ? 'donor-templates' : 'grant-templates';
-    fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/organizations/${orgId}/${endpoint}`)
-      .then(res => res.json())
-      .then(data => setTemplates(data))
-      .catch(err => console.error(`Error fetching ${activeType} templates:`, err));
-  };
-
-  // Fetch subscribers once (only used for donor)
+  // fetch subscribers
   useEffect(() => {
     if (orgId && activeType === 'donor') {
       fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/subscribers/${orgId}`)
-        .then(res => res.json())
+        .then(r => r.json())
         .then(data => setSubscribers(data.map(s => s.user)))
-        .catch(err => console.error('Error fetching subscribers:', err));
+        .catch(console.error);
     }
   }, [orgId, activeType]);
 
-  const handleCreateTemplate = () => {
-    const endpoint = activeType === 'donor' ? 'donor-templates' : 'grant-templates';
-    const template = { organizationId: orgId, title: newTemplateTitle, content: newTemplateContent };
-
-    fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/${endpoint}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(template),
-    })
-      .then(res => res.json())
-      .then(createdTemplate => {
-        setTemplates([...templates, createdTemplate]);
-        setNewTemplateTitle('');
-        setNewTemplateContent('');
-      })
-      .catch(err => console.error(`Error creating ${activeType} template:`, err));
-  };
-
-  // Toggle individual email
-  const toggleEmail = (email) => {
+  const toggleEmail = email => {
     setSelectedEmails(prev => {
       const next = new Set(prev);
       next.has(email) ? next.delete(email) : next.add(email);
@@ -64,40 +43,33 @@ function TemplatePage({ orgId }) {
     });
   };
 
-  // Toggle all selection
   const toggleSelectAll = () => {
-    if (selectAll) {
-      setSelectedEmails(new Set());
-    } else {
-      setSelectedEmails(new Set(subscribers.map(u => u.id)));
-    }
-    setSelectAll(!selectAll);
+    setSelectedEmails(prev => {
+      if (selectAll) return new Set();
+      return new Set(subscribers.map(u => u.id));
+    });
+    setSelectAll(x => !x);
   };
 
-  // Send template emails
   const sendTemplateEmails = () => {
     const emails = Array.from(selectedEmails);
-    if (!emails.length) return alert('Pick at least one subscriber.');
-
+    if (!emails.length) return alert('Select at least one subscriber');
     fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/templateMail`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ emails, subject: selectedTemplate.title, text: selectedTemplate.content, orgId }),
+      body: JSON.stringify({ emails, subject: selectedTemplate.title, text: selectedTemplate.content, orgId })
     })
-      .then(res => res.json())
+      .then(r => r.json())
       .then(() => {
-        alert('Emails sent!');
-        setShowSendDialog(false);
+        alert('Sent');
         setSelectedTemplate(null);
+        setShowSendDialog(false);
       })
-      .catch(err => {
-        console.error('Error sending template emails:', err);
-        alert('Failed to send emails.');
-      });
+      .catch(console.error);
   };
 
-  // Download selected grant as PDF
-  const downloadGrantPdf = () => {
+  // download existing grant
+  const downloadExistingGrant = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.text(selectedTemplate.title, 10, 20);
@@ -105,12 +77,12 @@ function TemplatePage({ orgId }) {
     const lines = doc.splitTextToSize(selectedTemplate.content, 180);
     doc.text(lines, 10, 30);
     doc.save(`${selectedTemplate.title}.pdf`);
+    setSelectedTemplate(null);
   };
 
   return (
     <div className="template-page">
       <h1>Templates</h1>
-
       <div className="template-type-toggle">
         <button className={activeType === 'donor' ? 'active' : ''} onClick={() => setActiveType('donor')}>
           📨 Subscriber Letters
@@ -120,15 +92,14 @@ function TemplatePage({ orgId }) {
         </button>
       </div>
 
+      {/* create new block */}
       <div className="template-section collapsible-section">
-        <div className="collapsible-header" onClick={() => setIsCreateOpen(prev => !prev)}>
+        <div className="collapsible-header" onClick={() => setIsCreateOpen(o => !o)}>
           <h2>{isCreateOpen ? '▼' : '▶'} Create {activeType === 'donor' ? 'letter' : 'grant'} template</h2>
         </div>
-
         {isCreateOpen && (
           <div className="collapsible-body">
             <input
-              type="text"
               placeholder="Template Title"
               value={newTemplateTitle}
               onChange={e => setNewTemplateTitle(e.target.value)}
@@ -143,71 +114,68 @@ function TemplatePage({ orgId }) {
         )}
       </div>
 
+      {/* list of templates with suggested grant */}
       <div className="template-section">
         <h2>{activeType === 'donor' ? 'Subscriber letter templates' : 'Grant request templates'}</h2>
-        {templates.length === 0 ? (
-          <p>No {activeType} templates yet.</p>
-        ) : (
-          <div className="template-list">
-            {templates.map(template => (
-              <div key={template.id} className="template-card">
-                <h3>{template.title}</h3>
-                <button onClick={() => setSelectedTemplate(template)}>View more</button>
-              </div>
-            ))}
-          </div>
-        )}
+
+        <div className="template-list">
+          {activeType === 'grant' && (
+            <div className="template-card">
+              <h3>Suggested template</h3>
+              <button onClick={() => setSelectedTemplate({ suggested: true })}>Fill out</button>
+            </div>
+          )}
+
+          {templates.map(t => (
+            <div key={t.id} className="template-card">
+              <h3>{t.title}</h3>
+              <button onClick={() => setSelectedTemplate({ ...t, suggested: false })}>
+                {activeType === 'donor' ? 'View more' : 'Download'}
+              </button>
+            </div>
+          ))}
+
+          {!templates.length && <p>No {activeType} templates yet.</p>}
+        </div>
       </div>
 
+      {/* modal */}
       {selectedTemplate && (
         <div className="modal-overlay">
-          <div className="modal-content email-style-modal">
-            <span className="close-button" onClick={() => {setSelectedTemplate(null)
-                                                            setShowSendDialog(false)}}>×</span>
-            <h2>Preview</h2>
+          <div className="modal-content">
+            <span className="close-button" onClick={() => setSelectedTemplate(null)}>×</span>
 
-            <div className="email-field">
-              <label><strong>Title:</strong></label>
-              <div className="email-box">{selectedTemplate.title}</div>
-            </div>
-
-            <div className="email-field">
-              <label><strong>Message:</strong></label>
-              <div className="email-box">{selectedTemplate.content}</div>
-            </div>
-
-            {/* Conditional actions */}
-            {activeType === 'donor' ? (
-              !showSendDialog ? (
-                <button className="send-button" onClick={() => setShowSendDialog(true)}>
-                  Send to
-                </button>
-              ) : (
-                <div className="subscriber-selection">
-                  <label>
-                    <input type="checkbox" checked={selectAll} onChange={toggleSelectAll} /> Select all subscribers
-                  </label>
-                  <div className="subscriber-list">
-                    {subscribers.map(u => (
-                      <label key={u.id}>
-                        <input
-                          type="checkbox"
-                          checked={selectedEmails.has(u.id)}
-                          onChange={() => toggleEmail(u.id)}
-                        />
-                        <span className="subscriber-text">
-                            {u.firstName} {u.lastName} {u.id}
-                        </span>
-                      </label>
-                    ))}
+            {selectedTemplate.suggested ? (
+              <GrantTemplate template={{ title: '', content: '' }} />
+            ) : activeType === 'donor' ? (
+              // donor preview and send flow
+              <>
+                <h2>{selectedTemplate.title}</h2>
+                <p>{selectedTemplate.content}</p>
+                {!showSendDialog ? (
+                  <button onClick={() => setShowSendDialog(true)}>Send to</button>
+                ) : (
+                  <div className="subscriber-selection">
+                    <label><input type="checkbox" checked={selectAll} onChange={toggleSelectAll}/> Select all subscribers</label>
+                    <div className="subscriber-list">
+                      {subscribers.map(u => (
+                        <label key={u.id}>
+                          <input
+                            type="checkbox"
+                            checked={selectedEmails.has(u.id)}
+                            onChange={() => toggleEmail(u.id)}
+                          />
+                          <span className="subscriber-text">{u.firstName} {u.lastName} – {u.id}</span>
+                        </label>
+                      ))}
+                    </div>
+                    <button onClick={sendTemplateEmails}>Confirm Send</button>
                   </div>
-                  <button onClick={sendTemplateEmails}>Confirm Send</button>
-                </div>
-              )
+                )}
+              </>
             ) : (
-              <button className="send-button" onClick={downloadGrantPdf}>
-                Download as PDF
-              </button>
+              // existing grant download
+              downloadExistingGrant()
             )}
           </div>
         </div>
@@ -216,5 +184,6 @@ function TemplatePage({ orgId }) {
   );
 }
 
-export default TemplatePage;
+
+
 
