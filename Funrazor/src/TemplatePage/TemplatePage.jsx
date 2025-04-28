@@ -68,6 +68,32 @@ export default function TemplatePage({ orgId }) {
       .catch(console.error);
   };
 
+const handleCreateTemplate = () => {
+    const endpoint = activeType === 'donor'
+      ? 'donor-templates'
+      : 'grant-templates';
+  
+    const payload = {
+      organizationId: orgId,
+      title: newTemplateTitle,
+      content: newTemplateContent,
+    };
+  
+    fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(res => res.json())
+      .then(created => {
+        setTemplates(ts => [...ts, created]);
+        setNewTemplateTitle('');
+        setNewTemplateContent('');
+        setIsCreateOpen(false);
+      })
+      .catch(console.error);
+  };
+
   // download existing grant
   const downloadExistingGrant = () => {
     const doc = new jsPDF();
@@ -143,39 +169,62 @@ export default function TemplatePage({ orgId }) {
       {selectedTemplate && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <span className="close-button" onClick={() => setSelectedTemplate(null)}>×</span>
-
+          <span
+                className="close-button"
+                onClick={() => {
+                    setSelectedTemplate(null);
+                    setShowSendDialog(false);
+                }}
+                >×</span>
             {selectedTemplate.suggested ? (
               <GrantTemplate template={{ title: '', content: '' }} />
             ) : activeType === 'donor' ? (
               // donor preview and send flow
               <>
-                <h2>{selectedTemplate.title}</h2>
-                <p>{selectedTemplate.content}</p>
-                {!showSendDialog ? (
-                  <button onClick={() => setShowSendDialog(true)}>Send to</button>
-                ) : (
-                  <div className="subscriber-selection">
-                    <label><input type="checkbox" checked={selectAll} onChange={toggleSelectAll}/> Select all subscribers</label>
-                    <div className="subscriber-list">
-                      {subscribers.map(u => (
-                        <label key={u.id}>
-                          <input
-                            type="checkbox"
-                            checked={selectedEmails.has(u.id)}
-                            onChange={() => toggleEmail(u.id)}
-                          />
-                          <span className="subscriber-text">{u.firstName} {u.lastName} – {u.id}</span>
-                        </label>
-                      ))}
-                    </div>
-                    <button onClick={sendTemplateEmails}>Confirm Send</button>
-                  </div>
-                )}
+            {/* Subject line */}
+            <div className="email-field">
+                <label>Subject:</label>
+                <div className="email-box">{selectedTemplate.title}</div>
+            </div>
+
+            {/* Message body */}
+            <div className="email-field">
+                <label>Message:</label>
+                <div className="email-box">{selectedTemplate.content}</div>
+            </div>
+
+            {!showSendDialog ? (
+                <button onClick={() => setShowSendDialog(true)}>Send to</button>
+            ) : (
+                <div className="subscriber-selection">
+                <label>
+                    <input
+                    type="checkbox"
+                    checked={selectAll}
+                    onChange={toggleSelectAll}
+                    />{' '}
+                    Select all subscribers
+                </label>
+                <div className="subscriber-list">
+                    {subscribers.map(u => (
+                    <label key={u.id}>
+                        <input
+                        type="checkbox"
+                        checked={selectedEmails.has(u.id)}
+                        onChange={() => toggleEmail(u.id)}
+                        />
+                        <span className="subscriber-text">
+                        {u.firstName} {u.lastName} {u.id}
+                        </span>
+                    </label>
+                    ))}
+                </div>
+                <button onClick={sendTemplateEmails}>Confirm Send</button>
+                </div>
+            )}
               </>
             ) : (
-              // existing grant download
-              downloadExistingGrant()
+                downloadExistingGrant()
             )}
           </div>
         </div>

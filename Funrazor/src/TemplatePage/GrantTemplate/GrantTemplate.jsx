@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
+import '../TemplatePage.css';
 
 export default function GrantTemplate({ template }) {
   const [fields, setFields] = useState({
@@ -118,4 +119,3 @@ export default function GrantTemplate({ template }) {
     </div>
   );
 }
-
