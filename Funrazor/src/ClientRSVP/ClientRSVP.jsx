@@ -92,16 +92,26 @@ const ClientRSVP = ({event, setIsRsvpOpen}) => {
 					<h2>RSVP</h2>
 					{error && <p style={{ color: 'red' }}>{error}</p>}
 					<div id='rsvp-buttons'>
-						<button onClick={() => setRsvpStatus('Yes')}
-										style={{fontWeight: rsvpStatus === 'Yes' ? 'bold' : 'normal'}}>Yes
-						</button>
-						<button onClick={() => setRsvpStatus('No')}
-										style={{fontWeight: rsvpStatus === 'No' ? 'bold' : 'normal'}}>No
-						</button>
-						<button onClick={() => setRsvpStatus('Maybe')}
-										style={{fontWeight: rsvpStatus === 'Maybe' ? 'bold' : 'normal'}}>Maybe
-						</button>
+					<button
+						className={rsvpStatus === 'Yes' ? 'rsvp-option selected' : 'rsvp-option'}
+						onClick={() => setRsvpStatus('Yes')}
+					>
+						Yes
+					</button>
+					<button
+						className={rsvpStatus === 'No' ? 'rsvp-option selected' : 'rsvp-option'}
+						onClick={() => setRsvpStatus('No')}
+					>
+						No
+					</button>
+					<button
+						className={rsvpStatus === 'Maybe' ? 'rsvp-option selected' : 'rsvp-option'}
+						onClick={() => setRsvpStatus('Maybe')}
+					>
+						Maybe
+					</button>
 					</div>
+
 					{/* <div>
 						<label>
 							<input
