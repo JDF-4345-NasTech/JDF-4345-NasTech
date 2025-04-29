@@ -255,6 +255,7 @@ function NonProfitHome({ orgId }) {
                                         </button>
                                     </>
                                 )}
+                                <button id="invite-admin-button" onClick={() => setShowInviteModal(true)}>Invite admin</button>
                                 {/* Requests Button */}
                                 {organization.requests && organization.requests.length > 0 && (
                                     <button id="requests-button" onClick={openRequestsModal}>
@@ -264,7 +265,6 @@ function NonProfitHome({ orgId }) {
                             </div>
                             {/* <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" /> */}
                         </div>
-                        <button onClick={() => setShowInviteModal(true)}>Invite admin</button>
                         {showInviteModal && (
                         <div className="modal">
                             <div className="modal-content">
