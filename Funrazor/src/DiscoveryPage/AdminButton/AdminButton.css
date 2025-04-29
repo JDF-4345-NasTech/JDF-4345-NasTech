@@ -28,6 +28,10 @@
   button {
     padding: 10px 20px;
     margin: 5px;
-    cursor: pointer;
+    cursor: pointer; 
+  }
+
+  .partOfOrgButton {
+    background-color: #7fbdff;
   }
   

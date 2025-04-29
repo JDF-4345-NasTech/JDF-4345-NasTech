@@ -24,6 +24,8 @@ model Organization {
 
   grantTemplates GrantTemplate[]
   donorTemplates DonorTemplate[]
+
+  invitedUsers User[] @relation("OrganizationInvitations")
 }
 
 model Subscriptions {
@@ -70,6 +72,8 @@ model User {
   requestedOrganization Organization? @relation("OrganizationRequests", fields: [requestedOrganizationId], references: [id])
   requestedOrganizationId Int?
   subscribed_organizations Subscriptions[]
+
+  invitations Organization[] @relation("OrganizationInvitations")
 }
 
 model Description {

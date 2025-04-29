@@ -26,6 +26,11 @@ function NonProfitHome({ orgId }) {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [userToAccept, setUserToAccept] = useState(null);  // Store the user ID for whom confirmation is needed
 
+    const [showInviteModal, setShowInviteModal] = useState(false);
+    const [inviteEmail, setInviteEmail] = useState("");
+    const [showConfirmInvite, setShowConfirmInvite] = useState(false);
+
+
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -196,6 +201,33 @@ function NonProfitHome({ orgId }) {
             alert('Error denying request');
           });
       };
+
+      const handleSendInvite = async () => {
+        try {
+          const response = await fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/invitations`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId: inviteEmail,
+              organizationId: orgId
+            })
+          });
+          if (response.ok) {
+            alert(`Invitation sent to ${inviteEmail}`);
+          } else {
+            const data = await response.json();
+            alert(`Failed to invite: ${data.error}`);
+          }
+        } catch (error) {
+          console.error('Error sending invite:', error);
+          alert('Something went wrong while inviting.');
+        } finally {
+          setShowInviteModal(false);
+          setShowConfirmInvite(false);
+          setInviteEmail("");
+        }
+      };
+      
       
 
     return (
@@ -223,6 +255,7 @@ function NonProfitHome({ orgId }) {
                                         </button>
                                     </>
                                 )}
+                                <button id="invite-admin-button" onClick={() => setShowInviteModal(true)}>Invite admin</button>
                                 {/* Requests Button */}
                                 {organization.requests && organization.requests.length > 0 && (
                                     <button id="requests-button" onClick={openRequestsModal}>
@@ -232,6 +265,34 @@ function NonProfitHome({ orgId }) {
                             </div>
                             {/* <img src={organization.image || ''} alt="NonProfitImage" id="non-profit-image" /> */}
                         </div>
+                        {showInviteModal && (
+                        <div className="modal">
+                            <div className="modal-content">
+                            <span className="close-button" onClick={() => setShowInviteModal(false)}>×</span>
+                            <h2>Invite admin</h2>
+                            <input
+                                type="email"
+                                placeholder="Enter user's email"
+                                value={inviteEmail}
+                                onChange={(e) => setInviteEmail(e.target.value)}
+                            />
+                            <button onClick={() => setShowConfirmInvite(true)}>Invite</button>
+                            </div>
+                        </div>
+                        )}
+
+                        {showConfirmInvite && (
+                        <div className="modal">
+                            <div className="modal-content">
+                            <span className="close-button" onClick={() => setShowConfirmInvite(false)}>×</span>
+                            <h2>Are you sure you want to invite {inviteEmail} to be an admin for this organization?</h2>
+                            <p>This will give them access to edit the organization page, create events, and send emails to subscribers.</p>
+                            <button onClick={handleSendInvite}>Yes, Invite</button>
+                            <button onClick={() => setShowConfirmInvite(false)}>Cancel</button>
+                            </div>
+                        </div>
+                        )}
+
                         {showRequestsModal && (
                             <div className="modal">
                                 <div className="modal-content">

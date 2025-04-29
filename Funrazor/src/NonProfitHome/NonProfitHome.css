@@ -267,3 +267,28 @@ input[type="date"] {
     font-size: 20px;
     cursor: pointer;
 }
+
+#invite-admin-button {
+    all: unset;
+    display: inline-flex;
+    align-items: center;        /* vertical centering */
+    justify-content: center;    /* horizontal centering */
+    padding: 0 20px;
+    font-size: 0.9rem;
+    margin: 0 8px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    height: 28px;
+    white-space: nowrap;
+    padding: 6px 25px;
+}
+
+
+#invite-admin-button:hover {
+    background-color: #0056b3;
+}
+
+
