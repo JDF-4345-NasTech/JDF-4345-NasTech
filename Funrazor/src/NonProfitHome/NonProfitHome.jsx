@@ -212,7 +212,6 @@ function NonProfitHome({ orgId }) {
               organizationId: orgId
             })
           });
-      
           if (response.ok) {
             alert(`Invitation sent to ${inviteEmail}`);
           } else {

@@ -122,8 +122,8 @@ function AdminButton({ setCloseAdminButton, closeAdminButton }) {
 
   return (
     <>
-      <button onClick={openModal}>
-        Part of an organization?
+      <button className="partOfOrgButton" onClick={openModal}>
+        Create organization
       </button>
 
       {isModalOpen && (
